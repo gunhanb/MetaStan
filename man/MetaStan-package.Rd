@@ -6,7 +6,7 @@
 \alias{MetaStan}
 \title{The 'MetaStan' package.}
 \description{
-A DESCRIPTION OF THE PACKAGE
+Fitting Bayesian meta-analysis models via Rstan.
 }
 \references{
 Stan Development Team (2018). RStan: the R interface to Stan. R package version 2.17.3. http://mc-stan.org

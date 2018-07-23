@@ -1,0 +1,7 @@
+"publication","year","randomized","control.type","comparison","followup","exp.total","cont.total","exp.PTLD.events","cont.PTLD.events","exp.death.events","cont.death.events"
+"1","Heffron (2003)",2003,"yes","concurrent","delayed CNI",24,61,20,NA,NA,4,3
+"2","Gibelli (2004)",2004,"no","historical","IL-2RA only",6,28,28,NA,NA,NA,NA
+"3","Schuller (2005)",2005,"no","concurrent","IL-2RA only",6,18,12,0,0,NA,NA
+"4","Ganschow (2005)",2005,"no","historical","IL-2RA only",36,54,54,1,0,1,3
+"5","Spada (2006)",2006,"yes","concurrent","no/low steroids",12,36,36,1,1,4,3
+"6","Gras (2008)",2008,"no","historical","no/low steroids",36,50,34,NA,NA,2,3

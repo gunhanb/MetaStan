@@ -9,11 +9,17 @@
 #' @param rctrl Number of events in contrl arm
 #' @param mu_prior A numerical vector specifying the parameter of the normal prior
 #' density for baseline risks, first value is parameter for mean, second is for variance.
+#' Default is c(0, 10).
 #' @param theta_prior A numerical vector specifying the parameter of the normal prior
 #' density for treatment effect estimate, first value is parameter for mean, second
-#' is for variance.
+#' is for variance. Default is NULL.
+#' @param delta_u A numerical value specifying the upper bound of the a priori inerval for
+#' treatment effect on odds ratio scale. This is used to cacluate a normal weakly informative prior
+#' for theta. Thus when this argument is pecified, `theta` should be left empty. Default is NULL.
 #' @param tau_prior A numerical vector specifying the parameter of the prior density
-#' for heterogenety stdev.
+#' for heterogenety stdev. Defalut is c(0, 0.5).
+#' @param tau_prior_dist A string specifying the prior density for the heterogeneity standard deviation,
+#' option is 'half-normal' for half-normal prior.
 #' @return an object of class `stanfit` returned by `rstan::sampling`
 #' @examples
 #' \dontrun{
@@ -29,19 +35,42 @@
 #'                                    tau_prior = c(0, 0.5))
 #' }
 #'
-meta_stan = function(ntrt = NULL, nctrl = NULL, rtrt = NULL, rctrl = NULL,
-                     mu_prior = c(0, 10), theta_prior = c(0, 100),
-                     tau_prior = c(0, 0.5), tau_prior_dist = "half-normal") {
+meta_stan = function(ntrt = NULL,
+                     nctrl = NULL,
+                     rtrt = NULL,
+                     rctrl = NULL,
+                     mu_prior = c(0, 10),
+                     theta_prior = NULL,
+                     tau_prior = c(0, 0.5),
+                     tau_prior_dist = "half-normal",
+                     delta_u = NULL) {
 
+  ################ check prior for treatment effect parameter
+  if(is.null(delta_u) == TRUE & is.null(theta_prior) == TRUE){
+    stop("Function argument \"delta_u\" or \"theta_prior\" must be specified !!!")
+  }
+
+  if(is.null(delta_u) == FALSE & is.null(theta_prior) == FALSE){
+    stop("Either \"delta_u\" OR \"theta_prior\" can be specified, but not both !!!")
+  }
+
+  ## Calculate standard devation of theta_prior from delta_u
+  if(is.null(delta_u) == FALSE){
+    theta_prior[1] = 0
+    theta_prior[2] = (log(delta_u) - log(1/delta_u)) / (2 * 1.96)
+  }
+
+  if(tau_prior_dist == "half-normal") { tau_prior_dist_num = 1 }
   ## Create a list to be used with Stan
   stanDat <- list(N = length(ntrt),
                   ntrt = ntrt,
                   nctrl = nctrl,
                   rtrt = rtrt,
                   rctrl = rctrl,
-                  mupar = mupar,
-                  dpar = dpar,
-                  taupar = taupar)
+                  mu_prior = mu_prior,
+                  theta_prior = theta_prior,
+                  tau_prior = tau_prior,
+                  tau_prior_dist = tau_prior_dist_num)
   ## Ftiing the model
   out = rstan::sampling(stanmodels$BNHM, data = stanDat)
   return(out)

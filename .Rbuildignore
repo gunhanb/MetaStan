@@ -1,3 +1,7 @@
 ^MetaStan\.Rproj$
 ^\.Rproj\.user$
 ^\.travis\.yml$
+^data-raw$
+cran-comments.md
+README.Rmd
+

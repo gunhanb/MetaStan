@@ -37,7 +37,7 @@ model {
   // prior distributions
   mu ~ normal(mu_prior[1], mu_prior[2]);
   theta ~ normal(theta_prior[1], theta_prior[2]);
-  tau ~ normal(tau_prior[1], tau_prior[2])T[0,];
+  if(tau_prior_dist == 1)  tau ~ normal(tau_prior[1], tau_prior[2])T[0,];
   // likelihood
   rctrl~ binomial(nctrl, pctrl);                // cntrl
   rtrt ~ binomial(ntrt, ptrt);                  // trt
