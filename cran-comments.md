@@ -11,6 +11,17 @@ output: html_document
 ## R CMD check results
 There were no ERRORs or WARNINGs. 
 
-There was 1 NOTE:
+There were 2 NOTEs:
+
+* This is a new submission.
+
+* checking for GNU extensions in Makefiles ... NOTE
+
+GNU make is a SystemRequirements.
+
+GNU make is added as SystemRequirements in Description 
+of the package
+
+
 
 

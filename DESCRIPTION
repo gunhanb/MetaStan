@@ -1,12 +1,15 @@
 Package: MetaStan
-Version: 1.0.0
-Title: Meta-Analysis with Stan
-Description: Fitting Bayesian meta-analysis models via Rstan.
-Authors@R: c(person("Burak Kuersad", "Guenhan", email="burak.gunhan@med.uni-goettingen.de", role=c("aut", "cre")),
-             person("Trustees of", "Columbia University", role="cph", comment="src/init.cpp, tools/make_cpp.R, R/stanmodels.R")
-	    )
+Version: 0.0.1
+Title: Bayesian Meta-Analysis via 'Stan'
+Description: Performs Bayesian meta-analysis using 'Stan'. 
+             Includes binomial-normal hierarchical model for meta-analysis.
+Authors@R: c(person("Burak Kuersad", "Guenhan", email="burak.gunhan@med.uni-goettingen.de", 
+             role=c("aut", "cre")),
+             person("Trustees of", "Columbia University", role="cph", comment="src/init.cpp, 
+             tools/make_cpp.R, R/stanmodels.R"))
 License: GPL (>=3)
 Encoding: UTF-8
+Date: 2018-07-23
 LazyData: true
 ByteCompile: true
 Depends: R (>= 3.4.0), Rcpp (>= 0.12.17), methods

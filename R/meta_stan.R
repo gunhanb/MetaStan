@@ -72,7 +72,29 @@ meta_stan = function(ntrt = NULL,
                   tau_prior = tau_prior,
                   tau_prior_dist = tau_prior_dist_num)
   ## Ftiing the model
-  out = rstan::sampling(stanmodels$BNHM, data = stanDat)
+  fit = rstan::sampling(stanmodels$BNHM, data = stanDat)
+  ## MODEL FINISHED
+  fit_sum <- rstan::summary(fit)$summary
+
+
+  Rhat.max <- max(fit_sum[,"Rhat"], na.rm = TRUE)
+
+  if(Rhat.max > 1.1)
+    warning("Maximal Rhat > 1.1. Consider increasing meta_stan MCMC parameter.")
+
+  ## finally include a check if the Stan NuTS sample had any
+  ## divergence in the sampling phase, these are not supposed to
+  ## happen and can often be avoided by increasing adapt_delta
+  sampler_params <- rstan::get_sampler_params(fit, inc_warmup=FALSE)
+  n_divergent <- sum(sapply(sampler_params, function(x) sum(x[,'divergent__'])) )
+  if(n_divergent > 0) {
+    warning(paste("In total", n_divergent, "divergent transitions occured during the sampling
+                  phase.\nPlease consider increasing adapt_delta closer to 1."))
+  }
+
+  out = list(fit = fit,
+             fit_sum = fit_sum)
+
   return(out)
 }
 

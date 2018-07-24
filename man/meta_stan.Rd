@@ -5,8 +5,8 @@
 \title{Fitting a meta-analysis model using Stan}
 \usage{
 meta_stan(ntrt = NULL, nctrl = NULL, rtrt = NULL, rctrl = NULL,
-  mu_prior = c(0, 10), theta_prior = c(0, 100), tau_prior = c(0, 0.5),
-  tau_prior_dist = "half-normal")
+  mu_prior = c(0, 10), theta_prior = NULL, tau_prior = c(0, 0.5),
+  tau_prior_dist = "half-normal", delta_u = NULL)
 }
 \arguments{
 \item{ntrt}{Number of subjects in treatment arm}
@@ -18,17 +18,22 @@ meta_stan(ntrt = NULL, nctrl = NULL, rtrt = NULL, rctrl = NULL,
 \item{rctrl}{Number of events in contrl arm}
 
 \item{mu_prior}{A numerical vector specifying the parameter of the normal prior
-density for baseline risks, first value is parameter for mean, second is for variance.}
+density for baseline risks, first value is parameter for mean, second is for variance.
+Default is c(0, 10).}
 
 \item{theta_prior}{A numerical vector specifying the parameter of the normal prior
 density for treatment effect estimate, first value is parameter for mean, second
-is for variance.}
+is for variance. Default is NULL.}
 
 \item{tau_prior}{A numerical vector specifying the parameter of the prior density
-for heterogenety stdev.}
+for heterogenety stdev. Defalut is c(0, 0.5).}
 
 \item{tau_prior_dist}{A string specifying the prior density for the heterogeneity standard deviation,
 option is 'half-normal' for half-normal prior.}
+
+\item{delta_u}{A numerical value specifying the upper bound of the a priori inerval for
+treatment effect on odds ratio scale. This is used to cacluate a normal weakly informative prior
+for theta. Thus when this argument is pecified, `theta` should be left empty. Default is NULL.}
 }
 \value{
 an object of class `stanfit` returned by `rstan::sampling`

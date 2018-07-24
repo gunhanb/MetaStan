@@ -16,9 +16,9 @@ test_that("Results are correct for fitting binomial normal hierarchical model us
                               tau_prior = c(0, 0.5),
                               tau_prior_dist = "half-normal")
   ### compare with results
-  results = summary(bnhm.wip.stan)[[1]]
-  #print(results[14,1])
-  expect_equivalent(round(results[14,1], 2), -0.76)
+  results = bnhm.wip.stan$fit_sum
+
+  expect_equivalent(round(results['theta', '50%'], 2), -0.75)
 
 })
 
