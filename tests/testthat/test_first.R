@@ -18,7 +18,7 @@ test_that("Results are correct for fitting binomial normal hierarchical model us
   ### compare with results
   results = bnhm.wip.stan$fit_sum
 
-  expect_equivalent(round(results['theta', '50%'], 2), -0.75)
+  expect_equivalent(round(results['theta', '50%'], 2), -0.75, tolerance = 0.1)
 
 })
 
