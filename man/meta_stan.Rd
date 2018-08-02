@@ -5,7 +5,7 @@
 \title{Fitting a meta-analysis model using Stan}
 \usage{
 meta_stan(ntrt = NULL, nctrl = NULL, rtrt = NULL, rctrl = NULL,
-  mu_prior = c(0, 10), theta_prior = NULL, tau_prior = c(0, 0.5),
+  mu_prior = c(0, 10), theta_prior = NULL, tau_prior = 0.5,
   tau_prior_dist = "half-normal", delta_u = NULL, chains = 4,
   iter = 2000, warmup = 1000, adapt_delta = 0.95)
 }
@@ -26,8 +26,8 @@ Default is c(0, 10).}
 density for treatment effect estimate, first value is parameter for mean, second
 is for variance. Default is NULL.}
 
-\item{tau_prior}{A numerical vector specifying the parameter of the prior density
-for heterogenety stdev. Defalut is c(0, 0.5).}
+\item{tau_prior}{A numerical value specifying the standard dev. of the prior density
+for heterogenety stdev. Default is 0.5.}
 
 \item{tau_prior_dist}{A string specifying the prior density for the heterogeneity standard deviation,
 option is 'half-normal' for half-normal prior.}
@@ -68,7 +68,7 @@ bnhm.vague.PTLD.stan  <- meta_stan(ntrt = dat.Crins2014.PTLD$exp.total,
                                    rtrt = dat.Crins2014.PTLD$exp.PTLD.events,
                                    rctrl = dat.Crins2014.PTLD$cont.PTLD.event,¨
                                    mu_prior = c(0, 10), theta_prior = c(0, 100),
-                                   tau_prior = c(0, 0.5))
+                                   tau_prior =  0.5)
 }
 
 }

@@ -54,7 +54,7 @@ private:
     vector<int> ntrt;
     vector_d mu_prior;
     vector_d theta_prior;
-    vector_d tau_prior;
+    double tau_prior;
     int tau_prior_dist;
 public:
     model_BNHM(stan::io::var_context& context__,
@@ -163,16 +163,11 @@ public:
                 theta_prior[i_vec__] = vals_r__[pos__++];
             }
             current_statement_begin__ = 13;
-            validate_non_negative_index("tau_prior", "2", 2);
-            context__.validate_dims("data initialization", "tau_prior", "vector_d", context__.to_vec(2));
-            validate_non_negative_index("tau_prior", "2", 2);
-            tau_prior = vector_d(static_cast<Eigen::VectorXd::Index>(2));
+            context__.validate_dims("data initialization", "tau_prior", "double", context__.to_vec());
+            tau_prior = double(0);
             vals_r__ = context__.vals_r("tau_prior");
             pos__ = 0;
-            size_t tau_prior_i_vec_lim__ = 2;
-            for (size_t i_vec__ = 0; i_vec__ < tau_prior_i_vec_lim__; ++i_vec__) {
-                tau_prior[i_vec__] = vals_r__[pos__++];
-            }
+            tau_prior = vals_r__[pos__++];
             current_statement_begin__ = 14;
             context__.validate_dims("data initialization", "tau_prior_dist", "int", context__.to_vec());
             tau_prior_dist = int(0);
@@ -411,9 +406,9 @@ public:
             current_statement_begin__ = 40;
             if (as_bool(logical_eq(tau_prior_dist,1))) {
                 current_statement_begin__ = 40;
-                lp_accum__.add(normal_log<propto__>(tau, get_base1(tau_prior,1,"tau_prior",1), get_base1(tau_prior,2,"tau_prior",1)));
+                lp_accum__.add(normal_log<propto__>(tau, 0, tau_prior));
                 if (tau < 0) lp_accum__.add(-std::numeric_limits<double>::infinity());
-                else lp_accum__.add(-normal_ccdf_log(0, get_base1(tau_prior,1,"tau_prior",1), get_base1(tau_prior,2,"tau_prior",1)));
+                else lp_accum__.add(-normal_ccdf_log(0, 0, tau_prior));
             }
             current_statement_begin__ = 42;
             lp_accum__.add(binomial_log<propto__>(rctrl, nctrl, pctrl));

@@ -10,7 +10,7 @@ data {
   int<lower=1> ntrt[N];                     // num patients, treatment
   vector[2] mu_prior;                         // Prior parameters for mu
   vector[2] theta_prior;                          // Prior parameters for d
-  vector[2] tau_prior;                        // Prior parameters for tau
+  real tau_prior;                             // Prior parameters for tau
   int tau_prior_dist;                        // Indicator for distribution of prior for tau
 }
 
@@ -37,7 +37,7 @@ model {
   // prior distributions
   mu ~ normal(mu_prior[1], mu_prior[2]);
   theta ~ normal(theta_prior[1], theta_prior[2]);
-  if(tau_prior_dist == 1)  tau ~ normal(tau_prior[1], tau_prior[2])T[0,];
+  if(tau_prior_dist == 1)  tau ~ normal(0, tau_prior)T[0,];
   // likelihood
   rctrl~ binomial(nctrl, pctrl);                // cntrl
   rtrt ~ binomial(ntrt, ptrt);                  // trt

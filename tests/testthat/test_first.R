@@ -13,7 +13,7 @@ test_that("Results are correct for fitting binomial normal hierarchical model us
                               rctrl = dat.Berkey1995$rc,
                               mu_prior = c(0, 10),
                               delta_u = 250,
-                              tau_prior = c(0, 0.5),
+                              tau_prior = 0.5,
                               tau_prior_dist = "half-normal")
   ### compare with results
   results = bnhm.wip.stan$fit_sum

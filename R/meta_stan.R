@@ -16,8 +16,8 @@
 #' @param delta_u A numerical value specifying the upper bound of the a priori inerval for
 #' treatment effect on odds ratio scale. This is used to cacluate a normal weakly informative prior
 #' for theta. Thus when this argument is pecified, `theta` should be left empty. Default is NULL.
-#' @param tau_prior A numerical vector specifying the parameter of the prior density
-#' for heterogenety stdev. Defalut is c(0, 0.5).
+#' @param tau_prior A numerical value specifying the standard dev. of the prior density
+#' for heterogenety stdev. Default is 0.5.
 #' @param tau_prior_dist A string specifying the prior density for the heterogeneity standard deviation,
 #' option is 'half-normal' for half-normal prior.
 #' @param adapt_delta A numerical value specfying the target average proposal acceptance
@@ -43,7 +43,7 @@
 #'                                    rtrt = dat.Crins2014.PTLD$exp.PTLD.events,
 #'                                    rctrl = dat.Crins2014.PTLD$cont.PTLD.event,¨
 #'                                    mu_prior = c(0, 10), theta_prior = c(0, 100),
-#'                                    tau_prior = c(0, 0.5))
+#'                                    tau_prior =  0.5)
 #' }
 #'
 meta_stan = function(ntrt = NULL,
@@ -52,7 +52,7 @@ meta_stan = function(ntrt = NULL,
                      rctrl = NULL,
                      mu_prior = c(0, 10),
                      theta_prior = NULL,
-                     tau_prior = c(0, 0.5),
+                     tau_prior = 0.5,
                      tau_prior_dist = "half-normal",
                      delta_u = NULL,
                      chains = 4,
