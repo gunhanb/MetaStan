@@ -25,12 +25,12 @@ convert_data_arm <- function(nt, nc, pt, pc) {
     data$nc <- nc
     data <- data.frame(data)
     N <- nrow(data)
-    Y <- as.vector(rbind(data$pc, data$pt))  # number of events
+    r <- as.vector(rbind(data$pc, data$pt))  # number of events
     sampleSize <- as.vector(rbind(data$nc, data$nt))  # number of all patients
-    d <- rep(0:1, times = N)
+    theta <- rep(0:1, times = N)
     het <- as.vector(rbind(rep(NA, times = N), 1:N))  # ID for random effects
     # Dataset for arm-level meta-analysis
-    data.arm <- data.frame(cbind(Y, sampleSize, d, het))
+    data.arm <- data.frame(cbind(r, sampleSize, theta, het))
     data.arm$mu <- as.factor(as.numeric(gl(n = N, k = 2)))
     return(data.arm)
 }
