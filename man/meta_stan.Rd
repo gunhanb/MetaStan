@@ -6,7 +6,8 @@
 \usage{
 meta_stan(ntrt = NULL, nctrl = NULL, rtrt = NULL, rctrl = NULL,
   mu_prior = c(0, 10), theta_prior = NULL, tau_prior = c(0, 0.5),
-  tau_prior_dist = "half-normal", delta_u = NULL)
+  tau_prior_dist = "half-normal", delta_u = NULL, chains = 4,
+  iter = 2000, warmup = 1000, adapt_delta = 0.95)
 }
 \arguments{
 \item{ntrt}{Number of subjects in treatment arm}
@@ -34,6 +35,21 @@ option is 'half-normal' for half-normal prior.}
 \item{delta_u}{A numerical value specifying the upper bound of the a priori inerval for
 treatment effect on odds ratio scale. This is used to cacluate a normal weakly informative prior
 for theta. Thus when this argument is pecified, `theta` should be left empty. Default is NULL.}
+
+\item{chains}{A positive integer specifying the number of Markov chains.
+The default is 4.}
+
+\item{iter}{A positive integer specifying the number of iterations for each chain
+(including warmup). The default is 2000.}
+
+\item{warmup}{A positive integer specifying the number of warmup (aka burnin)
+iterations per chain.}
+
+\item{adapt_delta}{A numerical value specfying the target average proposal acceptance
+probability for adaptation. See Stan manual for details. Default is 0.95. In general
+you should not need to change adapt_delta unless you see a warning message about
+divergent transitions, in which case you can increase adapt_delta from the
+default to a value closer to 1 (e.g. from 0.95 to 0.99, or from 0.99 to 0.999, etc).}
 }
 \value{
 an object of class `stanfit` returned by `rstan::sampling`
@@ -45,7 +61,7 @@ an object of class `stanfit` returned by `rstan::sampling`
 \dontrun{
 data('dat.Crins2014', package = "MetaStan")
 ## Subset of dataset where PTLD outcomes available
-dat.Crins2014.PTLD = subset(dat.Crins2014, is.na(exp.PTLD.events) == FALSE)
+dat.Crins2014.PTLD = subset(dat.Crins2014, is.finite(exp.PTLD.events))
 ## Fitting a Binomial-Normal Hierarchial model
 bnhm.vague.PTLD.stan  <- meta_stan(ntrt = dat.Crins2014.PTLD$exp.total,
                                    nctrl = dat.Crins2014.PTLD$cont.total,

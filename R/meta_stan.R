@@ -20,12 +20,23 @@
 #' for heterogenety stdev. Defalut is c(0, 0.5).
 #' @param tau_prior_dist A string specifying the prior density for the heterogeneity standard deviation,
 #' option is 'half-normal' for half-normal prior.
+#' @param adapt_delta A numerical value specfying the target average proposal acceptance
+#' probability for adaptation. See Stan manual for details. Default is 0.95. In general
+#' you should not need to change adapt_delta unless you see a warning message about
+#' divergent transitions, in which case you can increase adapt_delta from the
+#' default to a value closer to 1 (e.g. from 0.95 to 0.99, or from 0.99 to 0.999, etc).
+#' @param iter A positive integer specifying the number of iterations for each chain
+#' (including warmup). The default is 2000.
+#' @param warmup A positive integer specifying the number of warmup (aka burnin)
+#' iterations per chain.
+#' @param chains A positive integer specifying the number of Markov chains.
+#' The default is 4.
 #' @return an object of class `stanfit` returned by `rstan::sampling`
 #' @examples
 #' \dontrun{
 #' data('dat.Crins2014', package = "MetaStan")
 #' ## Subset of dataset where PTLD outcomes available
-#' dat.Crins2014.PTLD = subset(dat.Crins2014, is.na(exp.PTLD.events) == FALSE)
+#' dat.Crins2014.PTLD = subset(dat.Crins2014, is.finite(exp.PTLD.events))
 #' ## Fitting a Binomial-Normal Hierarchial model
 #' bnhm.vague.PTLD.stan  <- meta_stan(ntrt = dat.Crins2014.PTLD$exp.total,
 #'                                    nctrl = dat.Crins2014.PTLD$cont.total,
@@ -43,7 +54,11 @@ meta_stan = function(ntrt = NULL,
                      theta_prior = NULL,
                      tau_prior = c(0, 0.5),
                      tau_prior_dist = "half-normal",
-                     delta_u = NULL) {
+                     delta_u = NULL,
+                     chains = 4,
+                     iter = 2000,
+                     warmup = 1000,
+                     adapt_delta = 0.95) {
 
   ################ check prior for treatment effect parameter
   if(is.null(delta_u) == TRUE & is.null(theta_prior) == TRUE){
@@ -60,6 +75,7 @@ meta_stan = function(ntrt = NULL,
     theta_prior[2] = (log(delta_u) - log(1/delta_u)) / (2 * 1.96)
   }
 
+
   if(tau_prior_dist == "half-normal") { tau_prior_dist_num = 1 }
   ## Create a list to be used with Stan
   stanDat <- list(N = length(ntrt),
@@ -72,7 +88,12 @@ meta_stan = function(ntrt = NULL,
                   tau_prior = tau_prior,
                   tau_prior_dist = tau_prior_dist_num)
   ## Ftiing the model
-  fit = rstan::sampling(stanmodels$BNHM, data = stanDat)
+  fit = rstan::sampling(stanmodels$BNHM,
+                        data = stanDat,
+                        chains = chains,
+                        iter = iter,
+                        warmup = warmup,
+                        control = list(adapt_delta = adapt_delta))
   ## MODEL FINISHED
   fit_sum <- rstan::summary(fit)$summary
 
@@ -80,7 +101,7 @@ meta_stan = function(ntrt = NULL,
   Rhat.max <- max(fit_sum[,"Rhat"], na.rm = TRUE)
 
   if(Rhat.max > 1.1)
-    warning("Maximal Rhat > 1.1. Consider increasing meta_stan MCMC parameter.")
+    warning("Maximal Rhat > 1.1. Consider increasing meta_stan MCMC parameters.")
 
   ## finally include a check if the Stan NuTS sample had any
   ## divergence in the sampling phase, these are not supposed to
