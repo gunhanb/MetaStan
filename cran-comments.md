@@ -4,7 +4,7 @@ output: html_document
 ---
 
 ## Test environments
-* ubuntu 16.04, R 3.5.1
+* ubuntu 18.04, R 3.5.1
 * local OS X install, R 3.5.1
 * win-builder (devel and release)
 
