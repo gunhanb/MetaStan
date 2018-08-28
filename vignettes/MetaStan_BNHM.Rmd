@@ -1,0 +1,63 @@
+---
+title: "Fitting Binomial-Normal hierarchical model using MetaStan"
+author: "Burak Kürsad Günhan"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Fitting Binomial-Normal hierarchical model using MetaStan}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+fig_caption: yes
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+The development version of `MetaStan` is available on Github ([https://github.com/gunhanb/MetaStan9](https://github.com/gunhanb/MetaStan)) and can be installed using `devtools` package as follows:
+
+```{r install, eval = FALSE}
+devtools:::install_github("gunhanb/MetaStan")
+```
+
+The example described in the text (Crins dataset) is available in the package, and it can be loaded as follows:
+
+```{r dataset}
+library("MetaStan")
+data("dat.Crins2014", package = "MetaStan")
+## Subset of dataset where PTLD outcomes available
+dat.Crins2014.PTLD = subset(dat.Crins2014, is.finite(exp.PTLD.events))
+```
+
+
+Additional information can be obtained by typing `?dat.Crins2014` (for any dataset and function in the package). 
+
+`metastan` is the main fitting function of this package. The main computations are executed via the `rstan` package's `sampling function. We can fit the binomial-normal hierarchical using a weakly informative prior for treatment effect as follows:
+
+
+```{r bnhmFit, results="hide"}
+bnhm.wip.CrinsPTLD.stan  <- meta_stan(ntrt = dat.Crins2014.PTLD$exp.total, 
+                                      nctrl = dat.Crins2014.PTLD$cont.total, 
+                                      rtrt = dat.Crins2014.PTLD$exp.PTLD.events,
+                                      rctrl = dat.Crins2014.PTLD$cont.PTLD.event,
+                                      tau_prior_dist = "half-normal",
+                                      tau_prior = 0.5,
+                                      delta_u = 250,
+                                      chains = 4,
+                                      iter = 2000,
+                                      warmup = 1000)
+```
+
+
+Convergence diagnostics and the results can be, very conveniently, obtained using `shinystan` package as follows:
+
+```{r shinystan, eval = FALSE}
+library("shinystan")
+## Firstly convert "stan" object to a "shinystan" object
+bnhm.wip.CrinsPTLD.shinystan = as.shinystan(bnhm.wip.CrinsPTLD.stan$fit)
+launch_shinystan(bnhm.wip.CrinsPTLD.shinystan)
+```
+

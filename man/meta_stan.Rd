@@ -5,9 +5,9 @@
 \title{Fitting a meta-analysis model using Stan}
 \usage{
 meta_stan(ntrt = NULL, nctrl = NULL, rtrt = NULL, rctrl = NULL,
-  mu_prior = c(0, 10), theta_prior = NULL, tau_prior = 0.5,
-  tau_prior_dist = "half-normal", delta_u = NULL, chains = 4,
-  iter = 2000, warmup = 1000, adapt_delta = 0.95)
+  model = "BNHM1", mu_prior = c(0, 10), theta_prior = NULL,
+  tau_prior = 0.5, tau_prior_dist = "half-normal", delta_u = NULL,
+  chains = 4, iter = 2000, warmup = 1000, adapt_delta = 0.95)
 }
 \arguments{
 \item{ntrt}{Number of subjects in treatment arm}
@@ -17,6 +17,10 @@ meta_stan(ntrt = NULL, nctrl = NULL, rtrt = NULL, rctrl = NULL,
 \item{rtrt}{Number of events in treatment arm}
 
 \item{rctrl}{Number of events in contrl arm}
+
+\item{model}{A string specifying the model used. Available options are `BNHM1` (Model 4 from \emph{Jackson
+et al (2018)}), `BNHM2` (Model 2 from \emph{Jackson et al (2018)}), and `Beta-binomial` (Beta-binomial
+model from \emph{Kuss (2014)}). Default is `BNHM1`.}
 
 \item{mu_prior}{A numerical vector specifying the parameter of the normal prior
 density for baseline risks, first value is parameter for mean, second is for variance.
@@ -30,7 +34,8 @@ is for variance. Default is NULL.}
 for heterogenety stdev. Default is 0.5.}
 
 \item{tau_prior_dist}{A string specifying the prior density for the heterogeneity standard deviation,
-option is 'half-normal' for half-normal prior.}
+option is `half-normal` for half-normal prior, `uniform` for uniform prior, `half-cauchy` for
+half-cauchy prior.}
 
 \item{delta_u}{A numerical value specifying the upper bound of the a priori inerval for
 treatment effect on odds ratio scale. This is used to cacluate a normal weakly informative prior
@@ -43,7 +48,7 @@ The default is 4.}
 (including warmup). The default is 2000.}
 
 \item{warmup}{A positive integer specifying the number of warmup (aka burnin)
-iterations per chain.}
+iterations per chain. The default is 1000.}
 
 \item{adapt_delta}{A numerical value specfying the target average proposal acceptance
 probability for adaptation. See Stan manual for details. Default is 0.95. In general
@@ -71,4 +76,13 @@ bnhm.vague.PTLD.stan  <- meta_stan(ntrt = dat.Crins2014.PTLD$exp.total,
                                    tau_prior =  0.5)
 }
 
+}
+\references{
+Jackson D, Law M, Stijnen T, Viechtbauer W, White IR. A comparison of 7
+random-effects models for meta-analyses that estimate the summary odds ratio.
+\emph{Stat Med} 2018;37:1059--1085.
+
+Kuss O, Hoyer A and Solms A. Meta-analysis for diagnostic accuracy
+studies: a new statistical model using beta-binomial distributions and bivariate copulas.
+\emph{Stat Med}, 2014; 33:17--30. doi:10.1002/sim.5909
 }

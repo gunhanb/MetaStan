@@ -2,7 +2,7 @@ Package: MetaStan
 Version: 0.0.1
 Title: Bayesian Meta-Analysis via 'Stan'
 Description: Performs Bayesian meta-analysis using 'Stan'. 
-             Includes binomial-normal hierarchical model for meta-analysis.
+             Includes binomial-normal hierarchical model and beta-binomial model for pairwise meta-analysis.
 Authors@R: c(person("Burak Kuersad", "Guenhan", email="burak.gunhan@med.uni-goettingen.de", 
              role=c("aut", "cre")),
              person("Trustees of", "Columbia University", role="cph", comment="src/init.cpp, 
@@ -14,10 +14,13 @@ LazyData: true
 ByteCompile: true
 Depends: R (>= 3.4.0), Rcpp (>= 0.12.17), methods
 Imports: rstan (>= 2.17.3), rstantools (>= 1.5.0)
-Suggests: testthat
+Suggests: testthat,
+          knitr,
+          rmarkdown
 LinkingTo: StanHeaders (>= 2.17.2), rstan (>= 2.17.3), BH (>= 1.66.0-1), Rcpp (>= 0.12.17), RcppEigen (>= 0.3.3.4.0)
 SystemRequirements: GNU make
 NeedsCompilation: yes
-RoxygenNote: 6.0.1
+RoxygenNote: 6.1.0
 URL: http://github.com/gunhanb/MetaStan
 BugReports: http://github.com/gunhanb/MetaStan/issues
+VignetteBuilder: knitr

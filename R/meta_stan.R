@@ -19,7 +19,11 @@
 #' @param tau_prior A numerical value specifying the standard dev. of the prior density
 #' for heterogenety stdev. Default is 0.5.
 #' @param tau_prior_dist A string specifying the prior density for the heterogeneity standard deviation,
-#' option is 'half-normal' for half-normal prior.
+#' option is `half-normal` for half-normal prior, `uniform` for uniform prior, `half-cauchy` for
+#' half-cauchy prior.
+#' @param model A string specifying the model used. Available options are `BNHM1` (Model 4 from \emph{Jackson
+#' et al (2018)}), `BNHM2` (Model 2 from \emph{Jackson et al (2018)}), and `Beta-binomial` (Beta-binomial
+#' model from \emph{Kuss (2014)}). Default is `BNHM1`.
 #' @param adapt_delta A numerical value specfying the target average proposal acceptance
 #' probability for adaptation. See Stan manual for details. Default is 0.95. In general
 #' you should not need to change adapt_delta unless you see a warning message about
@@ -28,10 +32,17 @@
 #' @param iter A positive integer specifying the number of iterations for each chain
 #' (including warmup). The default is 2000.
 #' @param warmup A positive integer specifying the number of warmup (aka burnin)
-#' iterations per chain.
+#' iterations per chain. The default is 1000.
 #' @param chains A positive integer specifying the number of Markov chains.
 #' The default is 4.
 #' @return an object of class `stanfit` returned by `rstan::sampling`
+#' @references Jackson D, Law M, Stijnen T, Viechtbauer W, White IR. A comparison of 7
+#' random-effects models for meta-analyses that estimate the summary odds ratio.
+#' \emph{Stat Med} 2018;37:1059--1085.
+#' @references Kuss O, Hoyer A and Solms A. Meta-analysis for diagnostic accuracy
+#' studies: a new statistical model using beta-binomial distributions and bivariate copulas.
+#' \emph{Stat Med}, 2014; 33:17--30. doi:10.1002/sim.5909
+#'
 #' @examples
 #' \dontrun{
 #' data('dat.Crins2014', package = "MetaStan")
@@ -50,6 +61,7 @@ meta_stan = function(ntrt = NULL,
                      nctrl = NULL,
                      rtrt = NULL,
                      rctrl = NULL,
+                     model = "BNHM1",
                      mu_prior = c(0, 10),
                      theta_prior = NULL,
                      tau_prior = 0.5,
@@ -59,13 +71,23 @@ meta_stan = function(ntrt = NULL,
                      iter = 2000,
                      warmup = 1000,
                      adapt_delta = 0.95) {
+  ################ check model used
+  if (model %in% c("BNHM1", "BNHM2", "Beta-binomial") == FALSE) {
+    stop("Function argument \"model\" must be equal to \"BNHM1\" or \"BNHM2\" or \"Beta-binomial\" !!!")
+  }
+  ################ Beta-binomial model, only vague prior
+  if (model == "Beta-binomial") {
+    if(is.null(delta_u) == FALSE | is.null(theta_prior) == FALSE) {
+      stop("With Beta-binomial model, no prior informations allowed!!!")
+    }
+  }
 
   ################ check prior for treatment effect parameter
-  if(is.null(delta_u) == TRUE & is.null(theta_prior) == TRUE){
+  if(is.null(delta_u) == TRUE & is.null(theta_prior) == TRUE & model != "Beta-binomial"){
     stop("Function argument \"delta_u\" or \"theta_prior\" must be specified !!!")
   }
 
-  if(is.null(delta_u) == FALSE & is.null(theta_prior) == FALSE){
+  if(is.null(delta_u) == FALSE & is.null(theta_prior) == FALSE & model != "Beta-binomial"){
     stop("Either \"delta_u\" OR \"theta_prior\" can be specified, but not both !!!")
   }
 
@@ -75,8 +97,15 @@ meta_stan = function(ntrt = NULL,
     theta_prior[2] = (log(delta_u) - log(1/delta_u)) / (2 * 1.96)
   }
 
+  ################ check prior for heterogeneity parameter
+  if(is.null(tau_prior_dist) == TRUE){
+    stop("Function argument \"half-normal\" or \"uniform\" or \"half-cauchy\" must be specified !!!")
+  }
 
   if(tau_prior_dist == "half-normal") { tau_prior_dist_num = 1 }
+  if(tau_prior_dist == "uniform")     { tau_prior_dist_num = 2 }
+  if(tau_prior_dist == "half-cauchy") { tau_prior_dist_num = 3 }
+
   ## Create a list to be used with Stan
   stanDat <- list(N = length(ntrt),
                   ntrt = ntrt,
@@ -88,12 +117,40 @@ meta_stan = function(ntrt = NULL,
                   tau_prior = tau_prior,
                   tau_prior_dist = tau_prior_dist_num)
   ## Ftiing the model
-  fit = rstan::sampling(stanmodels$BNHM,
-                        data = stanDat,
-                        chains = chains,
-                        iter = iter,
-                        warmup = warmup,
-                        control = list(adapt_delta = adapt_delta))
+  if(model == "BNHM1") {
+    fit = rstan::sampling(stanmodels$BNHM_Smith,
+                          data = stanDat,
+                          chains = chains,
+                          iter = iter,
+                          warmup = warmup,
+                          control = list(adapt_delta = adapt_delta))
+  }
+  if(model == "BNHM2") {
+    fit = rstan::sampling(stanmodels$BNHM_Higgins,
+                          data = stanDat,
+                          chains = chains,
+                          iter = iter,
+                          warmup = warmup,
+                          control = list(adapt_delta = adapt_delta))
+  }
+
+  if(model == "Beta-binomial") {
+    ## No prior information in t6he data
+    stanDat <- list(N = length(ntrt),
+                    ntrt = ntrt,
+                    nctrl = nctrl,
+                    rtrt = rtrt,
+                    rctrl = rctrl)
+
+    fit = rstan::sampling(stanmodels$Beta_binomial,
+                          data = stanDat,
+                          chains = chains,
+                          iter = iter,
+                          warmup = warmup,
+                          control = list(adapt_delta = adapt_delta))
+  }
+
+
   ## MODEL FINISHED
   fit_sum <- rstan::summary(fit)$summary
 
