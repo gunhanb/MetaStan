@@ -4,4 +4,12 @@
 ^data-raw$
 cran-comments.md
 README.Rmd
+^\.travis\.yml$
+^.*\.Rproj$
+^\.Rproj\.user$
+\.github/*
+src/stan_files/.*\.o$
+src/stan_files/.*\.cc$
+src/stan_files/.*\.hpp$
+
 
