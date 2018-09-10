@@ -11,6 +11,14 @@ Building
 ```{r, echo=TRUE, eval=FALSE}
 library(devtools)
 install_github("gunhanb/MetaStan")
+library(MetaStan)
+```
+
+Vignette
+--------
+The vignette can be obtained by:
+```{r, echo=TRUE, eval=FALSE}
+vignette("MetaStan_BNHM")
 ```
 
 

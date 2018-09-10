@@ -1,8 +1,9 @@
 ---
-title: "Fitting Binomial-Normal hierarchical model using MetaStan"
+title: "Conducting meta-analysis using MetaStan"
 author: "Burak Kürsad Günhan"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
+bibliography: references.bib
 vignette: >
   %\VignetteIndexEntry{Fitting Binomial-Normal hierarchical model using MetaStan}
   %\VignetteEngine{knitr::rmarkdown}
@@ -13,51 +14,117 @@ fig_caption: yes
 ```{r setup, include = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
-  comment = "#>"
+  comment = "#"
 )
 ```
 
-The development version of `MetaStan` is available on Github ([https://github.com/gunhanb/MetaStan9](https://github.com/gunhanb/MetaStan)) and can be installed using `devtools` package as follows:
+## Introduction
+To fit meta-analysis models using frequentist methods, there are many R packages available including `metafor`. On the other hand, Bayesian estimation methods such as Markov chain Monte Carlo (MCMC) are very attractive for meta-analysis, especially because they can be used to fit more complicated models. These include binomial-normal hierarchical models and beta-binomial models which are based on the exact distributional assumptions unlike (commonly used) normal-normal hierarchical model. Another advantage of Bayesian methods to be able to use informative prior distributions for example to regularize heterogeneity estimates in case of low number of studies. Thus, we developed `MetaStan` which uses **Stan** (a modern MCMC engine) to fit several pairwise meta-analysis models including binomial-normal hierarchical model and beta-binomial model. This package is also the accompanying package of @Guenhan.
+
+
+## Installation 
+The development version of `MetaStan` is available on Github ([https://github.com/gunhanb/MetaStan](https://github.com/gunhanb/MetaStan)) and can be installed using `devtools` package as follows:
 
 ```{r install, eval = FALSE}
 devtools:::install_github("gunhanb/MetaStan")
 ```
 
-The example described in the text (Crins dataset) is available in the package, and it can be loaded as follows:
+The BCG trials example is available in the package, and it can be loaded as follows:
 
 ```{r dataset}
 library("MetaStan")
-data("dat.Crins2014", package = "MetaStan")
-## Subset of dataset where PTLD outcomes available
-dat.Crins2014.PTLD = subset(dat.Crins2014, is.finite(exp.PTLD.events))
+data("dat.Berkey1995", package = "MetaStan")
+head(dat.Berkey1995)
+```
+
+Additional information can be obtained by typing `?dat.Berkey1995` (for any dataset and function in the package). 
+
+We can visualize individual log odds ratio estimates plot using `ggplot2` as follows:
+```{r forestplot, echo=TRUE, results=TRUE}
+library(ggplot2)
+# Calculating log odds ratios and variances from data
+logodds <- function(x) log((x[1] * (x[4] - x[3]))/((x[2] - x[1]) * x[3]))
+stdes   <- function(x) sqrt(1/x[1] + 1/(x[2] - x[1]) + 1/x[3] + 1/(x[4] - x[3]))
+r_ind   <- apply(cbind(dat.Berkey1995$rt, dat.Berkey1995$nt, 
+                 dat.Berkey1995$rc, dat.Berkey1995$nc), 1, logodds)
+se_ind  <- apply(cbind(dat.Berkey1995$rt, dat.Berkey1995$nt, 
+                 dat.Berkey1995$rc, dat.Berkey1995$nc), 1, stdes)
+lower95_ind <- r_ind + qnorm(.025) * se_ind
+upper95_ind <- r_ind + qnorm(.975) * se_ind
+# Comparison of the results
+trials  <- c("1", "2" ,"3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13")
+trials <- ordered(trials, levels = trials)
+
+d <- data.frame(x = trials,
+                y = r_ind,
+                ylo = lower95_ind,
+                yhi = upper95_ind)
+forest.plot <- ggplot(d, aes(x = x, y = y, ymin = ylo, ymax = yhi)) +
+  geom_pointrange() +
+  coord_flip() +
+  geom_hline(aes(yintercept=0), lty = 2) +
+  xlab("Studies") +
+  ggtitle("Forest Plot (BCG vaccines)")
+
+plot(forest.plot)
 ```
 
 
-Additional information can be obtained by typing `?dat.Crins2014` (for any dataset and function in the package). 
-
-`metastan` is the main fitting function of this package. The main computations are executed via the `rstan` package's `sampling function. We can fit the binomial-normal hierarchical using a weakly informative prior for treatment effect as follows:
+## Fitting a binomial-normal hierarchical model
+`metastan` is the main fitting function of this package. The main computations are executed via the `rstan` package's `sampling` function. We can fit the binomial-normal hierarchical model [@Guenhan] using a weakly informative prior for treatment effect as follows:
 
 
 ```{r bnhmFit, results="hide"}
-bnhm.wip.CrinsPTLD.stan  <- meta_stan(ntrt = dat.Crins2014.PTLD$exp.total, 
-                                      nctrl = dat.Crins2014.PTLD$cont.total, 
-                                      rtrt = dat.Crins2014.PTLD$exp.PTLD.events,
-                                      rctrl = dat.Crins2014.PTLD$cont.PTLD.event,
-                                      tau_prior_dist = "half-normal",
-                                      tau_prior = 0.5,
-                                      delta_u = 250,
-                                      chains = 4,
-                                      iter = 2000,
-                                      warmup = 1000)
+bnhm1.BCG.stan  <- meta_stan(ntrt = dat.Berkey1995$nt, 
+                             nctrl = dat.Berkey1995$nc, 
+                             rtrt = dat.Berkey1995$rt,
+                             rctrl = dat.Berkey1995$rc,
+                             tau_prior_dist = "half-normal",
+                             tau_prior = 0.5,
+                             theta_prior = c(0, 2.82),
+                             model = "BNHM1",
+                             chains = 4,
+                             iter = 2000,
+                             warmup = 1000)
 ```
 
 
-Convergence diagnostics and the results can be, very conveniently, obtained using `shinystan` package as follows:
+Convergence diagnostics, very conveniently, obtained using `shinystan` package as follows:
 
 ```{r shinystan, eval = FALSE}
 library("shinystan")
 ## Firstly convert "stan" object to a "shinystan" object
-bnhm.wip.CrinsPTLD.shinystan = as.shinystan(bnhm.wip.CrinsPTLD.stan$fit)
-launch_shinystan(bnhm.wip.CrinsPTLD.shinystan)
+bnhm1.BCG.shinystan = as.shinystan(bnhm1.BCG.stan$fit)
+launch_shinystan(bnhm1.BCG.shinystan)
 ```
 
+A simple summary of the fitted model is given by `print` option:
+
+```{r print}
+print(bnhm1.BCG.stan)
+```
+
+
+Note that this model corresponds to Model 4 in @Jackson. The model 2 in @Jackson can be fitted by specfying `model = "BNHM2"` as follows: 
+
+
+```{r bnhm2Fit, results="hide"}
+bnhm2.BCG.stan  <- meta_stan(ntrt = dat.Berkey1995$nt, 
+                             nctrl = dat.Berkey1995$nc, 
+                             rtrt = dat.Berkey1995$rt,
+                             rctrl = dat.Berkey1995$rc,
+                             theta_prior = c(0, 2.82),
+                             tau_prior_dist = "half-normal",
+                             tau_prior = 0.5,
+                             model = "BNHM2")
+```
+
+```{r print2}
+print(bnhm2.BCG.stan)
+```
+
+
+Please see @Guenhan and @Jackson for complete model descriptions.
+
+
+# References

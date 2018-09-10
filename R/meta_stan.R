@@ -21,7 +21,8 @@
 #' @param tau_prior_dist A string specifying the prior density for the heterogeneity standard deviation,
 #' option is `half-normal` for half-normal prior, `uniform` for uniform prior, `half-cauchy` for
 #' half-cauchy prior.
-#' @param model A string specifying the model used. Available options are `BNHM1` (Model 4 from \emph{Jackson
+#' @param model A string specifying the model used. Available options are `FE` (fixed-effect model
+#' using binomial lielihood) `BNHM1` (Model 4 from \emph{Jackson
 #' et al (2018)}), `BNHM2` (Model 2 from \emph{Jackson et al (2018)}), and `Beta-binomial` (Beta-binomial
 #' model from \emph{Kuss (2014)}). Default is `BNHM1`.
 #' @param adapt_delta A numerical value specfying the target average proposal acceptance
@@ -72,8 +73,9 @@ meta_stan = function(ntrt = NULL,
                      warmup = 1000,
                      adapt_delta = 0.95) {
   ################ check model used
-  if (model %in% c("BNHM1", "BNHM2", "Beta-binomial") == FALSE) {
-    stop("Function argument \"model\" must be equal to \"BNHM1\" or \"BNHM2\" or \"Beta-binomial\" !!!")
+  if (model %in% c("FE", "BNHM1", "BNHM2", "Beta-binomial") == FALSE) {
+    stop("Function argument \"model\" must be equal to \"FE\" or \"BNHM1\" or \"BNHM2\" or
+         \"Beta-binomial\" !!!")
   }
   ################ Beta-binomial model, only vague prior
   if (model == "Beta-binomial") {
@@ -117,6 +119,24 @@ meta_stan = function(ntrt = NULL,
                   tau_prior = tau_prior,
                   tau_prior_dist = tau_prior_dist_num)
   ## Ftiing the model
+  if(model == "FE") {
+    ## No prior information in t6he data
+    stanDat <- list(N = length(ntrt),
+                    ntrt = ntrt,
+                    nctrl = nctrl,
+                    rtrt = rtrt,
+                    rctrl = rctrl,
+                    mu_prior = mu_prior,
+                    theta_prior = theta_prior)
+
+    fit = rstan::sampling(stanmodels$Fix_Eff,
+                          data = stanDat,
+                          chains = chains,
+                          iter = iter,
+                          warmup = warmup,
+                          control = list(adapt_delta = adapt_delta))
+  }
+
   if(model == "BNHM1") {
     fit = rstan::sampling(stanmodels$BNHM_Smith,
                           data = stanDat,
@@ -171,8 +191,12 @@ meta_stan = function(ntrt = NULL,
   }
 
   out = list(fit = fit,
-             fit_sum = fit_sum)
+             fit_sum = fit_sum,
+             model = model,
+             data = stanDat)
+  class(out) <- "meta_stan"
 
   return(out)
+
 }
 

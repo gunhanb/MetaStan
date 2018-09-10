@@ -17,7 +17,7 @@ There were 2 NOTEs:
 
 * checking for GNU extensions in Makefiles ... NOTE
 
-GNU make is a SystemRequirements.
+  GNU make is a SystemRequirements.
 
 GNU make is added as SystemRequirements in Description 
 of the package

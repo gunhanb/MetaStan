@@ -18,7 +18,8 @@ meta_stan(ntrt = NULL, nctrl = NULL, rtrt = NULL, rctrl = NULL,
 
 \item{rctrl}{Number of events in contrl arm}
 
-\item{model}{A string specifying the model used. Available options are `BNHM1` (Model 4 from \emph{Jackson
+\item{model}{A string specifying the model used. Available options are `FE` (fixed-effect model
+using binomial lielihood) `BNHM1` (Model 4 from \emph{Jackson
 et al (2018)}), `BNHM2` (Model 2 from \emph{Jackson et al (2018)}), and `Beta-binomial` (Beta-binomial
 model from \emph{Kuss (2014)}). Default is `BNHM1`.}
 

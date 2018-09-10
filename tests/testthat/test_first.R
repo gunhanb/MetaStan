@@ -26,6 +26,29 @@ test_that("Results are correct for fitting binomial normal hierarchical model (S
 
 })
 
+
+## Fitting a binomial-normal hierachical model with Smith parametrization
+test_that("Results are correct for fitting Fixed effect (Binomial likelhood) using WIP priors.", {
+  skip_on_cran()
+
+  set.seed(23344)
+  ## Load the dataset
+  data('dat.Berkey1995', package = "MetaStan")
+  ## Fitting a Binomial-Normal Hierarchial model using WIP priors
+  fe.stan  <- meta_stan(ntrt = dat.Berkey1995$nt,
+                                    nctrl = dat.Berkey1995$nc,
+                                    rtrt = dat.Berkey1995$rt,
+                                    rctrl = dat.Berkey1995$rc,
+                                    model = "FE",
+                                    mu_prior = c(0, 10),
+                                    delta_u = 250)
+  ### compare with results
+  results = fe.stan$fit_sum
+
+  expect_equivalent(round(results['theta', '50%'], 2), -0.48, tolerance = 0.1)
+
+})
+
 ## Fitting a binomial-normal hierachical model with "Higgins and Simmonds" parametrization
 test_that("Results are correct for fitting binomial normal hierarchical model (Higgins and Simmonds) using WIP priors.", {
   skip_on_cran()
