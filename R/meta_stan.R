@@ -13,7 +13,7 @@
 #' @param theta_prior A numerical vector specifying the parameter of the normal prior
 #' density for treatment effect estimate, first value is parameter for mean, second
 #' is for variance. Default is NULL.
-#' @param delta_u A numerical value specifying the upper bound of the a priori inerval for
+#' @param delta A numerical value specifying the upper bound of the a priori interval for
 #' treatment effect on odds ratio scale. This is used to cacluate a normal weakly informative prior
 #' for theta. Thus when this argument is pecified, `theta` should be left empty. Default is NULL.
 #' @param tau_prior A numerical value specifying the standard dev. of the prior density
@@ -67,7 +67,7 @@ meta_stan = function(ntrt = NULL,
                      theta_prior = NULL,
                      tau_prior = 0.5,
                      tau_prior_dist = "half-normal",
-                     delta_u = NULL,
+                     delta = NULL,
                      chains = 4,
                      iter = 2000,
                      warmup = 1000,
@@ -79,24 +79,24 @@ meta_stan = function(ntrt = NULL,
   }
   ################ Beta-binomial model, only vague prior
   if (model == "Beta-binomial") {
-    if(is.null(delta_u) == FALSE | is.null(theta_prior) == FALSE) {
+    if(is.null(delta) == FALSE | is.null(theta_prior) == FALSE) {
       stop("With Beta-binomial model, no prior informations allowed!!!")
     }
   }
 
   ################ check prior for treatment effect parameter
-  if(is.null(delta_u) == TRUE & is.null(theta_prior) == TRUE & model != "Beta-binomial"){
-    stop("Function argument \"delta_u\" or \"theta_prior\" must be specified !!!")
+  if(is.null(delta) == TRUE & is.null(theta_prior) == TRUE & model != "Beta-binomial"){
+    stop("Function argument \"delta\" or \"theta_prior\" must be specified !!!")
   }
 
-  if(is.null(delta_u) == FALSE & is.null(theta_prior) == FALSE & model != "Beta-binomial"){
-    stop("Either \"delta_u\" OR \"theta_prior\" can be specified, but not both !!!")
+  if(is.null(delta) == FALSE & is.null(theta_prior) == FALSE & model != "Beta-binomial"){
+    stop("Either \"delta\" OR \"theta_prior\" can be specified, but not both !!!")
   }
 
-  ## Calculate standard devation of theta_prior from delta_u
-  if(is.null(delta_u) == FALSE){
+  ## Calculate standard devation of theta_prior from delta
+  if(is.null(delta) == FALSE){
     theta_prior[1] = 0
-    theta_prior[2] = (log(delta_u) - log(1/delta_u)) / (2 * 1.96)
+    theta_prior[2] = (log(delta) - log(1/delta)) / (2 * 1.96)
   }
 
   ################ check prior for heterogeneity parameter

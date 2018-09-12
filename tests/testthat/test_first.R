@@ -16,7 +16,7 @@ test_that("Results are correct for fitting binomial normal hierarchical model (S
                               rctrl = dat.Berkey1995$rc,
                               model = "BNHM1",
                               mu_prior = c(0, 10),
-                              delta_u = 250,
+                              delta = 250,
                               tau_prior = 0.5,
                               tau_prior_dist = "half-normal")
   ### compare with results
@@ -41,7 +41,7 @@ test_that("Results are correct for fitting Fixed effect (Binomial likelhood) usi
                                     rctrl = dat.Berkey1995$rc,
                                     model = "FE",
                                     mu_prior = c(0, 10),
-                                    delta_u = 250)
+                                    delta = 250)
   ### compare with results
   results = fe.stan$fit_sum
 
@@ -63,7 +63,7 @@ test_that("Results are correct for fitting binomial normal hierarchical model (H
                               rctrl = dat.Berkey1995$rc,
                               model = "BNHM2",
                               mu_prior = c(0, 10),
-                              delta_u = 250,
+                              delta = 250,
                               tau_prior = 0.5,
                               tau_prior_dist = "half-normal")
   ### compare with results
