@@ -6,7 +6,7 @@
 \usage{
 meta_stan(ntrt = NULL, nctrl = NULL, rtrt = NULL, rctrl = NULL,
   model = "BNHM1", mu_prior = c(0, 10), theta_prior = NULL,
-  tau_prior = 0.5, tau_prior_dist = "half-normal", delta_u = NULL,
+  tau_prior = 0.5, tau_prior_dist = "half-normal", delta = NULL,
   chains = 4, iter = 2000, warmup = 1000, adapt_delta = 0.95)
 }
 \arguments{
@@ -38,8 +38,9 @@ for heterogenety stdev. Default is 0.5.}
 option is `half-normal` for half-normal prior, `uniform` for uniform prior, `half-cauchy` for
 half-cauchy prior.}
 
-\item{delta_u}{A numerical value specifying the upper bound of the a priori inerval for
-treatment effect on odds ratio scale. This is used to cacluate a normal weakly informative prior
+\item{delta}{A numerical value specifying the upper bound of the a priori interval for
+treatment effect on odds ratio scale \emph{Guenhan et al (2018)}. This is used to calculate
+a normal weakly informative prior
 for theta. Thus when this argument is pecified, `theta` should be left empty. Default is NULL.}
 
 \item{chains}{A positive integer specifying the number of Markov chains.
@@ -64,21 +65,52 @@ an object of class `stanfit` returned by `rstan::sampling`
 `meta_stan` fits a meta-analysis model using Stan.
 }
 \examples{
-\dontrun{
+\donttest{
 data('dat.Crins2014', package = "MetaStan")
 ## Subset of dataset where PTLD outcomes available
 dat.Crins2014.PTLD = subset(dat.Crins2014, is.finite(exp.PTLD.events))
-## Fitting a Binomial-Normal Hierarchial model
+## Fitting a Binomial-Normal Hierarchial model using vague priors for theta
 bnhm.vague.PTLD.stan  <- meta_stan(ntrt = dat.Crins2014.PTLD$exp.total,
                                    nctrl = dat.Crins2014.PTLD$cont.total,
                                    rtrt = dat.Crins2014.PTLD$exp.PTLD.events,
-                                   rctrl = dat.Crins2014.PTLD$cont.PTLD.event,¨
+                                   rctrl = dat.Crins2014.PTLD$cont.PTLD.event,
                                    mu_prior = c(0, 10), theta_prior = c(0, 100),
                                    tau_prior =  0.5)
+## Obatining a small summary
+print(bnhm.vague.PTLD.stan)
+## Extract the rstan fit for post-processing, eg convergence diagnostics
+bnhm.vague.PTLD.stanfit = bnhm.vague.PTLD.stan$fit
+ ## see `?rstan::sampling` for for post-processing of the `stanfit` object
+## Fitting a Binomial-Normal Hierarchial model using WIP for theta
+bnhm.wip.PTLD.stan  <- meta_stan(ntrt = dat.Crins2014.PTLD$exp.total,
+                                   nctrl = dat.Crins2014.PTLD$cont.total,
+                                   rtrt = dat.Crins2014.PTLD$exp.PTLD.events,
+                                   rctrl = dat.Crins2014.PTLD$cont.PTLD.event,
+                                   mu_prior = c(0, 10),
+                                   theta_prior = c(0, 2.82),
+                                   tau_prior =  0.5)
+## Fitting a fixed-effect Binomial model using vague priors for theta
+bm.vague.PTLD.stan  <- meta_stan(ntrt = dat.Crins2014.PTLD$exp.total,
+                                   nctrl = dat.Crins2014.PTLD$cont.total,
+                                   rtrt = dat.Crins2014.PTLD$exp.PTLD.events,
+                                   rctrl = dat.Crins2014.PTLD$cont.PTLD.event,
+                                   mu_prior = c(0, 10), theta_prior = c(0, 100),
+                                   model = "FE")
+
+## Fitting a Beta-binomial model using vague priors
+bnhm.wip.PTLD.stan  <- meta_stan(ntrt = dat.Crins2014.PTLD$exp.total,
+                                   nctrl = dat.Crins2014.PTLD$cont.total,
+                                   rtrt = dat.Crins2014.PTLD$exp.PTLD.events,
+                                   rctrl = dat.Crins2014.PTLD$cont.PTLD.event,
+                                   model = "Beta-binomial")
 }
 
 }
 \references{
+Guenhan BK, Roever C, Friede T. Meta-analysis of few studies involving
+rare events \emph{arXiv preprint} 2018;https://arxiv.org/abs/1809.04407.
+\emph{Stat Med} 2018;37:1059--1085.
+
 Jackson D, Law M, Stijnen T, Viechtbauer W, White IR. A comparison of 7
 random-effects models for meta-analyses that estimate the summary odds ratio.
 \emph{Stat Med} 2018;37:1059--1085.

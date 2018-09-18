@@ -2,7 +2,9 @@ Package: MetaStan
 Version: 0.0.1
 Title: Bayesian Meta-Analysis via 'Stan'
 Description: Performs Bayesian meta-analysis using 'Stan'. 
-             Includes binomial-normal hierarchical model and beta-binomial model for pairwise meta-analysis.
+             Includes binomial-normal hierarchical models and option to use weakly informative priors for the
+             heterogeneity parameter and the treatment effect parameter which are described in 
+             Guenhan, Roever, and Friede (2018) <arXiv:1809.04407>.
 Authors@R: c(person("Burak Kuersad", "Guenhan", email="burak.gunhan@med.uni-goettingen.de", 
              role=c("aut", "cre")),
              person("Trustees of", "Columbia University", role="cph", comment="src/init.cpp, 

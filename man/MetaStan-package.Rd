@@ -25,8 +25,8 @@ also the accompanying package of Guenhan et al (2018).
 Stan Development Team (2018). RStan: the R interface to Stan. R package version 2.17.3.
 http://mc-stan.org
 
-Günhan, B and Röver, C and Friede, T (2018).Meta-analysis of few studies with rare events.
-arXiv.org E-print Archive. ????.
+Günhan, B and Röver, C and Friede, T (2018). Meta-analysis of few studies involving rare events.
+arXiv.org E-print Archive. https://arxiv.org/abs/1809.04407.
 }
 \author{
 Burak Kuersad Guenhan <burak.gunhan@med.uni-goettingen.de>

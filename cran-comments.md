@@ -1,7 +1,11 @@
----
-title: "cran-comments"
-output: html_document
----
+## This is a resubmission
+
+In this submission, I have
+* added a reference describing methods of the package to DESCRIPTION
+* added more examples to Rd-files
+* replaced \dontrun with \donttest
+* fixed the typo in man/meta_stan.Rd
+
 
 ## Test environments
 * ubuntu 18.04, R 3.5.1
@@ -21,7 +25,3 @@ There were 2 NOTEs:
 
 GNU make is added as SystemRequirements in Description 
 of the package
-
-
-
-
