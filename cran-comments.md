@@ -6,6 +6,15 @@ In this submission, I have
 * replaced \dontrun with \donttest
 * fixed the typo in man/meta_stan.Rd
 
+## R CMD check results
+There is 1 NOTE:
+
+Possibly mis-spelled words in DESCRIPTION:
+  Friede (7:35)
+  Guenhan (7:14)
+  Roever (7:23)
+
+These are author names.
 
 ## Test environments
 * ubuntu 18.04, R 3.5.1
