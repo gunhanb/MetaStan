@@ -41,7 +41,7 @@ test_that("Results are correct for fitting Fixed effect (Binomial likelhood) usi
                                     rctrl = dat.Berkey1995$rc,
                                     model = "FE",
                                     mu_prior = c(0, 10),
-                                    delta = 250)
+                                    delta_u = 250)
   ### compare with results
   results = fe.stan$fit_sum
 
