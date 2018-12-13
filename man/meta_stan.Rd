@@ -4,10 +4,10 @@
 \alias{meta_stan}
 \title{Fitting a meta-analysis model using Stan}
 \usage{
-meta_stan(ntrt = NULL, nctrl = NULL, rtrt = NULL, rctrl = NULL,
-  model = "BNHM1", mu_prior = c(0, 10), theta_prior = NULL,
-  tau_prior = 0.5, tau_prior_dist = "half-normal", delta = NULL,
-  chains = 4, iter = 2000, warmup = 1000, adapt_delta = 0.95)
+meta_stan(ntrt, nctrl, rtrt, rctrl, data = NULL, model = "BNHM1",
+  mu_prior = c(0, 10), theta_prior = NULL, tau_prior = 0.5,
+  tau_prior_dist = "half-normal", delta = NULL, chains = 4,
+  iter = 2000, warmup = 1000, adapt_delta = 0.95)
 }
 \arguments{
 \item{ntrt}{Number of subjects in treatment arm}
@@ -17,6 +17,8 @@ meta_stan(ntrt = NULL, nctrl = NULL, rtrt = NULL, rctrl = NULL,
 \item{rtrt}{Number of events in treatment arm}
 
 \item{rctrl}{Number of events in contrl arm}
+
+\item{data}{Optional data frame containing the variables given to the arguments above}
 
 \item{model}{A string specifying the model used. Available options are `FE` (fixed-effect model
 using binomial lielihood) `BNHM1` (Model 4 from \emph{Jackson
@@ -109,13 +111,12 @@ bnhm.wip.PTLD.stan  <- meta_stan(ntrt = dat.Crins2014.PTLD$exp.total,
 \references{
 Guenhan BK, Roever C, Friede T. Meta-analysis of few studies involving
 rare events \emph{arXiv preprint} 2018;https://arxiv.org/abs/1809.04407.
-\emph{Stat Med} 2018;37:1059--1085.
 
 Jackson D, Law M, Stijnen T, Viechtbauer W, White IR. A comparison of 7
 random-effects models for meta-analyses that estimate the summary odds ratio.
 \emph{Stat Med} 2018;37:1059--1085.
 
-Kuss O, Hoyer A and Solms A. Meta-analysis for diagnostic accuracy
-studies: a new statistical model using beta-binomial distributions and bivariate copulas.
-\emph{Stat Med}, 2014; 33:17--30. doi:10.1002/sim.5909
+Kuss O.Statistical methods for meta‐analyses including information
+from studies without any events-add nothing to nothing and succeed nevertheless,
+\emph{Stat Med}, 2015; 4; 1097--1116, doi: 10.1002/sim.6383.
 }

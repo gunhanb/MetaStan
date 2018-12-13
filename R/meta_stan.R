@@ -7,6 +7,7 @@
 #' @param nctrl Number of subjects in control arm
 #' @param rtrt Number of events in treatment arm
 #' @param rctrl Number of events in contrl arm
+#' @param data Optional data frame containing the variables given to the arguments above
 #' @param mu_prior A numerical vector specifying the parameter of the normal prior
 #' density for baseline risks, first value is parameter for mean, second is for variance.
 #' Default is c(0, 10).
@@ -40,13 +41,12 @@
 #' @return an object of class `stanfit` returned by `rstan::sampling`
 #' @references Guenhan BK, Roever C, Friede T. Meta-analysis of few studies involving
 #' rare events \emph{arXiv preprint} 2018;https://arxiv.org/abs/1809.04407.
-#' \emph{Stat Med} 2018;37:1059--1085.
 #' @references Jackson D, Law M, Stijnen T, Viechtbauer W, White IR. A comparison of 7
 #' random-effects models for meta-analyses that estimate the summary odds ratio.
 #' \emph{Stat Med} 2018;37:1059--1085.
-#' @references Kuss O, Hoyer A and Solms A. Meta-analysis for diagnostic accuracy
-#' studies: a new statistical model using beta-binomial distributions and bivariate copulas.
-#' \emph{Stat Med}, 2014; 33:17--30. doi:10.1002/sim.5909
+#' @references Kuss O.Statistical methods for meta‐analyses including information
+#' from studies without any events-add nothing to nothing and succeed nevertheless,
+#' \emph{Stat Med}, 2015; 4; 1097--1116, doi: 10.1002/sim.6383.
 #'
 #' @examples
 #' \donttest{
@@ -89,10 +89,11 @@
 #'                                    model = "Beta-binomial")
 #' }
 #'
-meta_stan = function(ntrt = NULL,
-                     nctrl = NULL,
-                     rtrt = NULL,
-                     rctrl = NULL,
+meta_stan = function(ntrt,
+                     nctrl,
+                     rtrt,
+                     rctrl,
+                     data = NULL,
                      model = "BNHM1",
                      mu_prior = c(0, 10),
                      theta_prior = NULL,
@@ -139,12 +140,34 @@ meta_stan = function(ntrt = NULL,
   if(tau_prior_dist == "uniform")     { tau_prior_dist_num = 2 }
   if(tau_prior_dist == "half-cauchy") { tau_prior_dist_num = 3 }
 
+  ################ check data argument
+  if (is.null(data))
+    data <- sys.frame( sys.parent() )
+  mf <- match.call()
+  mf$data <- NULL
+  mf$model = NULL
+  mf$mu_prior = NULL
+  mf$theta_prior = NULL
+  mf$tau_prior = NULL
+  mf$tau_prior_dist = NULL
+  mf$delta = NULL
+  mf$chains = NULL
+  mf$iter = NULL
+  mf$warmup = NULL
+  mf$adapt_delta = NULL
+  mf[[1]] <- as.name("data.frame")
+  mf <- eval(mf,data)
+  A <- as.numeric(mf$ntrt) ## integers might overflow
+  B <- as.numeric(mf$nctrl)
+  C <- as.numeric(mf$rtrt)
+  D <- as.numeric(mf$rctrl)
+
   ## Create a list to be used with Stan
-  stanDat <- list(N = length(ntrt),
-                  ntrt = ntrt,
-                  nctrl = nctrl,
-                  rtrt = rtrt,
-                  rctrl = rctrl,
+  stanDat <- list(N = length(A),
+                  ntrt = A,
+                  nctrl = B,
+                  rtrt = C,
+                  rctrl = D,
                   mu_prior = mu_prior,
                   theta_prior = theta_prior,
                   tau_prior = tau_prior,

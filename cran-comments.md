@@ -1,3 +1,8 @@
+## This is a new submission, since I missed the deadline.
+
+In this submission, I have
+* updated Makevars and Makevars.win files following Prof. Ripley comments.
+
 ## This is a resubmission
 
 In this submission, I have
