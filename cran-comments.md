@@ -1,3 +1,9 @@
+## This is a resubmission
+
+In this submission, I have
+* updated meta_stan function by adding "data" argument to make it more user-friendly.
+
+
 ## This is a new submission, since I missed the deadline.
 
 In this submission, I have

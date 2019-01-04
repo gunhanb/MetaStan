@@ -6,7 +6,7 @@ Description: Performs Bayesian meta-analysis using 'Stan'.
              heterogeneity parameter and the treatment effect parameter which are described in 
              Guenhan, Roever, and Friede (2018) <arXiv:1809.04407>.
 Authors@R: c(person("Burak Kuersad", "Guenhan", email="burak.gunhan@med.uni-goettingen.de", 
-             role=c("aut", "cre")),
+             role=c("aut", "cre"), comment = c(ORCID = "0000-0002-7454-8680")),
              person("Trustees of", "Columbia University", role="cph", comment="src/init.cpp, 
              tools/make_cpp.R, R/stanmodels.R"))
 License: GPL (>=3)

@@ -44,7 +44,7 @@
 #' @references Jackson D, Law M, Stijnen T, Viechtbauer W, White IR. A comparison of 7
 #' random-effects models for meta-analyses that estimate the summary odds ratio.
 #' \emph{Stat Med} 2018;37:1059--1085.
-#' @references Kuss O.Statistical methods for meta‐analyses including information
+#' @references Kuss O.Statistical methods for meta-analyses including information
 #' from studies without any events-add nothing to nothing and succeed nevertheless,
 #' \emph{Stat Med}, 2015; 4; 1097--1116, doi: 10.1002/sim.6383.
 #'
