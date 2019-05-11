@@ -1,3 +1,30 @@
+## This is a new submission
+
+In this submission, I have
+* extended the package by including functions to fit model-based meta-analysis models
+* added two functions: create_MBMA_dat and MBMA_stan
+* added an example dataset for model-based meta-anylsis
+
+## Test environments
+* win-builder (devel and release)
+* ubuntu 18.04, R 3.6.0
+* local OS X install, R 3.6.0
+
+## R CMD check results
+There were no ERRORs or WARNINGs. 
+
+There were 1 NOTE:
+
+* checking for GNU extensions in Makefiles ... NOTE
+
+  GNU make is a SystemRequirements.
+
+GNU make is added as SystemRequirements in Description 
+of the package
+
+
+
+
 ## This is a resubmission
 
 In this submission, I have

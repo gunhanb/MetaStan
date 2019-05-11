@@ -1,7 +1,7 @@
 Package: MetaStan
-Version: 0.0.3
+Version: 0.1.0
 Title: Bayesian Meta-Analysis via 'Stan'
-Description: Performs Bayesian meta-analysis using 'Stan'. 
+Description: Performs Bayesian meta-analysis and model-based meta-analysis using 'Stan'. 
              Includes binomial-normal hierarchical models and option to use weakly informative priors for the
              heterogeneity parameter and the treatment effect parameter which are described in 
              Guenhan, Roever, and Friede (2018) <arXiv:1809.04407>.
@@ -11,7 +11,7 @@ Authors@R: c(person("Burak Kuersad", "Guenhan", email="burak.gunhan@med.uni-goet
              tools/make_cpp.R, R/stanmodels.R"))
 License: GPL (>=3)
 Encoding: UTF-8
-Date: 2018-12-13
+Date: 2019-05-10
 LazyData: true
 ByteCompile: true
 Depends: R (>= 3.4.0), Rcpp (>= 0.12.17), methods
@@ -23,7 +23,7 @@ Suggests: testthat,
 LinkingTo: StanHeaders (>= 2.18.0), rstan (>= 2.18.1), BH (>= 1.66.0-1), Rcpp (>= 0.12.17), RcppEigen (>= 0.3.3.4.0)
 SystemRequirements: GNU make
 NeedsCompilation: yes
-RoxygenNote: 6.1.0
+RoxygenNote: 6.1.1
 URL: http://github.com/gunhanb/MetaStan
 BugReports: http://github.com/gunhanb/MetaStan/issues
 VignetteBuilder: knitr

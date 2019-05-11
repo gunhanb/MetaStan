@@ -172,6 +172,16 @@ meta_stan = function(ntrt,
                   theta_prior = theta_prior,
                   tau_prior = tau_prior,
                   tau_prior_dist = tau_prior_dist_num)
+   
+  ## Beta-binomial model
+  ## No prior information in t6he data
+  stanDat_BBM <- list(N = length(A),
+                  ntrt = A,
+                  nctrl = B,
+                  rtrt = C,
+                  rctrl = D)
+
+
   ## Ftiing the model
   if(model == "FE") {
     ## No prior information in t6he data
@@ -209,15 +219,9 @@ meta_stan = function(ntrt,
   }
 
   if(model == "Beta-binomial") {
-    ## No prior information in t6he data
-    stanDat <- list(N = length(ntrt),
-                    ntrt = ntrt,
-                    nctrl = nctrl,
-                    rtrt = rtrt,
-                    rctrl = rctrl)
-
+ 
     fit = rstan::sampling(stanmodels$Beta_binomial,
-                          data = stanDat,
+                          data = stanDat_BBM,
                           chains = chains,
                           iter = iter,
                           warmup = warmup,
