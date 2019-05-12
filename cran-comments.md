@@ -11,18 +11,7 @@ In this submission, I have
 * local OS X install, R 3.6.0
 
 ## R CMD check results
-There were no ERRORs or WARNINGs. 
-
-There were 1 NOTE:
-
-* checking for GNU extensions in Makefiles ... NOTE
-
-  GNU make is a SystemRequirements.
-
-GNU make is added as SystemRequirements in Description 
-of the package
-
-
+There were no ERRORs or WARNINGs or NOTEs. 
 
 
 ## This is a resubmission
