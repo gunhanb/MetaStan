@@ -3,6 +3,7 @@
 
 [![CRAN
 Status](https://www.r-pkg.org/badges/version/MetaStan)](https://cran.r-project.org/package=MetaStan)
+<http://cranlogs.r-pkg.org/badges/grand-total/MetaStan>
 
 # MetaStan R package
 
@@ -10,12 +11,17 @@ Status](https://www.r-pkg.org/badges/version/MetaStan)](https://cran.r-project.o
 
 ## Building
 
-`MetaStan` package is on CRAN, yet. `MetaStan` can be installed as
-follows:
+`MetaStan` package is on CRAN. `MetaStan` can be installed as follows:
 
 ``` r
 install.packages("MetaStan")
-library(MetaStan)
+```
+
+The develeopment version of the package can be insatalled using
+`devtools`:
+
+``` r
+devtools::install_github("gunhanb/MetaStan")
 ```
 
 ## Vignette
@@ -31,17 +37,11 @@ vignette("MetaStan_BNHM")
 The `testthat` package is used for testing. Tests reside in the
 `tests/testthat` directory.
 
-## License
+## Licence
 
-    MetaStan is free software: you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation, either version 3 of the License, or
-    (at your option) any later version.
-    
-    MetaStan is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-    
-    You should have received a copy of the GNU General Public License
-    along with MetaStan  If not, see <http://www.gnu.org/licenses/>.
+The MetaStan package was written by [Burak Kürsad
+Günhan](bkguenhan.rbind.io). It is licensed under the [GNU General
+Public License](http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt).
+For citation info, type `citation(package='MetaStan')` in R. To report
+any issues or bugs or to suggest enhancements to the package, please go
+[here](https://github.com/gunhanb/MetaStan/issues).
