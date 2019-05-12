@@ -1,9 +1,7 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-[![CRAN
-Status](https://www.r-pkg.org/badges/version/MetaStan)](https://cran.r-project.org/package=MetaStan)
-
+[![CRAN Status](https://www.r-pkg.org/badges/version/MetaStan)](https://cran.r-project.org/package=MetaStan)
 [![Total Downloads](http://cranlogs.r-pkg.org/badges/grand-total/MetaStan)](http://cranlogs.r-pkg.org/badges/grand-total/MetaStan)
 
 # MetaStan R package
@@ -41,8 +39,9 @@ The `testthat` package is used for testing. Tests reside in the
 ## Licence
 
 The MetaStan package was written by [Burak Kürsad
-Günhan](http://bkguenhan.rbind.io). It is licensed under the [GNU General
-Public License](http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt).
-For citation info, type `citation(package='MetaStan')` in R. To report
-any issues or bugs or to suggest enhancements to the package, please go
+Günhan](http://bkguenhan.rbind.io). It is licensed under the [GNU
+General Public
+License](http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt). For
+citation info, type `citation(package='MetaStan')` in R. To report any
+issues or bugs or to suggest enhancements to the package, please go
 [here](https://github.com/gunhanb/MetaStan/issues).

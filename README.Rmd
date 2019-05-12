@@ -4,8 +4,7 @@ output: github_document
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-[![CRAN Status](https://www.r-pkg.org/badges/version/MetaStan)](https://cran.r-project.org/package=MetaStan)
-
+[![CRAN Status](https://www.r-pkg.org/badges/version/MetaStan)](https://cran.r-project.org/package=MetaStan) 
 [![Total Downloads](http://cranlogs.r-pkg.org/badges/grand-total/MetaStan)](http://cranlogs.r-pkg.org/badges/grand-total/MetaStan)
 
 
