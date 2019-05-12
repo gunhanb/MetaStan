@@ -23,7 +23,7 @@ install.packages("MetaStan")
 ```
 
 
-The develeopment version of the package can be insatalled using `devtools`:
+The development version of the package can be installed using `devtools`:
 
 ```{r, echo=TRUE, eval=FALSE}
 devtools::install_github("gunhanb/MetaStan")
