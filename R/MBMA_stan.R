@@ -122,6 +122,8 @@ MBMA_stan = function(data = NULL,
     b_ndx = data[data$dose == 0,]$ID
     ## Nonbaseline index
     t_ndx = data[data$dose != 0,]$ID
+    st = data$study
+
 
     stanDat <- list(Nobs = nrow(data),
                     Nst = max(data$study),
@@ -131,6 +133,7 @@ MBMA_stan = function(data = NULL,
                     ndose = subset(data, dose == 0)$na,
                     NPred = length(Pred_doses),
                     Pred_doses = Pred_doses,
+                    st = st,
                     b_ndx = b_ndx,
                     t_ndx = t_ndx)
 

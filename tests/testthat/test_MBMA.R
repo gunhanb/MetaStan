@@ -26,6 +26,15 @@ test_that("Results are correct for fitting model-based meta-analysis using Arm-b
 
   expect_equivalent(round(results['theta_1', '50%'], 2), 2.26, tolerance = 0.1)
 
+
+  MBMA.CB.Emax  <- MBMA_stan(data = datMBMA,
+                             model = "CB_Emax",
+                             Pred_doses = seq(0, 80, length.out = 11),
+                             Emax_prior = c(0, 10),
+                             tau_prior_dist = "half-normal",
+                             tau_prior = 0.5)
+
+
 })
 
 
