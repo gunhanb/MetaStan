@@ -28,8 +28,8 @@ transformed parameters {
   real ptrt[N];
 
   for(i in 1:N) {
-    pctrl[i] = inv_logit(mu[i] - theta * 0.5);
-    ptrt[i] = inv_logit(mu[i] + theta * 0.5 + zeta[i] * tau);
+    pctrl[i] = inv_logit(mu[i] - theta * 0.5 - zeta[i] * tau * 0.5);
+    ptrt[i]  = inv_logit(mu[i] + theta * 0.5 + zeta[i] * tau * 0.5);
   }
 }
 

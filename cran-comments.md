@@ -1,6 +1,20 @@
 ## This is a new submission
 
 In this submission, I have
+* corrected the Stan parameterization used in the "meta_stan" function.
+
+## Test environments
+* win-builder (devel and release)
+* ubuntu 18.04, R 3.6.1
+* local OS X install, R 3.6.1
+
+## R CMD check results
+There were no ERRORs or WARNINGs or NOTEs. 
+
+
+## This is a new submission
+
+In this submission, I have
 * extended the package by including functions to fit model-based meta-analysis models
 * added two functions: create_MBMA_dat and MBMA_stan
 * added an example dataset for model-based meta-anylsis
