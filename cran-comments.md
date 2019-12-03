@@ -1,7 +1,6 @@
 ## This is a new submission
 
-In this submission, I have
-* corrected the Stan parameterization used in the "meta_stan" function.
+In this submission, I have corrected the Stan parameterization used in the "meta_stan" function, and updated the reference paper.
 
 ## Test environments
 * win-builder (devel and release)
