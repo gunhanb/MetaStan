@@ -52,7 +52,7 @@
 #' 2016;7:23–28.
 #'
 #' @examples
-#' \donttest{
+#' \dontrun{
 #'## Load the dataset
 #'data('dat.Eletriptan', package = "MetaStan")
 #'## Fitting a Binomial-Normal Hierarchial model using WIP priors

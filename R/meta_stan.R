@@ -49,7 +49,7 @@
 #' \emph{Stat Med}, 2015; 4; 1097--1116, doi: 10.1002/sim.6383.
 #'
 #' @examples
-#' \donttest{
+#' \dontrun{
 #' data('dat.Crins2014', package = "MetaStan")
 #' ## Subset of dataset where PTLD outcomes available
 #' dat.Crins2014.PTLD = subset(dat.Crins2014, is.finite(exp.PTLD.events))
@@ -172,7 +172,7 @@ meta_stan = function(ntrt,
                   theta_prior = theta_prior,
                   tau_prior = tau_prior,
                   tau_prior_dist = tau_prior_dist_num)
-   
+
   ## Beta-binomial model
   ## No prior information in t6he data
   stanDat_BBM <- list(N = length(A),
@@ -219,7 +219,7 @@ meta_stan = function(ntrt,
   }
 
   if(model == "Beta-binomial") {
- 
+
     fit = rstan::sampling(stanmodels$Beta_binomial,
                           data = stanDat_BBM,
                           chains = chains,
