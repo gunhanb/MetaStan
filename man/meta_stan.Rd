@@ -4,10 +4,23 @@
 \alias{meta_stan}
 \title{Fitting a meta-analysis model using Stan}
 \usage{
-meta_stan(ntrt, nctrl, rtrt, rctrl, data = NULL, model = "BNHM1",
-  mu_prior = c(0, 10), theta_prior = NULL, tau_prior = 0.5,
-  tau_prior_dist = "half-normal", delta = NULL, chains = 4,
-  iter = 2000, warmup = 1000, adapt_delta = 0.95)
+meta_stan(
+  ntrt,
+  nctrl,
+  rtrt,
+  rctrl,
+  data = NULL,
+  model = "BNHM1",
+  mu_prior = c(0, 10),
+  theta_prior = NULL,
+  tau_prior = 0.5,
+  tau_prior_dist = "half-normal",
+  delta = NULL,
+  chains = 4,
+  iter = 2000,
+  warmup = 1000,
+  adapt_delta = 0.95
+)
 }
 \arguments{
 \item{ntrt}{Number of subjects in treatment arm}
@@ -67,7 +80,7 @@ an object of class `stanfit` returned by `rstan::sampling`
 `meta_stan` fits a meta-analysis model using Stan.
 }
 \examples{
-\donttest{
+\dontrun{
 data('dat.Crins2014', package = "MetaStan")
 ## Subset of dataset where PTLD outcomes available
 dat.Crins2014.PTLD = subset(dat.Crins2014, is.finite(exp.PTLD.events))

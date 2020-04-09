@@ -4,7 +4,8 @@
 \name{dat.Crins2014}
 \alias{dat.Crins2014}
 \title{Pediatric liver transplant example data}
-\format{A data frame with following coloumns
+\format{
+A data frame with following coloumns
 \describe{
   \item{publication}{publication identifier (first author and publication year)}
   \item{year}{publication year}
@@ -18,7 +19,8 @@
   \item{cont.PTLD.events}{number of PTLD events in control group}
   \item{cont.death.events}{number of deaths in control group}
   \item{cont.total}{number of patients in control group}
- }}
+ }
+}
 \source{
 N.D. Crins, C. Roever, A.D. Goralczyk, T. Friede. Interleukin-2
 receptor antagonists for pediatric liver transplant recipients:

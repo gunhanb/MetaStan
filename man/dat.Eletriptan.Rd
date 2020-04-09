@@ -4,7 +4,8 @@
 \name{dat.Eletriptan}
 \alias{dat.Eletriptan}
 \title{Migraine pain relief example (Eletriptan)}
-\format{A data frame with following coloumns
+\format{
+A data frame with following coloumns
 \describe{
   \item{ID}{trial ID}
   \item{d1}{dose (mg) in the first arm (placebo)}
@@ -20,7 +21,8 @@
   \item{r4}{number of events in the fourth arm}
   \item{n4}{number of patients in the fourth arm}
   \item{nd}{number of treatment arms}
- }}
+ }
+}
 \source{
 Thorlund, K., Mills, E., Wu, P., Ramos, E.,
  Chatterjee, A., Druyts, E., and Goadsby, P. (2014).

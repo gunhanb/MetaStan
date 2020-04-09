@@ -3,11 +3,10 @@ title: "Conducting meta-analysis using MetaStan"
 author: "Burak Kürsad Günhan"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
-bibliography: references.bib
 vignette: >
   %\VignetteIndexEntry{Fitting Binomial-Normal hierarchical model using MetaStan}
   %\VignetteEngine{knitr::rmarkdown}
-  %\VignetteEncoding{UTF-8}
+  \usepackage[utf8]{inputenc}
 fig_caption: yes
 ---
 
@@ -19,7 +18,7 @@ knitr::opts_chunk$set(
 ```
 
 ## Introduction
-To fit meta-analysis models using frequentist methods, there are many R packages available including `metafor`. On the other hand, Bayesian estimation methods such as Markov chain Monte Carlo (MCMC) are very attractive for meta-analysis, especially because they can be used to fit more complicated models. These include binomial-normal hierarchical models and beta-binomial models which are based on the exact distributional assumptions unlike (commonly used) normal-normal hierarchical model. Another advantage of Bayesian methods to be able to use informative prior distributions for example to regularize heterogeneity estimates in case of low number of studies. Thus, we developed `MetaStan` which uses **Stan** (a modern MCMC engine) to fit several pairwise meta-analysis models including binomial-normal hierarchical model and beta-binomial model. This package is also the accompanying package of @Guenhan.
+To fit meta-analysis models using frequentist methods, there are many R packages available including `metafor`. On the other hand, Bayesian estimation methods such as Markov chain Monte Carlo (MCMC) are very attractive for meta-analysis, especially because they can be used to fit more complicated models. These include binomial-normal hierarchical models and beta-binomial models which are based on the exact distributional assumptions unlike (commonly used) normal-normal hierarchical model. Another advantage of Bayesian methods to be able to use informative prior distributions for example to regularize heterogeneity estimates in case of low number of studies. Thus, we developed `MetaStan` which uses **Stan** (a modern MCMC engine) to fit several pairwise meta-analysis models including binomial-normal hierarchical model and beta-binomial model. This package is also the accompanying package for Günhan, Röver, and Friede (2020).
 
 
 ## Installation 
@@ -71,7 +70,7 @@ plot(forest.plot)
 
 
 ## Fitting a binomial-normal hierarchical model
-`metastan` is the main fitting function of this package. The main computations are executed via the `rstan` package's `sampling` function. We can fit the binomial-normal hierarchical model [@Guenhan] using a weakly informative prior for treatment effect as follows:
+`metastan` is the main fitting function of this package. The main computations are executed via the `rstan` package's `sampling` function. We can fit the binomial-normal hierarchical model (Günhan, Röver, and Friede, 2020) using a weakly informative prior for treatment effect as follows:
 
 
 ```{r bnhmFit, results="hide"}
@@ -106,7 +105,7 @@ print(bnhm1.BCG.stan)
 ```
 
 
-Note that this model corresponds to Model 4 in @Jackson. The model 2 in @Jackson can be fitted by specfying `model = "BNHM2"` as follows: 
+Note that this model corresponds to Model 4 in Jackson et al (2018). The model 2 in Jackson et al (2018) can be fitted by specfying `model = "BNHM2"` as follows: 
 
 
 ```{r bnhm2Fit, results="hide"}
@@ -126,7 +125,14 @@ print(bnhm2.BCG.stan)
 ```
 
 
-Please see @Guenhan and @Jackson for complete model descriptions.
+Please see Günhan, Röver, and Friede (2020) and Jackson et al (2018) for complete model descriptions.
 
 
 # References
+Günhan, BK, Röver, C, and Friede, T (2020). "Random-effects meta-analysis of few
+studies involving rare events". In: Research Synthesis Methods 11.1, pp. 74-90. DOI:
+10.1002/jrsm.1370.
+
+Jackson, D et al. (2018). "A comparison of seven random-effects models for metaanalyses
+that estimate the summary odds ratio". In: Statistics in Medicine 37.7,
+pp. 1059-1085. DOI: 10.1002/sim.7588.

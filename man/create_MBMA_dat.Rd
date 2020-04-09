@@ -4,8 +4,11 @@
 \alias{create_MBMA_dat}
 \title{Prepare model-based meta-analysis dataset for Stan.}
 \usage{
-create_MBMA_dat(dat = dat, armVars = c(dose = "t", responders = "r",
-  sampleSize = "n"), nArmsVar = "nd")
+create_MBMA_dat(
+  dat = dat,
+  armVars = c(dose = "t", responders = "r", sampleSize = "n"),
+  nArmsVar = "nd"
+)
 }
 \arguments{
 \item{dat}{Data in one-study-per-row format.}

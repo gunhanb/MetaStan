@@ -4,10 +4,20 @@
 \alias{MBMA_stan}
 \title{Fitting a model-based meta-analysis model using Stan}
 \usage{
-MBMA_stan(data = NULL, Pred_doses = NULL, model = "AB_Emax",
-  mu_prior = c(0, 10), Emax_prior = c(0, 10), ED50_prior = c(0, 10),
-  tau_prior = 0.5, tau_prior_dist = "half-normal", chains = 4,
-  iter = 2000, warmup = 1000, adapt_delta = 0.95)
+MBMA_stan(
+  data = NULL,
+  Pred_doses = NULL,
+  model = "AB_Emax",
+  mu_prior = c(0, 10),
+  Emax_prior = c(0, 10),
+  ED50_prior = c(0, 10),
+  tau_prior = 0.5,
+  tau_prior_dist = "half-normal",
+  chains = 4,
+  iter = 2000,
+  warmup = 1000,
+  adapt_delta = 0.95
+)
 }
 \arguments{
 \item{data}{An object of `create_MBMA_dat`.}
@@ -63,7 +73,7 @@ an object of class `stanfit` returned by `rstan::sampling`
 `MBMA_stan` fits a model-based meta-analysis model using Stan.
 }
 \examples{
-\donttest{
+\dontrun{
 ## Load the dataset
 data('dat.Eletriptan', package = "MetaStan")
 ## Fitting a Binomial-Normal Hierarchial model using WIP priors
