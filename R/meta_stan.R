@@ -3,11 +3,7 @@
 #' `meta_stan` fits a meta-analysis model using Stan.
 #'
 #' @export
-#' @param ntrt Number of subjects in treatment arm
-#' @param nctrl Number of subjects in control arm
-#' @param rtrt Number of events in treatment arm
-#' @param rctrl Number of events in contrl arm
-#' @param data Optional data frame containing the variables given to the arguments above
+#' @param data Data frame created by `convert_data_arm`
 #' @param mu_prior A numerical vector specifying the parameter of the normal prior
 #' density for baseline risks, first value is parameter for mean, second is for variance.
 #' Default is c(0, 10).
@@ -15,19 +11,28 @@
 #' density for treatment effect estimate, first value is parameter for mean, second
 #' is for variance. Default is NULL.
 #' @param delta A numerical value specifying the upper bound of the a priori interval for
-#' treatment effect on odds ratio scale \emph{Guenhan et al (2018)}. This is used to calculate
-#' a normal weakly informative prior
-#' for theta. Thus when this argument is pecified, `theta` should be left empty. Default is NULL.
+#' treatment effect on odds ratio scale \emph{Guenhan et al (2019)}. This is used to calculate
+#' a normal weakly informative prior.
+#' for theta. Thus when this argument is specified, `theta` should be left empty. Default is NULL.
 #' @param tau_prior A numerical value specifying the standard dev. of the prior density
-#' for heterogenety stdev. Default is 0.5.
+#' for heterogeneity stdev. Default is 0.5.
 #' @param tau_prior_dist A string specifying the prior density for the heterogeneity standard deviation,
 #' option is `half-normal` for half-normal prior, `uniform` for uniform prior, `half-cauchy` for
 #' half-cauchy prior.
-#' @param model A string specifying the model used. Available options are `FE` (fixed-effect model
-#' using binomial lielihood) `BNHM1` (Model 4 from \emph{Jackson
-#' et al (2018)}), `BNHM2` (Model 2 from \emph{Jackson et al (2018)}), and `Beta-binomial` (Beta-binomial
-#' model from \emph{Kuss (2014)}). Default is `BNHM1`.
-#' @param adapt_delta A numerical value specfying the target average proposal acceptance
+#' @param beta_prior A numerical vector specifying the parameter of the normal prior
+#' density for beta coefficients in a meta-regression model, first value is parameter for mean, second
+#' is for variance. Default is c(0, 100).
+#' @param family A string specifying the family of distributions defining the statistical
+#' model (1: normal, 2: binomial, or 3: Poisson)
+#' @param re A string specifying whether random-effects are included to the model. When `FALSE`, the
+#' model corresponds to a fixed-effects model. The default is `TRUE`.
+#' @param ncp A string specifying whether to use a non-centered parametrization.
+#' The default is `TRUE`.
+#' @param mreg A string specifying whether to fit a meta-regression model.
+#' The default is `FALSE`.
+#' @param cov A numeric matrix specifying trial-level covariates in each row.
+#' This is need when `mreg = TRUE`.
+#' @param adapt_delta A numerical value specifying the target average proposal acceptance
 #' probability for adaptation. See Stan manual for details. Default is 0.95. In general
 #' you should not need to change adapt_delta unless you see a warning message about
 #' divergent transitions, in which case you can increase adapt_delta from the
@@ -38,9 +43,9 @@
 #' iterations per chain. The default is 1000.
 #' @param chains A positive integer specifying the number of Markov chains.
 #' The default is 4.
-#' @return an object of class `stanfit` returned by `rstan::sampling`
-#' @references Guenhan BK, Roever C, Friede T. Meta-analysis of few studies involving
-#' rare events \emph{arXiv preprint} 2018;https://arxiv.org/abs/1809.04407.
+#' @return an object of class `MetaStan`.
+#' @references Guenhan BK, Roever C, Friede T. Random-effects meta-analysis of few studies involving
+#' rare events \emph{Resarch Synthesis Methods} 2019; doi:10.1002/jrsm.1370.
 #' @references Jackson D, Law M, Stijnen T, Viechtbauer W, White IR. A comparison of 7
 #' random-effects models for meta-analyses that estimate the summary odds ratio.
 #' \emph{Stat Med} 2018;37:1059--1085.
@@ -51,81 +56,56 @@
 #' @examples
 #' \dontrun{
 #' data('dat.Crins2014', package = "MetaStan")
-#' ## Subset of dataset where PTLD outcomes available
-#' dat.Crins2014.PTLD = subset(dat.Crins2014, is.finite(exp.PTLD.events))
-#' ## Fitting a Binomial-Normal Hierarchial model using vague priors for theta
-#' bnhm.vague.PTLD.stan  <- meta_stan(ntrt = dat.Crins2014.PTLD$exp.total,
-#'                                    nctrl = dat.Crins2014.PTLD$cont.total,
-#'                                    rtrt = dat.Crins2014.PTLD$exp.PTLD.events,
-#'                                    rctrl = dat.Crins2014.PTLD$cont.PTLD.event,
-#'                                    mu_prior = c(0, 10), theta_prior = c(0, 100),
-#'                                    tau_prior =  0.5)
-#' ## Obatining a small summary
-#' print(bnhm.vague.PTLD.stan)
-#' ## Extract the rstan fit for post-processing, eg convergence diagnostics
-#' bnhm.vague.PTLD.stanfit = bnhm.vague.PTLD.stan$fit
-#'  ## see `?rstan::sampling` for for post-processing of the `stanfit` object
-#' ## Fitting a Binomial-Normal Hierarchial model using WIP for theta
-#' bnhm.wip.PTLD.stan  <- meta_stan(ntrt = dat.Crins2014.PTLD$exp.total,
-#'                                    nctrl = dat.Crins2014.PTLD$cont.total,
-#'                                    rtrt = dat.Crins2014.PTLD$exp.PTLD.events,
-#'                                    rctrl = dat.Crins2014.PTLD$cont.PTLD.event,
-#'                                    mu_prior = c(0, 10),
-#'                                    theta_prior = c(0, 2.82),
-#'                                    tau_prior =  0.5)
-#' ## Fitting a fixed-effect Binomial model using vague priors for theta
-#' bm.vague.PTLD.stan  <- meta_stan(ntrt = dat.Crins2014.PTLD$exp.total,
-#'                                    nctrl = dat.Crins2014.PTLD$cont.total,
-#'                                    rtrt = dat.Crins2014.PTLD$exp.PTLD.events,
-#'                                    rctrl = dat.Crins2014.PTLD$cont.PTLD.event,
-#'                                    mu_prior = c(0, 10), theta_prior = c(0, 100),
-#'                                    model = "FE")
+#' dat_long <- convert_data_arm(dat.Crins2014$exp.total, dat.Crins2014$cont.total,
+#'                              dat.Crins2014$exp.AR.events, dat.Crins2014$cont.AR.events)
+#' bnhm.Crins  <- meta_stan(data = dat_long, family = "binomial",
+#'                          mu_prior = c(0, 10), theta_prior = c(0, 100),
+#'                          tau_prior =  0.5)
+#' print(bnhm.Crins)
 #'
-#' ## Fitting a Beta-binomial model using vague priors
-#' bnhm.wip.PTLD.stan  <- meta_stan(ntrt = dat.Crins2014.PTLD$exp.total,
-#'                                    nctrl = dat.Crins2014.PTLD$cont.total,
-#'                                    rtrt = dat.Crins2014.PTLD$exp.PTLD.events,
-#'                                    rctrl = dat.Crins2014.PTLD$cont.PTLD.event,
-#'                                    model = "Beta-binomial")
+#' forestplot(bnhm.Crins)
 #' }
 #'
-meta_stan = function(ntrt,
-                     nctrl,
-                     rtrt,
-                     rctrl,
-                     data = NULL,
-                     model = "BNHM1",
+meta_stan = function(data = NULL,
+                     family = NULL,
                      mu_prior = c(0, 10),
                      theta_prior = NULL,
                      tau_prior = 0.5,
                      tau_prior_dist = "half-normal",
+                     beta_prior = c(0, 100),
                      delta = NULL,
+                     re = TRUE,
+                     ncp = TRUE,
+                     mreg = FALSE,
+                     cov = NULL,
                      chains = 4,
                      iter = 2000,
                      warmup = 1000,
                      adapt_delta = 0.95) {
-  ################ check model used
-  if (model %in% c("FE", "BNHM1", "BNHM2", "Beta-binomial") == FALSE) {
-    stop("Function argument \"model\" must be equal to \"FE\" or \"BNHM1\" or \"BNHM2\" or
-         \"Beta-binomial\" !!!")
-  }
-  ################ Beta-binomial model, only vague prior
-  if (model == "Beta-binomial") {
-    if(is.null(delta) == FALSE | is.null(theta_prior) == FALSE) {
-      stop("With Beta-binomial model, no prior informations allowed!!!")
-    }
+  ################ check family used
+  if(is.null(family) == TRUE){
+    stop("Function argument \"family\" must be specified !!!")
   }
 
+  if (family %in% c("binomial", "normal", "poisson") == FALSE) {
+    stop("Function argument \"family\" must be equal to \"binomial\" or \"normal\" or \"poisson\"!!!")
+  }
+
+
   ################ check prior for treatment effect parameter
-  if(is.null(delta) == TRUE & is.null(theta_prior) == TRUE & model != "Beta-binomial"){
+  if(is.null(delta) == TRUE & is.null(theta_prior) == TRUE){
     stop("Function argument \"delta\" or \"theta_prior\" must be specified !!!")
   }
 
-  if(is.null(delta) == FALSE & is.null(theta_prior) == FALSE & model != "Beta-binomial"){
+  if(is.null(delta) == FALSE & is.null(theta_prior) == FALSE){
     stop("Either \"delta\" OR \"theta_prior\" can be specified, but not both !!!")
   }
 
-  ## Calculate standard devation of theta_prior from delta
+  if(mreg == TRUE & is.null(cov) == TRUE){
+    stop("Function argument \"cov\" argument must be specified, when \"mreg\" is TRUE !!!")
+  }
+
+  ## Calculate standard deviation of theta_prior from delta
   if(is.null(delta) == FALSE){
     theta_prior[1] = 0
     theta_prior[2] = (log(delta) - log(1/delta)) / (2 * 1.96)
@@ -140,100 +120,88 @@ meta_stan = function(ntrt,
   if(tau_prior_dist == "uniform")     { tau_prior_dist_num = 2 }
   if(tau_prior_dist == "half-cauchy") { tau_prior_dist_num = 3 }
 
-  ################ check data argument
-  if (is.null(data))
-    data <- sys.frame( sys.parent() )
-  mf <- match.call()
-  mf$data <- NULL
-  mf$model = NULL
-  mf$mu_prior = NULL
-  mf$theta_prior = NULL
-  mf$tau_prior = NULL
-  mf$tau_prior_dist = NULL
-  mf$delta = NULL
-  mf$chains = NULL
-  mf$iter = NULL
-  mf$warmup = NULL
-  mf$adapt_delta = NULL
-  mf[[1]] <- as.name("data.frame")
-  mf <- eval(mf,data)
-  A <- as.numeric(mf$ntrt) ## integers might overflow
-  B <- as.numeric(mf$nctrl)
-  C <- as.numeric(mf$rtrt)
-  D <- as.numeric(mf$rctrl)
+  if(family == "normal")   { link = 1 }
+  if(family == "binomial") { link = 2 }
+  if(family == "poisson")  { link = 3 }
+
+
+  ################ check data
+  if (!is.data.frame(data)) {
+    stop("Data MUST be a data frame!!!")
+  }
+
+  ################ prepare data
+  Nobs = nrow(data)
+
+  y <- array(rep(0,Nobs))
+  y_se <- array(rep(0,Nobs))
+  r   <- array(rep(0,Nobs))
+  n <- array(rep(1,Nobs))
+  count <- array(rep(0, Nobs))
+  exposure <- array(rep(0, Nobs))
+
+  if(family == "binomial") {
+    r = data$r
+    n = data$n
+  }
+  if(family == "normal") {
+    y = data$y
+    y_se = data$y_se
+  }
+  if(family == "poisson") {
+    count = data$count
+    exposure = data$exposure
+  }
+
+  if(mreg == FALSE){
+    cov = matrix(rep(0, max(as.numeric(as.vector(dat_long$mu)))), nrow = 1)
+  }
+  ncov = nrow(cov)
+
+  if(re == TRUE)   {re = 1}
+  if(re == FALSE)  {re = 0}
+  if(ncp == TRUE)  {ncp = 1}
+  if(ncp == FALSE) {ncp = 0}
+  if(mreg == TRUE)   {mreg = 1}
+  if(mreg == FALSE)  {mreg = 0}
 
   ## Create a list to be used with Stan
-  stanDat <- list(N = length(A),
-                  ntrt = A,
-                  nctrl = B,
-                  rtrt = C,
-                  rctrl = D,
+  stanDat <- list(Nobs = Nobs,
+                  t = data$theta,
+                  link = link,
+                  st = as.numeric(as.vector(data$mu)),
+                  y = y,
+                  y_se = y_se,
+                  r = r,
+                  n = n,
+                  count = count,
+                  exposure = exposure,
                   mu_prior = mu_prior,
                   theta_prior = theta_prior,
                   tau_prior = tau_prior,
-                  tau_prior_dist = tau_prior_dist_num)
-
-  ## Beta-binomial model
-  ## No prior information in t6he data
-  stanDat_BBM <- list(N = length(A),
-                  ntrt = A,
-                  nctrl = B,
-                  rtrt = C,
-                  rctrl = D)
+                  tau_prior_dist = tau_prior_dist_num,
+                  beta_prior = beta_prior,
+                  re = re,
+                  ncp = ncp,
+                  mreg = mreg,
+                  cov = cov,
+                  ncov = ncov)
 
 
-  ## Ftiing the model
-  if(model == "FE") {
-    ## No prior information in t6he data
-    stanDat <- list(N = length(ntrt),
-                    ntrt = ntrt,
-                    nctrl = nctrl,
-                    rtrt = rtrt,
-                    rctrl = rctrl,
-                    mu_prior = mu_prior,
-                    theta_prior = theta_prior)
 
-    fit = rstan::sampling(stanmodels$Fix_Eff,
-                          data = stanDat,
-                          chains = chains,
-                          iter = iter,
-                          warmup = warmup,
-                          control = list(adapt_delta = adapt_delta))
-  }
-
-  if(model == "BNHM1") {
-    fit = rstan::sampling(stanmodels$BNHM_Smith,
-                          data = stanDat,
-                          chains = chains,
-                          iter = iter,
-                          warmup = warmup,
-                          control = list(adapt_delta = adapt_delta))
-  }
-  if(model == "BNHM2") {
-    fit = rstan::sampling(stanmodels$BNHM_Higgins,
-                          data = stanDat,
-                          chains = chains,
-                          iter = iter,
-                          warmup = warmup,
-                          control = list(adapt_delta = adapt_delta))
-  }
-
-  if(model == "Beta-binomial") {
-
-    fit = rstan::sampling(stanmodels$Beta_binomial,
-                          data = stanDat_BBM,
-                          chains = chains,
-                          iter = iter,
-                          warmup = warmup,
-                          control = list(adapt_delta = adapt_delta))
-  }
+  ## Fitting the model
+  fit = rstan::sampling(stanmodels$SMA,
+                        data = stanDat,
+                        chains = chains,
+                        iter = iter,
+                        warmup = warmup,
+                        control = list(adapt_delta = adapt_delta))
 
 
   ## MODEL FINISHED
   fit_sum <- rstan::summary(fit)$summary
-
-
-  Rhat.max <- max(fit_sum[,"Rhat"], na.rm = TRUE)
+  Rhat.max <- max(fit_sum[,"Rhat"], na.rm=TRUE)
+  N_EFF.min <- min(fit_sum[,"n_eff"], na.rm=TRUE)
 
   if(Rhat.max > 1.1)
     warning("Maximal Rhat > 1.1. Consider increasing meta_stan MCMC parameters.")
@@ -248,10 +216,14 @@ meta_stan = function(ntrt,
                   phase.\nPlease consider increasing adapt_delta closer to 1."))
   }
 
+
   out = list(fit = fit,
              fit_sum = fit_sum,
-             model = model,
-             data = stanDat)
+             data = stanDat,
+             Rhat.max = Rhat.max,
+             N_EFF.min = N_EFF.min,
+             tau_prior_dist = tau_prior_dist)
+
   class(out) <- "meta_stan"
 
   return(out)

@@ -6,7 +6,7 @@
 \usage{
 create_MBMA_dat(
   dat = dat,
-  armVars = c(dose = "t", responders = "r", sampleSize = "n"),
+  armVars = c(dose = "t", r = "r", n = "n"),
   nArmsVar = "nd"
 )
 }

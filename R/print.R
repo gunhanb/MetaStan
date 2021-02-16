@@ -13,15 +13,58 @@
 print.meta_stan <- function(x, digits = 2, ...) {
   if (!is.element("meta_stan", class(x)))
     stop("Argument 'x' must be an object of class \"meta_stan\".")
-  results = x$fit_sum
-  cat("Meta-analysis using MetaStan\n")
-  cat("Mean treatment effect\n")
-  print(round(results['theta', -c(2, 3, 5, 7, 9, 10)], digits))
+  cat("Meta-analysis using MetaStan \n\n")
+  cat("Maximum Rhat:", signif(x$Rhat.max, digits=3),"\n")
+  cat("Minimum Effective Sample Size:", signif(x$N_EFF.min, digits=digits),"\n\n")
 
-  if (x$model %in% c("BNHM1", "BNHM2") == TRUE){
-    cat("Heterogeneity stdev\n")
-    print(round(results['tau', -c(2, 3, 5, 7, 9, 10)], digits))
+  cat("mu prior: Normal")
+  cat("(")
+  cat(x$data$mu_prior[1])
+  cat(",")
+  cat(x$data$mu_prior[2])
+  cat(")")
+  cat("\n")
+  cat("theta prior: Normal")
+  cat("(")
+  cat(x$data$theta_prior[1])
+  cat(",")
+  cat(round(x$data$theta_prior[2], 2))
+  cat(")")
+  cat("\n")
+
+  if (x$data$mreg){
+    cat("beta prior: Normal")
+    cat("(")
+    cat(x$data$beta_prior[1])
+    cat(",")
+    cat(x$data$beta_prior[2])
+    cat(")")
+    cat("\n")
   }
+  if (x$data$re){
+    cat("tau prior:")
+    cat(x$tau_prior_dist)
+    cat("(")
+    cat(x$data$tau_prior)
+    cat(")")
+    cat("\n\n")
+  }
+
+  cat("Treatment effect (theta) estimates\n")
+  print(round(x$fit_sum['theta', -c(2, 3, 5, 7, 9, 10)], digits))
+  cat("\n")
+
+  if (x$data$mreg){
+    cat("Beta coeffients\n")
+    print(round(x$fit_sum['beta[1,1]', -c(2, 3, 5, 7, 9, 10)], digits))
+    cat("\n")
+  }
+
+  if (x$data$re){
+    cat("Heterogeneity stdev (tau)\n")
+    print(round(x$fit_sum['tau[1]', -c(2, 3, 5, 7, 9, 10)], digits))
+  }
+
 
   return(invisible())
 }

@@ -19,14 +19,14 @@ Bayesian methods to be able to use informative prior distributions for example t
 regularize heterogeneity estimates in case of low number of studies. Thus, we developed
 `MetaStan` which uses Stan (a modern MCMC engine) to fit several pairwise meta-analysis
 models including binomial-normal hierarchical model and beta-binomial model. This package is
-also the accompanying package of Guenhan et al (2018).
+also the accompanying package of Guenhan et al (2019).
 }
 \references{
 Stan Development Team (2018). RStan: the R interface to Stan. R package version 2.17.3.
 http://mc-stan.org
 
-Günhan, B and Röver, C and Friede, T (2018). Meta-analysis of few studies involving rare events.
-arXiv.org E-print Archive. https://arxiv.org/abs/1809.04407.
+Günhan, B and Röver, C and Friede, T (2019). Random-effects meta-analysis of few studies
+involving rare events. Research Synthesis Methods. doi = 10.1002/jrsm.1370.
 }
 \author{
 Burak Kuersad Guenhan <burak.gunhan@med.uni-goettingen.de>

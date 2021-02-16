@@ -22,7 +22,7 @@
 #' print(EletriptanDat)
 #' @export
 create_MBMA_dat <- function(dat = dat,
-                            armVars = c(dose = "t", responders = "r", sampleSize = "n"),
+                            armVars = c(dose = "t", r = "r", n = "n"),
                             nArmsVar = "nd") {
   ######################################################## THIS CODE IS COPY PASTE FROM gemtc::mtc.data.studyrow
   studyNames = 1:nrow(dat)
@@ -68,6 +68,10 @@ create_MBMA_dat <- function(dat = dat,
   datMBMA$na <- rep(dat[[paste(nArmsVar)]], times = dat[[paste(nArmsVar)]])
   N <- nrow(datMBMA)
 
-  return(datMBMA)
+  final = list(data = datMBMA,
+               data_wide = dat)
+
+
+  return(final)
 }
 

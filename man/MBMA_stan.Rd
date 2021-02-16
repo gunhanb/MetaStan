@@ -6,13 +6,18 @@
 \usage{
 MBMA_stan(
   data = NULL,
-  Pred_doses = NULL,
-  model = "AB_Emax",
+  family = NULL,
+  model = "emax",
   mu_prior = c(0, 10),
-  Emax_prior = c(0, 10),
-  ED50_prior = c(0, 10),
+  Emax_prior = c(0, 100),
   tau_prior = 0.5,
   tau_prior_dist = "half-normal",
+  ED50_prior = c(-2.5, 1.8),
+  ED50_prior_dist = "functional",
+  gamma_prior = c(1, 2),
+  Pred_doses,
+  re = TRUE,
+  ncp = TRUE,
   chains = 4,
   iter = 2000,
   warmup = 1000,
@@ -22,15 +27,11 @@ MBMA_stan(
 \arguments{
 \item{data}{An object of `create_MBMA_dat`.}
 
-\item{Pred_doses}{A numerical vector specfying the doses which prediction will be made.
-Default is NULL.}
+\item{family}{A string specifying the family of distributions defining the statistical
+model (1: normal, 2: binomial, or 3: Poisson)}
 
-\item{model}{A string specifying the model used. Available options are `Baseline_Emax`
-(Baseline random effects model (\emph{Boucher and Bennets, 2016)}), `CB_Emax`
-(contrast-based random effects model (\emph{Mawdsley et al ,2016)}), `AB_Emax`
-(arm-based random effects model, adapted from (\emph{Zhang et al ,2017)}), `CBPlusBaseline_Emax`
-(contrast-based plus baseline random effects model, adapted from (\emph{Dias et al ,2013)}).
-Default is `AB_Emax`.}
+\item{model}{A string specifying the function defining the dose-response model
+(1: linear, 2: log-linear, 3: emax, or 4: sigmoidal)}
 
 \item{mu_prior}{A numerical vector specifying the parameter of the normal prior
 density for baseline risks, first value is parameter for mean, second is for variance.
@@ -38,11 +39,7 @@ Default is c(0, 10).}
 
 \item{Emax_prior}{A numerical vector specifying the parameter of the normal prior
 density for Emax parameter, first value is parameter for mean, second
-is for standard devation. Default is c(0, 10).}
-
-\item{ED50_prior}{A numerical vector specifying the parameter of the normal prior
-density for ED50 parameter, first value is parameter for mean, second
-is for standard devation. Default is c(0, 10).}
+is for standard deviation. Default is c(0, 10). Needed for emax and sigmoidal models.}
 
 \item{tau_prior}{A numerical value specifying the standard dev. of the prior density
 for heterogenety stdev. Default is 0.5.}
@@ -50,6 +47,22 @@ for heterogenety stdev. Default is 0.5.}
 \item{tau_prior_dist}{A string specifying the prior density for the heterogeneity standard deviation,
 option is `half-normal` for half-normal prior, `uniform` for uniform prior, `half-cauchy` for
 half-cauchy prior.}
+
+\item{ED50_prior}{A numerical vector specifying the parameter of the normal prior
+density for ED50 parameter, first value is parameter for mean, second
+is for standard deviation. Default is c(0, 10). Needed for emax and sigmoidal models.}
+
+\item{ED50_prior_dist}{A string specifying the prior density for the ED50 parameter,
+`functional` is for a functional uniform prior, `half-normal` for uniform prior, `half-cauchy` for
+half-cauchy prior.}
+
+\item{Pred_doses}{A numerical vector specifying the doses which prediction will be made.}
+
+\item{re}{A string specifying whether random-effects are included to the model. When `FALSE`, the
+model corresponds to a fixed-effects model. The default is `TRUE`.}
+
+\item{ncp}{A string specifying whether to use a non-centered parametrization.
+The default is `TRUE`.}
 
 \item{chains}{A positive integer specifying the number of Markov chains.
 The default is 4.}
@@ -65,6 +78,10 @@ probability for adaptation. See Stan manual for details. Default is 0.95. In gen
 you should not need to change adapt_delta unless you see a warning message about
 divergent transitions, in which case you can increase adapt_delta from the
 default to a value closer to 1 (e.g. from 0.95 to 0.99, or from 0.99 to 0.999, etc).}
+
+\item{alpha_prior}{A numerical vector specifying the parameter of the normal prior
+density for the alpha parameter, first value is parameter for mean, second is for variance.
+Default is c(0, 10). Needed for linear and linear log-dose models.}
 }
 \value{
 an object of class `stanfit` returned by `rstan::sampling`
@@ -78,14 +95,15 @@ an object of class `stanfit` returned by `rstan::sampling`
 data('dat.Eletriptan', package = "MetaStan")
 ## Fitting a Binomial-Normal Hierarchial model using WIP priors
 datMBMA = create_MBMA_dat(dat = dat.Eletriptan,
-                         armVars = c(dose = "d", responders = "r",
-                                     sampleSize = "n"),
+                         armVars = c(dose = "d", r = "r",
+                                     n = "n"),
                          nArmsVar = "nd")
 
 MBMA.AB.Emax  <- MBMA_stan(data = datMBMA,
-                          model = "AB_Emax",
-                          Pred_doses = seq(0, 80, length.out = 11),
+                          family = "binomial",
+                          model = "emax",
                           Emax_prior = c(0, 10),
+                          ED50_prior = "functional",
                           tau_prior_dist = "half-normal",
                           tau_prior = 0.5)
 }

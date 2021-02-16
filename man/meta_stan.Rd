@@ -5,17 +5,18 @@
 \title{Fitting a meta-analysis model using Stan}
 \usage{
 meta_stan(
-  ntrt,
-  nctrl,
-  rtrt,
-  rctrl,
   data = NULL,
-  model = "BNHM1",
+  family = NULL,
   mu_prior = c(0, 10),
   theta_prior = NULL,
   tau_prior = 0.5,
   tau_prior_dist = "half-normal",
+  beta_prior = c(0, 100),
   delta = NULL,
+  re = TRUE,
+  ncp = TRUE,
+  mreg = FALSE,
+  cov = NULL,
   chains = 4,
   iter = 2000,
   warmup = 1000,
@@ -23,20 +24,10 @@ meta_stan(
 )
 }
 \arguments{
-\item{ntrt}{Number of subjects in treatment arm}
+\item{data}{Data frame created by `convert_data_arm`}
 
-\item{nctrl}{Number of subjects in control arm}
-
-\item{rtrt}{Number of events in treatment arm}
-
-\item{rctrl}{Number of events in contrl arm}
-
-\item{data}{Optional data frame containing the variables given to the arguments above}
-
-\item{model}{A string specifying the model used. Available options are `FE` (fixed-effect model
-using binomial lielihood) `BNHM1` (Model 4 from \emph{Jackson
-et al (2018)}), `BNHM2` (Model 2 from \emph{Jackson et al (2018)}), and `Beta-binomial` (Beta-binomial
-model from \emph{Kuss (2014)}). Default is `BNHM1`.}
+\item{family}{A string specifying the family of distributions defining the statistical
+model (1: normal, 2: binomial, or 3: Poisson)}
 
 \item{mu_prior}{A numerical vector specifying the parameter of the normal prior
 density for baseline risks, first value is parameter for mean, second is for variance.
@@ -47,16 +38,32 @@ density for treatment effect estimate, first value is parameter for mean, second
 is for variance. Default is NULL.}
 
 \item{tau_prior}{A numerical value specifying the standard dev. of the prior density
-for heterogenety stdev. Default is 0.5.}
+for heterogeneity stdev. Default is 0.5.}
 
 \item{tau_prior_dist}{A string specifying the prior density for the heterogeneity standard deviation,
 option is `half-normal` for half-normal prior, `uniform` for uniform prior, `half-cauchy` for
 half-cauchy prior.}
 
+\item{beta_prior}{A numerical vector specifying the parameter of the normal prior
+density for beta coefficients in a meta-regression model, first value is parameter for mean, second
+is for variance. Default is c(0, 100).}
+
 \item{delta}{A numerical value specifying the upper bound of the a priori interval for
-treatment effect on odds ratio scale \emph{Guenhan et al (2018)}. This is used to calculate
-a normal weakly informative prior
-for theta. Thus when this argument is pecified, `theta` should be left empty. Default is NULL.}
+treatment effect on odds ratio scale \emph{Guenhan et al (2019)}. This is used to calculate
+a normal weakly informative prior.
+for theta. Thus when this argument is specified, `theta` should be left empty. Default is NULL.}
+
+\item{re}{A string specifying whether random-effects are included to the model. When `FALSE`, the
+model corresponds to a fixed-effects model. The default is `TRUE`.}
+
+\item{ncp}{A string specifying whether to use a non-centered parametrization.
+The default is `TRUE`.}
+
+\item{mreg}{A string specifying whether to fit a meta-regression model.
+The default is `FALSE`.}
+
+\item{cov}{A numeric matrix specifying trial-level covariates in each row.
+This is need when `mreg = TRUE`.}
 
 \item{chains}{A positive integer specifying the number of Markov chains.
 The default is 4.}
@@ -67,14 +74,14 @@ The default is 4.}
 \item{warmup}{A positive integer specifying the number of warmup (aka burnin)
 iterations per chain. The default is 1000.}
 
-\item{adapt_delta}{A numerical value specfying the target average proposal acceptance
+\item{adapt_delta}{A numerical value specifying the target average proposal acceptance
 probability for adaptation. See Stan manual for details. Default is 0.95. In general
 you should not need to change adapt_delta unless you see a warning message about
 divergent transitions, in which case you can increase adapt_delta from the
 default to a value closer to 1 (e.g. from 0.95 to 0.99, or from 0.99 to 0.999, etc).}
 }
 \value{
-an object of class `stanfit` returned by `rstan::sampling`
+an object of class `MetaStan`.
 }
 \description{
 `meta_stan` fits a meta-analysis model using Stan.
@@ -82,48 +89,20 @@ an object of class `stanfit` returned by `rstan::sampling`
 \examples{
 \dontrun{
 data('dat.Crins2014', package = "MetaStan")
-## Subset of dataset where PTLD outcomes available
-dat.Crins2014.PTLD = subset(dat.Crins2014, is.finite(exp.PTLD.events))
-## Fitting a Binomial-Normal Hierarchial model using vague priors for theta
-bnhm.vague.PTLD.stan  <- meta_stan(ntrt = dat.Crins2014.PTLD$exp.total,
-                                   nctrl = dat.Crins2014.PTLD$cont.total,
-                                   rtrt = dat.Crins2014.PTLD$exp.PTLD.events,
-                                   rctrl = dat.Crins2014.PTLD$cont.PTLD.event,
-                                   mu_prior = c(0, 10), theta_prior = c(0, 100),
-                                   tau_prior =  0.5)
-## Obatining a small summary
-print(bnhm.vague.PTLD.stan)
-## Extract the rstan fit for post-processing, eg convergence diagnostics
-bnhm.vague.PTLD.stanfit = bnhm.vague.PTLD.stan$fit
- ## see `?rstan::sampling` for for post-processing of the `stanfit` object
-## Fitting a Binomial-Normal Hierarchial model using WIP for theta
-bnhm.wip.PTLD.stan  <- meta_stan(ntrt = dat.Crins2014.PTLD$exp.total,
-                                   nctrl = dat.Crins2014.PTLD$cont.total,
-                                   rtrt = dat.Crins2014.PTLD$exp.PTLD.events,
-                                   rctrl = dat.Crins2014.PTLD$cont.PTLD.event,
-                                   mu_prior = c(0, 10),
-                                   theta_prior = c(0, 2.82),
-                                   tau_prior =  0.5)
-## Fitting a fixed-effect Binomial model using vague priors for theta
-bm.vague.PTLD.stan  <- meta_stan(ntrt = dat.Crins2014.PTLD$exp.total,
-                                   nctrl = dat.Crins2014.PTLD$cont.total,
-                                   rtrt = dat.Crins2014.PTLD$exp.PTLD.events,
-                                   rctrl = dat.Crins2014.PTLD$cont.PTLD.event,
-                                   mu_prior = c(0, 10), theta_prior = c(0, 100),
-                                   model = "FE")
+dat_long <- convert_data_arm(dat.Crins2014$exp.total, dat.Crins2014$cont.total,
+                             dat.Crins2014$exp.AR.events, dat.Crins2014$cont.AR.events)
+bnhm.Crins  <- meta_stan(data = dat_long, family = "binomial",
+                         mu_prior = c(0, 10), theta_prior = c(0, 100),
+                         tau_prior =  0.5)
+print(bnhm.Crins)
 
-## Fitting a Beta-binomial model using vague priors
-bnhm.wip.PTLD.stan  <- meta_stan(ntrt = dat.Crins2014.PTLD$exp.total,
-                                   nctrl = dat.Crins2014.PTLD$cont.total,
-                                   rtrt = dat.Crins2014.PTLD$exp.PTLD.events,
-                                   rctrl = dat.Crins2014.PTLD$cont.PTLD.event,
-                                   model = "Beta-binomial")
+forestplot(bnhm.Crins)
 }
 
 }
 \references{
-Guenhan BK, Roever C, Friede T. Meta-analysis of few studies involving
-rare events \emph{arXiv preprint} 2018;https://arxiv.org/abs/1809.04407.
+Guenhan BK, Roever C, Friede T. Random-effects meta-analysis of few studies involving
+rare events \emph{Resarch Synthesis Methods} 2019; doi:10.1002/jrsm.1370.
 
 Jackson D, Law M, Stijnen T, Viechtbauer W, White IR. A comparison of 7
 random-effects models for meta-analyses that estimate the summary odds ratio.
