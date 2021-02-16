@@ -28,12 +28,10 @@ convert_data_arm <- function(nt, nc, pt, pc) {
     data <- data.frame(data)
     N <- nrow(data)
     r <- as.vector(rbind(data$pc, data$pt))  # number of events
-    sampleSize <- as.vector(rbind(data$nc, data$nt))  # number of all patients
+    n <- as.vector(rbind(data$nc, data$nt))  # number of all patients
     theta <- rep(0:1, times = N)
-    theta12 <- rep((-0.5):0.5, times = N)             # Needed for Smith model
-    het <- as.vector(rbind(rep(NA, times = N), 1:N))  # ID for random effects
     # Dataset for arm-level meta-analysis
-    data.arm <- data.frame(cbind(r, sampleSize, theta, theta12, het))
+    data.arm <- data.frame(cbind(r, n, theta))
     data.arm$mu <- as.factor(as.numeric(gl(n = N, k = 2)))
     return(data.arm)
 }
