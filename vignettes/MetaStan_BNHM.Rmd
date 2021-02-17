@@ -74,18 +74,17 @@ plot(forest.plot)
 
 
 ```{r bnhmFit, results="hide"}
-bnhm1.BCG.stan  <- meta_stan(ntrt = nt, 
-                             nctrl = nc, 
-                             rtrt = rt,
-                             rctrl = rc,
-                             data = dat.Berkey1995,
-                             tau_prior_dist = "half-normal",
-                             tau_prior = 0.5,
-                             theta_prior = c(0, 2.82),
-                             model = "BNHM1",
-                             chains = 4,
-                             iter = 2000,
-                             warmup = 1000)
+ data('dat.Berkey1995', package = "MetaStan")
+ ## Fitting a Binomial-Normal Hierarchical model using WIP priors
+ dat_long <- convert_data_arm(dat.Berkey1995$nt, dat.Berkey1995$nc,
+                             dat.Berkey1995$rt, dat.Berkey1995$rc)
+
+ meta.BCG.stan  <- meta_stan(data = dat_long,
+                            family = "binomial",
+                            mu_prior = c(0, 10),
+                            theta_prior = c(0, 100),
+                            tau_prior = 0.5,
+                            tau_prior_dist = "half-normal")
 ```
 
 
@@ -94,35 +93,20 @@ Convergence diagnostics, very conveniently, obtained using `shinystan` package a
 ```{r shinystan, eval = FALSE}
 library("shinystan")
 ## Firstly convert "stan" object to a "shinystan" object
-bnhm1.BCG.shinystan = as.shinystan(bnhm1.BCG.stan$fit)
-launch_shinystan(bnhm1.BCG.shinystan)
+bnhm1.BCG.shinystan = as.shinystan(meta.BCG.stan$fit)
+launch_shinystan(meta.BCG.stan)
 ```
 
 A simple summary of the fitted model is given by `print` option:
 
 ```{r print}
-print(bnhm1.BCG.stan)
+print(meta.BCG.stan)
 ```
 
 
 Note that this model corresponds to Model 4 in Jackson et al (2018). The model 2 in Jackson et al (2018) can be fitted by specfying `model = "BNHM2"` as follows: 
 
 
-```{r bnhm2Fit, results="hide"}
-bnhm2.BCG.stan  <- meta_stan(ntrt = nt, 
-                             nctrl = nc, 
-                             rtrt = rt,
-                             rctrl = rc,
-                             data = dat.Berkey1995,
-                             theta_prior = c(0, 2.82),
-                             tau_prior_dist = "half-normal",
-                             tau_prior = 0.5,
-                             model = "BNHM2")
-```
-
-```{r print2}
-print(bnhm2.BCG.stan)
-```
 
 
 Please see Günhan, Röver, and Friede (2020) and Jackson et al (2018) for complete model descriptions.
@@ -133,6 +117,6 @@ Günhan, BK, Röver, C, and Friede, T (2020). "Random-effects meta-analysis of f
 studies involving rare events". In: Research Synthesis Methods 11.1, pp. 74-90. DOI:
 10.1002/jrsm.1370.
 
-Jackson, D et al. (2018). "A comparison of seven random-effects models for metaanalyses
+Jackson, D et al. (2018). "A comparison of seven random-effects models for meta-analyses
 that estimate the summary odds ratio". In: Statistics in Medicine 37.7,
 pp. 1059-1085. DOI: 10.1002/sim.7588.
