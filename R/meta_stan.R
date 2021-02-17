@@ -11,7 +11,7 @@
 #' density for treatment effect estimate, first value is parameter for mean, second
 #' is for variance. Default is NULL.
 #' @param delta A numerical value specifying the upper bound of the a priori interval for
-#' treatment effect on odds ratio scale \emph{Guenhan et al (2019)}. This is used to calculate
+#' treatment effect on odds ratio scale \emph{Guenhan et al (2020)}. This is used to calculate
 #' a normal weakly informative prior.
 #' for theta. Thus when this argument is specified, `theta` should be left empty. Default is NULL.
 #' @param tau_prior A numerical value specifying the standard dev. of the prior density
@@ -45,7 +45,7 @@
 #' The default is 4.
 #' @return an object of class `MetaStan`.
 #' @references Guenhan BK, Roever C, Friede T. Random-effects meta-analysis of few studies involving
-#' rare events \emph{Resarch Synthesis Methods} 2019; doi:10.1002/jrsm.1370.
+#' rare events \emph{Resarch Synthesis Methods} 2020; doi:10.1002/jrsm.1370.
 #' @references Jackson D, Law M, Stijnen T, Viechtbauer W, White IR. A comparison of 7
 #' random-effects models for meta-analyses that estimate the summary odds ratio.
 #' \emph{Stat Med} 2018;37:1059--1085.
@@ -64,6 +64,23 @@
 #' print(bnhm.Crins)
 #'
 #' forestplot(bnhm.Crins)
+#'
+#' ## TB dataset
+#' data('dat.Berkey1995', package = "MetaStan")
+#' ## Fitting a Binomial-Normal Hierarchical model using WIP priors
+#' dat_long <- convert_data_arm(dat.Berkey1995$nt, dat.Berkey1995$nc,
+#'                             dat.Berkey1995$rt, dat.Berkey1995$rc)
+#'
+#' meta.reg.stan  <- meta_stan(data = dat_long,
+#'                            family = "binomial",
+#'                            mu_prior = c(0, 10),
+#'                            theta_prior = c(0, 100),
+#'                            tau_prior = 0.5,
+#'                            tau_prior_dist = "half-normal",
+#'                            mreg = TRUE,
+#'                            cov = matrix(dat.Berkey1995$Latitude, nrow = 1))
+#'
+#' print(meta.reg.stan)
 #' }
 #'
 meta_stan = function(data = NULL,

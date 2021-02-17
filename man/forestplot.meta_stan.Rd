@@ -34,7 +34,7 @@ dat_long <- convert_data_arm(dat.Crins2014$exp.total, dat.Crins2014$cont.total,
 bnhm.Crins  <- meta_stan(data = dat_long, family = "binomial",
                          mu_prior = c(0, 10), theta_prior = c(0, 100),
                          tau_prior =  0.5)
-forestplot(bnhm.Crins)
+forestplot(bnhm.Crins, data_wide = dat.Crins2014)
 
 }
 }

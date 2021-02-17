@@ -7,7 +7,7 @@
 MBMA_stan(
   data = NULL,
   family = NULL,
-  model = "emax",
+  dose_response = "emax",
   mu_prior = c(0, 10),
   Emax_prior = c(0, 100),
   tau_prior = 0.5,
@@ -30,7 +30,7 @@ MBMA_stan(
 \item{family}{A string specifying the family of distributions defining the statistical
 model (1: normal, 2: binomial, or 3: Poisson)}
 
-\item{model}{A string specifying the function defining the dose-response model
+\item{dose_response}{A string specifying the function defining the dose-response model
 (1: linear, 2: log-linear, 3: emax, or 4: sigmoidal)}
 
 \item{mu_prior}{A numerical vector specifying the parameter of the normal prior
@@ -99,13 +99,16 @@ datMBMA = create_MBMA_dat(dat = dat.Eletriptan,
                                      n = "n"),
                          nArmsVar = "nd")
 
-MBMA.AB.Emax  <- MBMA_stan(data = datMBMA,
+MBMA.Emax  <- MBMA_stan(data = datMBMA,
                           family = "binomial",
-                          model = "emax",
+                          dose_response = "emax",
                           Emax_prior = c(0, 10),
                           ED50_prior = "functional",
                           tau_prior_dist = "half-normal",
                           tau_prior = 0.5)
+print(MBMA.Emax)
+plot(MBMA.Emax)
+
 }
 
 }

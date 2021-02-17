@@ -68,13 +68,16 @@
 #'                                      n = "n"),
 #'                          nArmsVar = "nd")
 #'
-#'MBMA.AB.Emax  <- MBMA_stan(data = datMBMA,
+#' MBMA.Emax  <- MBMA_stan(data = datMBMA,
 #'                           family = "binomial",
 #'                           dose_response = "emax",
 #'                           Emax_prior = c(0, 10),
 #'                           ED50_prior = "functional",
 #'                           tau_prior_dist = "half-normal",
 #'                           tau_prior = 0.5)
+#' print(MBMA.Emax)
+#' plot(MBMA.Emax)
+#'
 #' }
 #'
 MBMA_stan = function(data = NULL,
@@ -104,19 +107,23 @@ MBMA_stan = function(data = NULL,
   }
 
   ################ check model used
-  if (model %in% c("linear", "log-linear", "emax", "sigmoidal") == FALSE) {
-    stop("Function argument \"model\" must be equal to \"linear\" or \"log-linear\" or \"emax\" or
+  if (dose_response %in% c("linear", "log-linear", "emax", "sigmoidal") == FALSE) {
+    stop("Function argument \"dose-response\" must be equal to \"linear\" or \"log-linear\" or \"emax\" or
          \"sigmoidal\" !!!")
   }
 
   ################ check data
   data_wide = data$data_wide
   data = data$data
+
+  if (missing(Pred_doses)) {
   Pred_doses = seq(from = 0, to = max(as.numeric(as.character(data$dose)),
                                       na.rm = TRUE), length.out =  30)
 
+  }
 
   if (!is.data.frame(data)) { stop("Data MUST be a data frame!!!") }
+
   ################ check prior for heterogeneity parameter
   if(is.null(tau_prior_dist) == TRUE){
     stop("Function argument \"half-normal\" or \"uniform\" or \"half-cauchy\" must be specified !!!")
@@ -236,6 +243,8 @@ MBMA_stan = function(data = NULL,
   out = list(fit = fit,
              fit_sum = fit_sum,
              data = stan_dat_long,
+             data_wide = data_wide,
+             data_long = data,
              Rhat.max = Rhat.max,
              N_EFF.min = N_EFF.min,
              tau_prior_dist = tau_prior_dist,
