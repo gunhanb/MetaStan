@@ -4,7 +4,7 @@ author: "Burak Kürsad Günhan"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Fitting Binomial-Normal hierarchical model using MetaStan}
+  %\VignetteIndexEntry{Conducting meta-analysis using MetaStan}
   %\VignetteEngine{knitr::rmarkdown}
   \usepackage[utf8]{inputenc}
 fig_caption: yes
