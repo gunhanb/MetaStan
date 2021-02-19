@@ -11,7 +11,7 @@
 #' density for treatment effect estimate, first value is parameter for mean, second
 #' is for variance. Default is NULL.
 #' @param delta A numerical value specifying the upper bound of the a priori interval for
-#' treatment effect on odds ratio scale \emph{Guenhan et al (2020)}. This is used to calculate
+#' treatment effect on odds ratio scale (\emph{Guenhan et al (2020)}). This is used to calculate
 #' a normal weakly informative prior.
 #' for theta. Thus when this argument is specified, `theta` should be left empty. Default is NULL.
 #' @param tau_prior A numerical value specifying the standard dev. of the prior density
@@ -23,7 +23,7 @@
 #' density for beta coefficients in a meta-regression model, first value is parameter for mean, second
 #' is for variance. Default is c(0, 100).
 #' @param family A string specifying the family of distributions defining the statistical
-#' model (1: normal, 2: binomial, or 3: Poisson)
+#' model. Options include  "normal", "binomial", and "Poisson".
 #' @param re A string specifying whether random-effects are included to the model. When `FALSE`, the
 #' model corresponds to a fixed-effects model. The default is `TRUE`.
 #' @param ncp A string specifying whether to use a non-centered parametrization.
@@ -56,9 +56,9 @@
 #' @examples
 #' \dontrun{
 #' data('dat.Crins2014', package = "MetaStan")
-#' dat_long <- convert_data_arm(dat.Crins2014$exp.total, dat.Crins2014$cont.total,
+#' dat_MetaStan <- convert_data_arm(dat.Crins2014$exp.total, dat.Crins2014$cont.total,
 #'                              dat.Crins2014$exp.AR.events, dat.Crins2014$cont.AR.events)
-#' bnhm.Crins  <- meta_stan(data = dat_long, family = "binomial",
+#' bnhm.Crins  <- meta_stan(data = dat_MetaStan, family = "binomial",
 #'                          mu_prior = c(0, 10), theta_prior = c(0, 100),
 #'                          tau_prior =  0.5)
 #' print(bnhm.Crins)
@@ -68,10 +68,10 @@
 #' ## TB dataset
 #' data('dat.Berkey1995', package = "MetaStan")
 #' ## Fitting a Binomial-Normal Hierarchical model using WIP priors
-#' dat_long <- convert_data_arm(dat.Berkey1995$nt, dat.Berkey1995$nc,
+#' dat_MetaStan <- convert_data_arm(dat.Berkey1995$nt, dat.Berkey1995$nc,
 #'                             dat.Berkey1995$rt, dat.Berkey1995$rc)
 #'
-#' meta.reg.stan  <- meta_stan(data = dat_long,
+#' meta.reg.stan  <- meta_stan(data = dat_MetaStan,
 #'                            family = "binomial",
 #'                            mu_prior = c(0, 10),
 #'                            theta_prior = c(0, 100),
@@ -143,9 +143,10 @@ meta_stan = function(data = NULL,
 
 
   ################ check data
-  if (!is.data.frame(data)) {
-    stop("Data MUST be a data frame!!!")
-  }
+  data_wide = data$data_wide
+  data = data$data_long
+
+  if (!is.data.frame(data)) { stop("Data MUST be a data frame!!!") }
 
   ################ prepare data
   Nobs = nrow(data)
@@ -171,7 +172,7 @@ meta_stan = function(data = NULL,
   }
 
   if(mreg == FALSE){
-    cov = matrix(rep(0, max(as.numeric(as.vector(dat_long$mu)))), nrow = 1)
+    cov = matrix(rep(0, max(as.numeric(as.vector(data$mu)))), nrow = 1)
   }
   ncov = nrow(cov)
 
@@ -236,7 +237,9 @@ meta_stan = function(data = NULL,
 
   out = list(fit = fit,
              fit_sum = fit_sum,
-             data = stanDat,
+             data_wide = data_wide,
+             data_long = data,
+             stanDat = stanDat,
              Rhat.max = Rhat.max,
              N_EFF.min = N_EFF.min,
              tau_prior_dist = tau_prior_dist)

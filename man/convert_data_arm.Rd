@@ -4,7 +4,7 @@
 \alias{convert_data_arm}
 \title{Convert contrast-based dataset to arm-based dataset}
 \usage{
-convert_data_arm(nt, nc, pt, pc)
+convert_data_arm(nt, nc, pt, pc, publication)
 }
 \arguments{
 \item{nt}{Number of subjects in treatment arm}
@@ -14,22 +14,25 @@ convert_data_arm(nt, nc, pt, pc)
 \item{pt}{Number of events in treatment arm}
 
 \item{pc}{Number of events in treatment arm}
+
+\item{publication}{The corresponding publication}
 }
 \value{
 A dataframe object
 }
 \description{
-\code{convert_data_arm} creates a dataframe to fit a Binomial-Normal
-Hierarchical model using \code{glmer} function.
+\code{convert_data_arm} creates a dataframe to fit a meta-analysis
+model using \code{meta_Stan} function.
 }
 \examples{
 data('dat.Crins2014', package = "MetaStan")
 ## Subset of dataset where PTLD outcomes available
 dat.Crins2014.PTLD = subset(dat.Crins2014, is.finite(exp.PTLD.events))
 ## Create arm-based dataset
-dat.Crins2014.PTLD.arm <- convert_data_arm(dat.Crins2014.PTLD$exp.total,
-dat.Crins2014.PTLD$cont.total,dat.Crins2014.PTLD$exp.PTLD.events,
-dat.Crins2014.PTLD$cont.PTLD.events)
+data('dat.Crins2014', package = "MetaStan")
+dat_converted <- convert_data_arm(dat.Crins2014$exp.total, dat.Crins2014$cont.total,
+                             dat.Crins2014$exp.AR.events, dat.Crins2014$cont.AR.events,
+                             dat.Crins2014$publication)
 
 
 }

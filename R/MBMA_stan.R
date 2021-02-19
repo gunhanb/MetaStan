@@ -25,10 +25,13 @@
 #' @param tau_prior_dist A string specifying the prior density for the heterogeneity standard deviation,
 #' option is `half-normal` for half-normal prior, `uniform` for uniform prior, `half-cauchy` for
 #' half-cauchy prior.
-#' @param dose_response A string specifying the function defining the dose-response model
-#' (1: linear, 2: log-linear, 3: emax, or 4: sigmoidal)
+#' @param gamma_prior A numerical vector specifying the parameter of the normal prior
+#' density for gamma parameter, first value is parameter for mean, second
+#' is for standard deviation. Default is c(1, 2). Needed for sigmoidal model.
+#' @param dose_response A string specifying the function defining the dose-response model.
+#' Options include "linear", "log-linear", "emax", and "sigmoidal".
 #' @param family A string specifying the family of distributions defining the statistical
-#' model (1: normal, 2: binomial, or 3: Poisson)
+#' model. Options include "normal", "binomial", and "Poisson".
 #' @param re A string specifying whether random-effects are included to the model. When `FALSE`, the
 #' model corresponds to a fixed-effects model. The default is `TRUE`.
 #' @param ncp A string specifying whether to use a non-centered parametrization.
@@ -46,11 +49,11 @@
 #' The default is 4.
 #' @return an object of class `stanfit` returned by `rstan::sampling`
 #' @references Boucher M, et al. The many flavors of model-based meta-analysis:
-#' Part I-Introduction and landmark data. \emph{CPT: Pharmacometrics & Systems Pharmacology}.
-#' 2016;5:54–64.
+#' Part I-Introduction and landmark data. \emph{CPT: Pharmacometrics and Systems Pharmacology}.
+#' 2016;5:54-64.
 #' @references Mawdsley D, et al. Model-based network meta-analysis: A
 #' framework for evidence synthesis of clinical trial data.
-#' \emph{CPT: Pharmacometrics & Systems Pharmacology}. 2016;5:393-401.
+#' \emph{CPT: Pharmacometrics and Systems Pharmacology}. 2016;5:393-401.
 #' @references  Zhang J, et al. (2014). Network meta-analysis of randomized
 #' clinical trials: Reporting the proper summaries. \emph{Clinical Trials}.
 #' 11(2), 246–262.
@@ -85,6 +88,7 @@ MBMA_stan = function(data = NULL,
                      dose_response = "emax",
                      mu_prior = c(0, 10),
                      Emax_prior = c(0, 100),
+                     alpha_prior = c(0, 100),
                      tau_prior = 0.5,
                      tau_prior_dist = "half-normal",
                      ED50_prior = c(-2.5, 1.8),
@@ -114,7 +118,10 @@ MBMA_stan = function(data = NULL,
 
   ################ check data
   data_wide = data$data_wide
-  data = data$data
+  data = data$data_long
+
+  if (!is.data.frame(data)) { stop("Data MUST be a data frame!!!") }
+
 
   if (missing(Pred_doses)) {
   Pred_doses = seq(from = 0, to = max(as.numeric(as.character(data$dose)),
@@ -122,7 +129,6 @@ MBMA_stan = function(data = NULL,
 
   }
 
-  if (!is.data.frame(data)) { stop("Data MUST be a data frame!!!") }
 
   ################ check prior for heterogeneity parameter
   if(is.null(tau_prior_dist) == TRUE){
@@ -181,6 +187,9 @@ MBMA_stan = function(data = NULL,
   b_ndx = data[data$dose == 0, ]$ID
   t_ndx = data[data$dose != 0, ]$ID
 
+  if(dose_response == 1 || dose_response == 2) {alpha_Emax_prior = alpha_prior}
+  if(dose_response == 3 || dose_response == 4)    {alpha_Emax_prior = Emax_prior}
+
 
   stan_dat_long <- list(Nobs = Nobs,
                         link = link,
@@ -198,7 +207,7 @@ MBMA_stan = function(data = NULL,
                         exposure = exposure,
                         maxdose = max(as.numeric(data$dose)),
                         mu_prior = mu_prior,
-                        alpha_prior = Emax_prior,
+                        alpha_prior = alpha_Emax_prior,
                         ED50_prior = ED50_prior,
                         gamma_prior = gamma_prior,
                         ED50_prior_dist = ED50_prior_dist_num,

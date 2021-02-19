@@ -5,11 +5,9 @@
 #'function with pointwise 95% credible intervals.
 #'
 #' @param x A \code{MBMA_stan} object.
-#' @param digits A numerical value specifying the number of significant digits to be shown.
-#' Default is 2.
 #' @param ... Further arguments passed to ggplot.
 #' @return The return value is invisible \code{NULL}.
-#' #' @examples
+#' @examples
 #' \dontrun{
 #'## Load the dataset
 #'data('dat.Eletriptan', package = "MetaStan")
@@ -27,6 +25,9 @@
 #'                           tau_prior_dist = "half-normal",
 #'                           tau_prior = 0.5)
 #' print(MBMA.Emax)
+#' plot(MBMA.Emax)
+#' # use ggplot2 package for further adjustments
+#' Library(ggplot2)
 #' theme_set(theme_classic())
 #' plot(MBMA.Emax) + xlab("Doses (mg)") + ylab("response probabilities")
 #'
@@ -36,7 +37,7 @@
 #' @author Christian Roever and Burak Kuersad Guenhan
 #' @seealso \code{ggplot2::ggplot}
 #' @export
-plot.MBMA_stan = plot.MBMA_stan = function(x = MBMA.stan) {
+plot.MBMA_stan = function(x = MBMA.stan,...) {
 
 
 
@@ -72,19 +73,19 @@ plot.MBMA_stan = plot.MBMA_stan = function(x = MBMA.stan) {
                         y.hi =  pred.probs[,5],
                         y.hi75 =  pred.probs[,4])
 
-  dose.plot = ggplot2::ggplot(mydata, aes(x = x_data, y = y)) +
-    geom_point(aes(x = dose, y = y.obs, size = y.samplesizes)) +
-    geom_line(data = Preddata, aes(x = Pred_doses, y = y.pred)) +
-    geom_line(data = Preddata, aes(x = Pred_doses, y = y.lo), linetype = "dashed") +
-    geom_line(data = Preddata, aes(x = Pred_doses, y = y.hi), linetype = "dashed") +
-    geom_line(data = Preddata, aes(x = Pred_doses, y = y.lo25), linetype = "dashed") +
-    geom_line(data = Preddata, aes(x = Pred_doses, y = y.hi75), linetype = "dashed") +
-    geom_ribbon(data = Preddata, aes(x = Pred_doses, y = y.pred, ymin=y.lo25,ymax=y.hi75),
+  dose.plot = ggplot2::ggplot(mydata, ggplot2::aes(x = x_data, y = y)) +
+    ggplot2::geom_point(ggplot2::aes(x = dose, y = y.obs, size = y.samplesizes)) +
+    ggplot2::geom_line(data = Preddata, ggplot2::aes(x = Pred_doses, y = y.pred)) +
+    ggplot2::geom_line(data = Preddata, ggplot2::aes(x = Pred_doses, y = y.lo), linetype = "dashed") +
+    ggplot2::geom_line(data = Preddata, ggplot2::aes(x = Pred_doses, y = y.hi), linetype = "dashed") +
+    ggplot2::geom_line(data = Preddata, ggplot2::aes(x = Pred_doses, y = y.lo25), linetype = "dashed") +
+    ggplot2::geom_line(data = Preddata, ggplot2::aes(x = Pred_doses, y = y.hi75), linetype = "dashed") +
+    ggplot2::geom_ribbon(data = Preddata, ggplot2::aes(x = Pred_doses, y = y.pred, ymin=y.lo25,ymax=y.hi75),
                 fill="blue", alpha=0.75) +
-    geom_ribbon(data = Preddata, aes(x = Pred_doses, y = y.pred, ymin=y.lo,ymax=y.hi),
+    ggplot2::geom_ribbon(data = Preddata, ggplot2::aes(x = Pred_doses, y = y.pred, ymin=y.lo,ymax=y.hi),
                 fill="blue", alpha=0.25) +
-    ylim(c(0,1)) +
-    theme(legend.position = "none")
+    ggplot2::ylim(c(0,1)) +
+    ggplot2::theme(legend.position = "none")
 
-
+ dose.plot
 }

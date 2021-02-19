@@ -62,45 +62,5 @@ test_that("Results are correct for fitting model-based meta-analysis Paresthesia
 })
 
 
-## Model comparison
-test_that("Results are correct for compariing models: Paresthesia dataset.", {
-  skip_on_cran()
-
-  set.seed(23344)
-  ## Load the dataset
-  data('dat.Paresthesia', package = "MetaStan")
-  ## Fitting a MBMA model
-  datMBMA = create_MBMA_dat(dat = dat.Paresthesia,
-                            armVars = c(dose = "d", r = "r",
-                                        n = "n"),
-                            nArmsVar = "nd")
-
-  MBMA.Linear  <- MBMA_stan(data = datMBMA,
-                          family = "binomial",
-                          dose_response = "linear")
-
-  MBMA.LogLinear  <- MBMA_stan(data = datMBMA,
-                          family = "binomial",
-                          dose_response = "log-linear")
-
-  MBMA.Emax  <- MBMA_stan(data = datMBMA,
-                          family = "binomial",
-                          dose_response = "emax")
-
-  MBMA.Sigmoidal  <- MBMA_stan(data = datMBMA,
-                          family = "binomial",
-                          dose_response = "sigmoidal")
-
-  ### compare with results
-  model_list <- list(MBMA.Linear$fit,
-                     MBMA.LogLinear$fit,
-                     MBMA.Emax$fit,
-                     MBMA.Sigmoidal$fit)
-
-  results = compare_MBMA(model_list, 1)[1]
-
-  expect_equivalent(results, 98.1, tolerance = 0.1)
-
-})
 
 

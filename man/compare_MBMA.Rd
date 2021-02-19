@@ -7,14 +7,11 @@
 compare_MBMA(model_list, digits = 2, ...)
 }
 \arguments{
+\item{model_list}{A vector of \code{MBMA_stan} object.}
+
 \item{digits}{An integer indicating the number of decimal places.}
 
 \item{...}{Further arguments passed to or from other methods.}
-
-\item{x}{A vector of \code{MBMA_stan} object.}
-}
-\value{
-The return value is invisible \code{NULL}
 }
 \description{
 Takes a vector of \code{MBMA_stan} fits and give
@@ -26,4 +23,7 @@ depends on \code{loo_compare} function from \code{loo} package.
 Vehtari, A, A Gelman, and J Gabry (Sept. 2017).
 "Practical Bayesian model evaluation using leave one-out
 cross-validation and WAIC." In: Statistics and Computing 27.5, pp. 1413–1432.
+}
+\seealso{
+\code{loo::loo_compare}
 }

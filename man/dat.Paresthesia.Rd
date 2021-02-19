@@ -7,7 +7,6 @@
 \format{
 A data frame with following coloumns
 \describe{
-  \item{ID}{trial ID}
   \item{d1}{dose (mg) in the first arm (placebo)}
   \item{r1}{number of events in the first arm (placebo)}
   \item{n1}{number of patients in the first arm (placebo)}

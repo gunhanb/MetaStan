@@ -14,12 +14,15 @@
 #' and Gert van Valkenhoef
 #' @seealso \code{gemtc::mtc.data.studyrow} and \code{nmaINLA::create_INLA_dat}
 #' @examples
+#' \dontrun{
 #' data('dat.Eletriptan')
 #' ## Create the dataset suitable for MBMA_stan
 #' EletriptanDat <- create_MBMA_dat(dat = dat.Eletriptan,
-#' armVars = c("dose" = "d", "r" = "r", "n" = "n"), nArmsVar = 'nd')
+#'                                  armVars = c("dose" = "d", "r" = "r", "n" = "n"),
+#'                                  nArmsVar = 'nd')
 #' ## Check that the data are correct
 #' print(EletriptanDat)
+#' }
 #' @export
 create_MBMA_dat <- function(dat = dat,
                             armVars = c(dose = "d", r = "r", n = "n"),
@@ -68,7 +71,7 @@ create_MBMA_dat <- function(dat = dat,
   datMBMA$na <- rep(dat[[paste(nArmsVar)]], times = dat[[paste(nArmsVar)]])
   N <- nrow(datMBMA)
 
-  final = list(data = datMBMA,
+  final = list(data_long = datMBMA,
                data_wide = dat)
 
 

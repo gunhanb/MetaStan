@@ -29,12 +29,15 @@ format to one-arm-per-row format,
 The resulting data.frame can be used as data argument in \code{MBMA_stan}.
 }
 \examples{
+\dontrun{
 data('dat.Eletriptan')
 ## Create the dataset suitable for MBMA_stan
 EletriptanDat <- create_MBMA_dat(dat = dat.Eletriptan,
-armVars = c("dose" = "d", "r" = "r", "n" = "n"), nArmsVar = 'nd')
+                                 armVars = c("dose" = "d", "r" = "r", "n" = "n"),
+                                 nArmsVar = 'nd')
 ## Check that the data are correct
 print(EletriptanDat)
+}
 }
 \seealso{
 \code{gemtc::mtc.data.studyrow} and \code{nmaINLA::create_INLA_dat}

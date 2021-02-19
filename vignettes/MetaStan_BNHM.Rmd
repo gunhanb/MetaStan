@@ -77,7 +77,8 @@ plot(forest.plot)
  data('dat.Berkey1995', package = "MetaStan")
  ## Fitting a Binomial-Normal Hierarchical model using WIP priors
  dat_long <- convert_data_arm(dat.Berkey1995$nt, dat.Berkey1995$nc,
-                             dat.Berkey1995$rt, dat.Berkey1995$rc)
+                             dat.Berkey1995$rt, dat.Berkey1995$rc,
+                             dat.Berkey1995$publication)
 
  meta.BCG.stan  <- meta_stan(data = dat_long,
                             family = "binomial",
@@ -104,8 +105,7 @@ print(meta.BCG.stan)
 ```
 
 
-Note that this model corresponds to Model 4 in Jackson et al (2018). The model 2 in Jackson et al (2018) can be fitted by specfying `model = "BNHM2"` as follows: 
-
+Note that this model corresponds to Model 4 in Jackson et al (2018). 
 
 
 

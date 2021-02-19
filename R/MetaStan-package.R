@@ -12,7 +12,7 @@
 #' regularize heterogeneity estimates in case of low number of studies. Thus, we developed
 #' `MetaStan` which uses Stan (a modern MCMC engine) to fit several pairwise meta-analysis
 #' models including binomial-normal hierarchical model and beta-binomial model. This package is
-#' also the accompanying package of Guenhan et al (2020). ANother important functionality of the
+#' also the accompanying package of Guenhan et al (2020). Another important functionality of the
 #' package is the model-based meta-analysis models.
 # '
 #' @docType package
@@ -23,7 +23,15 @@
 #' @import methods
 #' @import Rcpp
 #' @import rstantools
+#' @import forestplot
+#' @import loo
 #' @importFrom rstan sampling
+#' @importFrom forestplot forestplot
+#' @importFrom loo loo_compare
+#' @importFrom metafor escalc
+#' @importFrom stats qnorm
+#' @importFrom grid gpar
+#' @importFrom grid unit
 #'
 #' @references
 #' Stan Development Team (2018). RStan: the R interface to Stan. R package version 2.17.3.

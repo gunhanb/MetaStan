@@ -10,6 +10,7 @@ MBMA_stan(
   dose_response = "emax",
   mu_prior = c(0, 10),
   Emax_prior = c(0, 100),
+  alpha_prior = c(0, 100),
   tau_prior = 0.5,
   tau_prior_dist = "half-normal",
   ED50_prior = c(-2.5, 1.8),
@@ -28,10 +29,10 @@ MBMA_stan(
 \item{data}{An object of `create_MBMA_dat`.}
 
 \item{family}{A string specifying the family of distributions defining the statistical
-model (1: normal, 2: binomial, or 3: Poisson)}
+model. Options include "normal", "binomial", and "Poisson".}
 
-\item{dose_response}{A string specifying the function defining the dose-response model
-(1: linear, 2: log-linear, 3: emax, or 4: sigmoidal)}
+\item{dose_response}{A string specifying the function defining the dose-response model.
+Options include "linear", "log-linear", "emax", and "sigmoidal".}
 
 \item{mu_prior}{A numerical vector specifying the parameter of the normal prior
 density for baseline risks, first value is parameter for mean, second is for variance.
@@ -40,6 +41,10 @@ Default is c(0, 10).}
 \item{Emax_prior}{A numerical vector specifying the parameter of the normal prior
 density for Emax parameter, first value is parameter for mean, second
 is for standard deviation. Default is c(0, 10). Needed for emax and sigmoidal models.}
+
+\item{alpha_prior}{A numerical vector specifying the parameter of the normal prior
+density for the alpha parameter, first value is parameter for mean, second is for variance.
+Default is c(0, 10). Needed for linear and linear log-dose models.}
 
 \item{tau_prior}{A numerical value specifying the standard dev. of the prior density
 for heterogenety stdev. Default is 0.5.}
@@ -55,6 +60,10 @@ is for standard deviation. Default is c(0, 10). Needed for emax and sigmoidal mo
 \item{ED50_prior_dist}{A string specifying the prior density for the ED50 parameter,
 `functional` is for a functional uniform prior, `half-normal` for uniform prior, `half-cauchy` for
 half-cauchy prior.}
+
+\item{gamma_prior}{A numerical vector specifying the parameter of the normal prior
+density for gamma parameter, first value is parameter for mean, second
+is for standard deviation. Default is c(1, 2). Needed for sigmoidal model.}
 
 \item{Pred_doses}{A numerical vector specifying the doses which prediction will be made.}
 
@@ -78,10 +87,6 @@ probability for adaptation. See Stan manual for details. Default is 0.95. In gen
 you should not need to change adapt_delta unless you see a warning message about
 divergent transitions, in which case you can increase adapt_delta from the
 default to a value closer to 1 (e.g. from 0.95 to 0.99, or from 0.99 to 0.999, etc).}
-
-\item{alpha_prior}{A numerical vector specifying the parameter of the normal prior
-density for the alpha parameter, first value is parameter for mean, second is for variance.
-Default is c(0, 10). Needed for linear and linear log-dose models.}
 }
 \value{
 an object of class `stanfit` returned by `rstan::sampling`
@@ -114,12 +119,12 @@ plot(MBMA.Emax)
 }
 \references{
 Boucher M, et al. The many flavors of model-based meta-analysis:
-Part I-Introduction and landmark data. \emph{CPT: Pharmacometrics & Systems Pharmacology}.
-2016;5:54–64.
+Part I-Introduction and landmark data. \emph{CPT: Pharmacometrics and Systems Pharmacology}.
+2016;5:54-64.
 
 Mawdsley D, et al. Model-based network meta-analysis: A
 framework for evidence synthesis of clinical trial data.
-\emph{CPT: Pharmacometrics & Systems Pharmacology}. 2016;5:393-401.
+\emph{CPT: Pharmacometrics and Systems Pharmacology}. 2016;5:393-401.
 
 Zhang J, et al. (2014). Network meta-analysis of randomized
 clinical trials: Reporting the proper summaries. \emph{Clinical Trials}.

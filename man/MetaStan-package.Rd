@@ -19,7 +19,7 @@ Bayesian methods to be able to use informative prior distributions for example t
 regularize heterogeneity estimates in case of low number of studies. Thus, we developed
 `MetaStan` which uses Stan (a modern MCMC engine) to fit several pairwise meta-analysis
 models including binomial-normal hierarchical model and beta-binomial model. This package is
-also the accompanying package of Guenhan et al (2020). ANother important functionality of the
+also the accompanying package of Guenhan et al (2020). Another important functionality of the
 package is the model-based meta-analysis models.
 }
 \references{

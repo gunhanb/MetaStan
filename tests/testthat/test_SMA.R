@@ -11,7 +11,8 @@ test_that("Results are correct for fitting binomial normal hierarchical model us
   data('dat.Berkey1995', package = "MetaStan")
   ## Fitting a Binomial-Normal Hierarchical model using WIP priors
   dat_long <- convert_data_arm(dat.Berkey1995$nt, dat.Berkey1995$nc,
-                               dat.Berkey1995$rt, dat.Berkey1995$rc)
+                               dat.Berkey1995$rt, dat.Berkey1995$rc,
+                               dat.Berkey1995$publication)
 
   bnhm.wip.bnhm1.stan  <- meta_stan(data = dat_long,
                                     family = "binomial",
@@ -34,10 +35,11 @@ test_that("Results are correct for a meta-regression model.", {
   ## Load the dataset
   data('dat.Berkey1995', package = "MetaStan")
   ## Fitting a Binomial-Normal Hierarchical model using WIP priors
-  dat_long <- convert_data_arm(dat.Berkey1995$nt, dat.Berkey1995$nc,
-                               dat.Berkey1995$rt, dat.Berkey1995$rc)
+  data_converted <- convert_data_arm(dat.Berkey1995$nt, dat.Berkey1995$nc,
+                               dat.Berkey1995$rt, dat.Berkey1995$rc,
+                               dat.Berkey1995$publication)
 
-  meta.reg.stan  <- meta_stan(data = dat_long,
+  meta.reg.stan  <- meta_stan(data = data_converted,
                               family = "binomial",
                               mu_prior = c(0, 10),
                               theta_prior = c(0, 100),

@@ -13,11 +13,12 @@ A data frame with following coloumns
   \item{rc}{number of TB events in control arm}
   \item{nc}{number of subjects in control arm}
   \item{Latitude}{absolute latitude of the study location}
+  \item{publication}{author and date}
 }
 }
 \source{
 Berkey, C.S., Hoaglin, D.C., Mosteller, F. and Colditz,
-G.A., 1995. A random-effects regression model for meta-analysis. 
+G.A., 1995. A random-effects regression model for meta-analysis.
 Statistics in medicine, 14(4), pp.395-411
 }
 \usage{

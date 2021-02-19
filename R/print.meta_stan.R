@@ -18,33 +18,33 @@ print.meta_stan <- function(x, digits = 2, ...) {
 
   cat("mu prior: Normal")
   cat("(")
-  cat(x$data$mu_prior[1])
+  cat(x$stanDat$mu_prior[1])
   cat(",")
-  cat(x$data$mu_prior[2])
+  cat(x$stanDat$mu_prior[2])
   cat(")")
   cat("\n")
   cat("theta prior: Normal")
   cat("(")
-  cat(x$data$theta_prior[1])
+  cat(x$stanDat$theta_prior[1])
   cat(",")
-  cat(round(x$data$theta_prior[2], 2))
+  cat(round(x$stanDat$theta_prior[2], 2))
   cat(")")
   cat("\n")
 
-  if (x$data$mreg){
+  if (x$stanDat$mreg){
     cat("beta prior: Normal")
     cat("(")
-    cat(x$data$beta_prior[1])
+    cat(x$stanDat$beta_prior[1])
     cat(",")
-    cat(x$data$beta_prior[2])
+    cat(x$stanDat$beta_prior[2])
     cat(")")
     cat("\n")
   }
-  if (x$data$re){
+  if (x$stanDat$re){
     cat("tau prior:")
     cat(x$tau_prior_dist)
     cat("(")
-    cat(x$data$tau_prior)
+    cat(x$stanDat$tau_prior)
     cat(")")
     cat("\n\n")
   }
@@ -53,13 +53,13 @@ print.meta_stan <- function(x, digits = 2, ...) {
   print(round(x$fit_sum['theta', -c(2, 3, 5, 7, 9, 10)], digits))
   cat("\n")
 
-  if (x$data$mreg){
+  if (x$stanDat$mreg){
     cat("Beta coeffients\n")
     print(round(x$fit_sum['beta[1,1]', -c(2, 3, 5, 7, 9, 10)], digits))
     cat("\n")
   }
 
-  if (x$data$re){
+  if (x$stanDat$re){
     cat("Heterogeneity stdev (tau)\n")
     print(round(x$fit_sum['tau[1]', -c(2, 3, 5, 7, 9, 10)], digits))
   }

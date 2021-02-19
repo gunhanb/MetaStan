@@ -13,11 +13,13 @@
 #'   \item{followup}{t	 follow-up time in months}
 #'   \item{exp.AR.events}{number of AR events in experimental group}
 #'   \item{exp.PTLD.events}{number of PTLD events in experimental group}
-#'   \item{exp.death.events}{number of deaths in experimental group}
+#'   \item{exp.deaths}{number of deaths in experimental group}
 #'   \item{exp.total}{number of patients in experimental group}
+#'   \item{exp.SRR.events}{number of SRR events in experimental group}
+#'   \item{cont.AR.events}{number of AR events in control group}
+#'   \item{cont.SRR.events}{number of SRR events in control group}
 #'   \item{cont.PTLD.events}{number of PTLD events in control group}
-#'   \item{cont.PTLD.events}{number of PTLD events in control group}
-#'   \item{cont.death.events}{number of deaths in control group}
+#'   \item{cont.deaths}{number of deaths in control group}
 #'   \item{cont.total}{number of patients in control group}
 #'  }
 #' @source N.D. Crins, C. Roever, A.D. Goralczyk, T. Friede. Interleukin-2

@@ -16,8 +16,9 @@ Encoding: UTF-8
 Date: 2021-02-15
 LazyData: true
 ByteCompile: true
-Depends: R (>= 3.4.0), Rcpp (>= 0.12.17), methods, forestplot (>= 1.6)
-Imports: rstan (>= 2.18.1), rstantools (>= 1.5.0)
+Depends: R (>= 3.4.0), Rcpp (>= 0.12.17), methods
+Imports: rstan (>= 2.18.1), rstantools (>= 1.5.0), loo (>= 2.0), 
+         forestplot (>= 1.6), metafor (>= 2.0-0)
 Suggests: testthat,
           knitr,
           rmarkdown,
