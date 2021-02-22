@@ -4,7 +4,7 @@
 \alias{convert_data_arm}
 \title{Convert contrast-based dataset to arm-based dataset}
 \usage{
-convert_data_arm(nt, nc, pt, pc, publication)
+convert_data_arm(nt, nc, pt, pc, pub, data = NULL)
 }
 \arguments{
 \item{nt}{Number of subjects in treatment arm}
@@ -15,7 +15,9 @@ convert_data_arm(nt, nc, pt, pc, publication)
 
 \item{pc}{Number of events in treatment arm}
 
-\item{publication}{The corresponding publication}
+\item{pub}{The corresponding publication}
+
+\item{data}{Optional data frame containing the variables given to the arguments above.}
 }
 \value{
 A dataframe object
@@ -30,9 +32,9 @@ data('dat.Crins2014', package = "MetaStan")
 dat.Crins2014.PTLD = subset(dat.Crins2014, is.finite(exp.PTLD.events))
 ## Create arm-based dataset
 data('dat.Crins2014', package = "MetaStan")
-dat_converted <- convert_data_arm(dat.Crins2014$exp.total, dat.Crins2014$cont.total,
-                             dat.Crins2014$exp.AR.events, dat.Crins2014$cont.AR.events,
-                             dat.Crins2014$publication)
+dat_converted <- convert_data_arm(exp.total, cont.total,
+                                  exp.AR.events, cont.AR.events,
+                                  publication, data = dat.Crins2014)
 
 
 }

@@ -14,7 +14,7 @@ test_that("Results are correct for fitting binomial normal hierarchical model us
                                dat.Berkey1995$rt, dat.Berkey1995$rc,
                                dat.Berkey1995$publication)
 
-  bnhm.wip.bnhm1.stan  <- meta_stan(data = dat_long,
+bnhm.wip.bnhm1.stan  <- meta_stan(data = dat_long,
                                     family = "binomial",
                                     mu_prior = c(0, 10),
                                     delta = 250,

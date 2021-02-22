@@ -7,7 +7,8 @@
 #' @param nc Number of subjects in control arm
 #' @param pt Number of events in treatment arm
 #' @param pc Number of events in treatment arm
-#' @param publication The corresponding publication
+#' @param pub The corresponding publication
+#' @param data Optional data frame containing the variables given to the arguments above.
 #' @return A dataframe object
 #' @examples
 #' data('dat.Crins2014', package = "MetaStan")
@@ -15,20 +16,21 @@
 #' dat.Crins2014.PTLD = subset(dat.Crins2014, is.finite(exp.PTLD.events))
 #' ## Create arm-based dataset
 #' data('dat.Crins2014', package = "MetaStan")
-#' dat_converted <- convert_data_arm(dat.Crins2014$exp.total, dat.Crins2014$cont.total,
-#'                              dat.Crins2014$exp.AR.events, dat.Crins2014$cont.AR.events,
-#'                              dat.Crins2014$publication)
+#' dat_converted <- convert_data_arm(exp.total, cont.total,
+#'                                   exp.AR.events, cont.AR.events,
+#'                                   publication, data = dat.Crins2014)
 #'
 #'
 #' @export
-convert_data_arm <- function(nt, nc, pt, pc, publication) {
-    data_wide <- NULL
-    data_wide$pt <- pt
-    data_wide$nt <- nt
-    data_wide$pc <- pc
-    data_wide$nc <- nc
-    data_wide$publication <- publication
-    data_wide             <- data.frame(data_wide)
+convert_data_arm <- function(nt, nc, pt, pc, pub, data = NULL) {
+
+    ################ check data argument
+    if (is.null(data))
+        data <- sys.frame(sys.parent())
+    data_wide <- match.call()
+    data_wide$data <- NULL
+    data_wide[[1]] <- as.name("data.frame")
+    data_wide <- eval(data_wide,data)
 
     N     <- nrow(data_wide)
     r     <- as.vector(rbind(data_wide$pc, data_wide$pt))  # number of events

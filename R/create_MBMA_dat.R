@@ -9,7 +9,7 @@
 #' @param armVars Vector of per-arm variables
 #'  The name of each component will be the column name in the resulting dataset.
 #' @param nArmsVar Variable holding the number of arms for each study.
-#' @return A data frame with the generated coloumns.
+#' @return A data frame with the generated columns.
 #' @author Burak Kuersad Guenhan, \email{burak.gunhan@med.uni-goettingen.de}
 #' and Gert van Valkenhoef
 #' @seealso \code{gemtc::mtc.data.studyrow} and \code{nmaINLA::create_INLA_dat}
