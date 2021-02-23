@@ -23,10 +23,9 @@
 #' @import methods
 #' @import Rcpp
 #' @import rstantools
-#' @import forestplot
 #' @import loo
-#' @importFrom rstan sampling
 #' @importFrom forestplot forestplot
+#' @importFrom rstan sampling
 #' @importFrom loo loo_compare
 #' @importFrom metafor escalc
 #' @importFrom stats qnorm

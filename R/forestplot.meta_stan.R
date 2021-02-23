@@ -27,6 +27,7 @@
 #' R package.
 #' @author Christian Roever and Burak Kuersad Guenhan
 #' @seealso \code{foresplot::foresplot}
+#' @import forestplot
 #' @export
 forestplot.meta_stan = function(x = NULL,
                                digits = 2,
@@ -50,9 +51,9 @@ forestplot.meta_stan = function(x = NULL,
 
   Nstud = nrow(data_wide)
   raw.data <- metafor::escalc(measure = "OR",
-                               ai = pt, n1i = nt,
-                               ci = pc, n2i = nc,
-                               slab = publication, data = data_wide)
+                              ai = pt, n1i = nt,
+                              ci = pc, n2i = nc,
+                              slab = pub, data = data_wide)
 
 
   # summary estimate
@@ -109,7 +110,7 @@ forestplot.meta_stan = function(x = NULL,
 
   mlabtext <- matrix("", nrow=Nstud + 3, ncol = 3)
   mlabtext[1,] <- c("Study", "Estimate", "95% CI")
-  mlabtext[,1] <- c("Study", raw.data$publication, "Summary", "Prediction")
+  mlabtext[,1] <- c("Study", raw.data$pub, "Summary", "Prediction")
 
   mlabtext[2:(Nstud + 1),2] <- sprintf(format, raw.data$yi)
   mlabtext[2:(Nstud + 1),3] <- sprintf(paste0("[",format,", ",format,"]"),

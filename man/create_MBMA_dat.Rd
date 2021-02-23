@@ -19,7 +19,7 @@ The name of each component will be the column name in the resulting dataset.}
 \item{nArmsVar}{Variable holding the number of arms for each study.}
 }
 \value{
-A data frame with the generated coloumns.
+A data frame with the generated columns.
 }
 \description{
 \code{create_MBMA_dat} converts datasets in the one-study-per-row
