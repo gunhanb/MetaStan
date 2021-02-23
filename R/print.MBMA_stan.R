@@ -93,7 +93,7 @@ print.MBMA_stan <- function(x, digits = 2, ...) {
   if (x$data$dose_response == 4) {
     cat("Dose-response function = sigmoidal emax \n\n")
     cat("Emax estimates\n")
-    print(round(x$fit_sum['alpha_1', -c(2, 3, 5, 7, 9, 10)], digits))
+    print(round(x$fit_sum['alpha', -c(2, 3, 5, 7, 9, 10)], digits))
     cat("\n")
     cat("ED50 estimates\n")
     print(round(x$fit_sum['ED50[1]', -c(2, 3, 5, 7, 9, 10)], digits))
