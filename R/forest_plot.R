@@ -17,10 +17,10 @@
 #' dat_long <- convert_data_arm(dat.Crins2014$exp.total, dat.Crins2014$cont.total,
 #'                              dat.Crins2014$exp.AR.events, dat.Crins2014$cont.AR.events,
 #'                              dat.Crins2014$publication)
-#' bnhm.Crins  <- meta_stan(data = dat_long, family = "binomial",
+#' bnhm.Crins  <- meta_stan(data = dat_long, likelihood = "binomial",
 #'                          mu_prior = c(0, 10), theta_prior = c(0, 100),
 #'                          tau_prior =  0.5)
-#' forestplot(bnhm.Crins)
+#' forest_plot(bnhm.Crins)
 #'
 #' }
 #' @source This function is based \code{foresplot} function from \code{foresplot}
@@ -29,11 +29,11 @@
 #' @seealso \code{foresplot::foresplot}
 #' @import forestplot
 #' @export
-forestplot.meta_stan = function(x = NULL,
-                               digits = 2,
-                               boxsize = 0.3,
-                               col,
-                               ...) {
+forest_plot = function(x = NULL,
+                       digits = 2,
+                       boxsize = 0.3,
+                       col,
+                       ...) {
 
   if (!requireNamespace("forestplot", quietly=TRUE))
     stop("required 'forestplot' package not available!")

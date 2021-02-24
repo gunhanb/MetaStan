@@ -18,7 +18,7 @@
 #'                          nArmsVar = "nd")
 #'
 #' MBMA.Emax  <- MBMA_stan(data = datMBMA,
-#'                           family = "binomial",
+#'                           likelihood = "binomial",
 #'                           dose_response = "emax",
 #'                           Emax_prior = c(0, 10),
 #'                           ED50_prior = "functional",

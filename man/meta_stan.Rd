@@ -6,7 +6,7 @@
 \usage{
 meta_stan(
   data = NULL,
-  family = NULL,
+  likelihood = NULL,
   mu_prior = c(0, 10),
   theta_prior = NULL,
   tau_prior = 0.5,
@@ -20,13 +20,14 @@ meta_stan(
   chains = 4,
   iter = 2000,
   warmup = 1000,
-  adapt_delta = 0.95
+  adapt_delta = 0.95,
+  ...
 )
 }
 \arguments{
 \item{data}{Data frame created by `convert_data_arm`}
 
-\item{family}{A string specifying the family of distributions defining the statistical
+\item{likelihood}{A string specifying the likelihood function defining the statistical
 model. Options include  "normal", "binomial", and "Poisson".}
 
 \item{mu_prior}{A numerical vector specifying the parameter of the normal prior
@@ -79,6 +80,8 @@ probability for adaptation. See Stan manual for details. Default is 0.95. In gen
 you should not need to change adapt_delta unless you see a warning message about
 divergent transitions, in which case you can increase adapt_delta from the
 default to a value closer to 1 (e.g. from 0.95 to 0.99, or from 0.99 to 0.999, etc).}
+
+\item{...}{Further arguments passed to or from other methods.}
 }
 \value{
 an object of class `MetaStan`.
@@ -91,7 +94,7 @@ an object of class `MetaStan`.
 data('dat.Crins2014', package = "MetaStan")
 dat_MetaStan <- convert_data_arm(dat.Crins2014$exp.total, dat.Crins2014$cont.total,
                              dat.Crins2014$exp.AR.events, dat.Crins2014$cont.AR.events)
-bnhm.Crins  <- meta_stan(data = dat_MetaStan, family = "binomial",
+bnhm.Crins  <- meta_stan(data = dat_MetaStan, likelihood = "binomial",
                          mu_prior = c(0, 10), theta_prior = c(0, 100),
                          tau_prior =  0.5)
 print(bnhm.Crins)
@@ -105,7 +108,7 @@ dat_MetaStan <- convert_data_arm(dat.Berkey1995$nt, dat.Berkey1995$nc,
                             dat.Berkey1995$rt, dat.Berkey1995$rc)
 
 meta.reg.stan  <- meta_stan(data = dat_MetaStan,
-                           family = "binomial",
+                           likelihood = "binomial",
                            mu_prior = c(0, 10),
                            theta_prior = c(0, 100),
                            tau_prior = 0.5,

@@ -16,7 +16,7 @@ test_that("Results are correct for fitting model-based meta-analysis Eleptriptan
                             nArmsVar = "nd")
 
   MBMA.Emax  <- MBMA_stan(data = datMBMA,
-                          family = "binomial",
+                          likelihood = "binomial",
                           dose_response = "emax",
                           Pred_doses = seq(0, 80, length.out = 11),
                           mu_prior = c(0, 100),
@@ -46,7 +46,7 @@ test_that("Results are correct for fitting model-based meta-analysis Paresthesia
                             nArmsVar = "nd")
 
   MBMA.Emax  <- MBMA_stan(data = datMBMA,
-                          family = "binomial",
+                          likelihood = "binomial",
                           dose_response = "emax",
                           mu_prior = c(0, 100),
                           Emax_prior = c(0, 100),

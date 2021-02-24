@@ -6,7 +6,7 @@
 \usage{
 MBMA_stan(
   data = NULL,
-  family = NULL,
+  likelihood = NULL,
   dose_response = "emax",
   mu_prior = c(0, 10),
   Emax_prior = c(0, 100),
@@ -22,13 +22,14 @@ MBMA_stan(
   chains = 4,
   iter = 2000,
   warmup = 1000,
-  adapt_delta = 0.95
+  adapt_delta = 0.95,
+  ...
 )
 }
 \arguments{
 \item{data}{An object of `create_MBMA_dat`.}
 
-\item{family}{A string specifying the family of distributions defining the statistical
+\item{likelihood}{A string specifying the likelihood of distributions defining the statistical
 model. Options include "normal", "binomial", and "Poisson".}
 
 \item{dose_response}{A string specifying the function defining the dose-response model.
@@ -87,6 +88,8 @@ probability for adaptation. See Stan manual for details. Default is 0.95. In gen
 you should not need to change adapt_delta unless you see a warning message about
 divergent transitions, in which case you can increase adapt_delta from the
 default to a value closer to 1 (e.g. from 0.95 to 0.99, or from 0.99 to 0.999, etc).}
+
+\item{...}{Further arguments passed to or from other methods.}
 }
 \value{
 an object of class `stanfit` returned by `rstan::sampling`
@@ -105,7 +108,7 @@ datMBMA = create_MBMA_dat(dat = dat.Eletriptan,
                          nArmsVar = "nd")
 
 MBMA.Emax  <- MBMA_stan(data = datMBMA,
-                          family = "binomial",
+                          likelihood = "binomial",
                           dose_response = "emax",
                           Emax_prior = c(0, 10),
                           ED50_prior = "functional",

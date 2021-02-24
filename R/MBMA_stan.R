@@ -30,7 +30,7 @@
 #' is for standard deviation. Default is c(1, 2). Needed for sigmoidal model.
 #' @param dose_response A string specifying the function defining the dose-response model.
 #' Options include "linear", "log-linear", "emax", and "sigmoidal".
-#' @param family A string specifying the family of distributions defining the statistical
+#' @param likelihood A string specifying the likelihood of distributions defining the statistical
 #' model. Options include "normal", "binomial", and "Poisson".
 #' @param re A string specifying whether random-effects are included to the model. When `FALSE`, the
 #' model corresponds to a fixed-effects model. The default is `TRUE`.
@@ -47,6 +47,7 @@
 #' iterations per chain. The default is 1000.
 #' @param chains A positive integer specifying the number of Markov chains.
 #' The default is 4.
+#' @param ... Further arguments passed to or from other methods.
 #' @return an object of class `stanfit` returned by `rstan::sampling`
 #' @references Boucher M, et al. The many flavors of model-based meta-analysis:
 #' Part I-Introduction and landmark data. \emph{CPT: Pharmacometrics and Systems Pharmacology}.
@@ -72,7 +73,7 @@
 #'                          nArmsVar = "nd")
 #'
 #' MBMA.Emax  <- MBMA_stan(data = datMBMA,
-#'                           family = "binomial",
+#'                           likelihood = "binomial",
 #'                           dose_response = "emax",
 #'                           Emax_prior = c(0, 10),
 #'                           ED50_prior = "functional",
@@ -84,7 +85,7 @@
 #' }
 #'
 MBMA_stan = function(data = NULL,
-                     family = NULL,
+                     likelihood = NULL,
                      dose_response = "emax",
                      mu_prior = c(0, 10),
                      Emax_prior = c(0, 100),
@@ -100,14 +101,15 @@ MBMA_stan = function(data = NULL,
                      chains = 4,
                      iter = 2000,
                      warmup = 1000,
-                     adapt_delta = 0.95) {
-  ################ check family used
-  if(is.null(family) == TRUE){
-    stop("Function argument \"family\" must be specified !!!")
+                     adapt_delta = 0.95,
+                     ...) {
+  ################ check likelihood used
+  if(is.null(likelihood) == TRUE){
+    stop("Function argument \"likelihood\" must be specified !!!")
   }
 
-  if (family %in% c("binomial", "normal", "poisson") == FALSE) {
-    stop("Function argument \"family\" must be equal to \"binomial\" or \"normal\" or \"poisson\"!!!")
+  if (likelihood %in% c("binomial", "normal", "poisson") == FALSE) {
+    stop("Function argument \"likelihood\" must be equal to \"binomial\" or \"normal\" or \"poisson\"!!!")
   }
 
   ################ check model used
@@ -144,9 +146,9 @@ MBMA_stan = function(data = NULL,
   if(ED50_prior_dist == "half-normal") { ED50_prior_dist_num = 2 }
 
 
-  if(family == "normal")   { link = 1 }
-  if(family == "binomial") { link = 2 }
-  if(family == "poisson")  { link = 3 }
+  if(likelihood == "normal")   { link = 1 }
+  if(likelihood == "binomial") { link = 2 }
+  if(likelihood == "poisson")  { link = 3 }
 
   if(dose_response == "linear")     { dose_response = 1 }
   if(dose_response == "log-linear") { dose_response = 2 }
@@ -164,15 +166,15 @@ MBMA_stan = function(data = NULL,
   count <- array(rep(0, Nobs))
   exposure <- array(rep(0, Nobs))
 
-  if(family == "binomial") {
+  if(likelihood == "binomial") {
     r = data$r
     n = data$n
   }
-  if(family == "normal") {
+  if(likelihood == "normal") {
     y = data$y
     y_se = data$y_se
   }
-  if(family == "poisson") {
+  if(likelihood == "poisson") {
     count = data$count
     exposure = data$exposure
   }
@@ -227,7 +229,8 @@ MBMA_stan = function(data = NULL,
                         chains = chains,
                         iter = iter,
                         warmup = warmup,
-                        control = list(adapt_delta = adapt_delta))
+                        control = list(adapt_delta = adapt_delta),
+                        ...)
 
 
   ## MODEL FINISHED

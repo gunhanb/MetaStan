@@ -22,7 +22,7 @@
 #' @param beta_prior A numerical vector specifying the parameter of the normal prior
 #' density for beta coefficients in a meta-regression model, first value is parameter for mean, second
 #' is for variance. Default is c(0, 100).
-#' @param family A string specifying the family of distributions defining the statistical
+#' @param likelihood A string specifying the likelihood function defining the statistical
 #' model. Options include  "normal", "binomial", and "Poisson".
 #' @param re A string specifying whether random-effects are included to the model. When `FALSE`, the
 #' model corresponds to a fixed-effects model. The default is `TRUE`.
@@ -43,6 +43,7 @@
 #' iterations per chain. The default is 1000.
 #' @param chains A positive integer specifying the number of Markov chains.
 #' The default is 4.
+#' @param ... Further arguments passed to or from other methods.
 #' @return an object of class `MetaStan`.
 #' @references Guenhan BK, Roever C, Friede T. Random-effects meta-analysis of few studies involving
 #' rare events \emph{Resarch Synthesis Methods} 2020; doi:10.1002/jrsm.1370.
@@ -58,7 +59,7 @@
 #' data('dat.Crins2014', package = "MetaStan")
 #' dat_MetaStan <- convert_data_arm(dat.Crins2014$exp.total, dat.Crins2014$cont.total,
 #'                              dat.Crins2014$exp.AR.events, dat.Crins2014$cont.AR.events)
-#' bnhm.Crins  <- meta_stan(data = dat_MetaStan, family = "binomial",
+#' bnhm.Crins  <- meta_stan(data = dat_MetaStan, likelihood = "binomial",
 #'                          mu_prior = c(0, 10), theta_prior = c(0, 100),
 #'                          tau_prior =  0.5)
 #' print(bnhm.Crins)
@@ -72,7 +73,7 @@
 #'                             dat.Berkey1995$rt, dat.Berkey1995$rc)
 #'
 #' meta.reg.stan  <- meta_stan(data = dat_MetaStan,
-#'                            family = "binomial",
+#'                            likelihood = "binomial",
 #'                            mu_prior = c(0, 10),
 #'                            theta_prior = c(0, 100),
 #'                            tau_prior = 0.5,
@@ -84,7 +85,7 @@
 #' }
 #'
 meta_stan = function(data = NULL,
-                     family = NULL,
+                     likelihood = NULL,
                      mu_prior = c(0, 10),
                      theta_prior = NULL,
                      tau_prior = 0.5,
@@ -98,14 +99,15 @@ meta_stan = function(data = NULL,
                      chains = 4,
                      iter = 2000,
                      warmup = 1000,
-                     adapt_delta = 0.95) {
-  ################ check family used
-  if(is.null(family) == TRUE){
-    stop("Function argument \"family\" must be specified !!!")
+                     adapt_delta = 0.95,
+                     ...) {
+  ################ check likelihood used
+  if(is.null(likelihood) == TRUE){
+    stop("Function argument \"likelihood\" must be specified !!!")
   }
 
-  if (family %in% c("binomial", "normal", "poisson") == FALSE) {
-    stop("Function argument \"family\" must be equal to \"binomial\" or \"normal\" or \"poisson\"!!!")
+  if (likelihood %in% c("binomial", "normal", "poisson") == FALSE) {
+    stop("Function argument \"likelihood\" must be equal to \"binomial\" or \"normal\" or \"poisson\"!!!")
   }
 
 
@@ -137,9 +139,9 @@ meta_stan = function(data = NULL,
   if(tau_prior_dist == "uniform")     { tau_prior_dist_num = 2 }
   if(tau_prior_dist == "half-cauchy") { tau_prior_dist_num = 3 }
 
-  if(family == "normal")   { link = 1 }
-  if(family == "binomial") { link = 2 }
-  if(family == "poisson")  { link = 3 }
+  if(likelihood == "normal")   { link = 1 }
+  if(likelihood == "binomial") { link = 2 }
+  if(likelihood == "poisson")  { link = 3 }
 
 
   ################ check data
@@ -158,15 +160,15 @@ meta_stan = function(data = NULL,
   count <- array(rep(0, Nobs))
   exposure <- array(rep(0, Nobs))
 
-  if(family == "binomial") {
+  if(likelihood == "binomial") {
     r = data$r
     n = data$n
   }
-  if(family == "normal") {
+  if(likelihood == "normal") {
     y = data$y
     y_se = data$y_se
   }
-  if(family == "poisson") {
+  if(likelihood == "poisson") {
     count = data$count
     exposure = data$exposure
   }
@@ -213,7 +215,8 @@ meta_stan = function(data = NULL,
                         chains = chains,
                         iter = iter,
                         warmup = warmup,
-                        control = list(adapt_delta = adapt_delta))
+                        control = list(adapt_delta = adapt_delta),
+                        ...)
 
 
   ## MODEL FINISHED
