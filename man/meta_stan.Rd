@@ -63,7 +63,7 @@ The default is `TRUE`.}
 \item{mreg}{A string specifying whether to fit a meta-regression model.
 The default is `FALSE`.}
 
-\item{cov}{A numeric matrix specifying trial-level covariates in each row.
+\item{cov}{A numeric vector or matrix specifying trial-level covariates (in each row).
 This is need when `mreg = TRUE`.}
 
 \item{chains}{A positive integer specifying the number of Markov chains.
@@ -114,7 +114,7 @@ meta.reg.stan  <- meta_stan(data = dat_MetaStan,
                            tau_prior = 0.5,
                            tau_prior_dist = "half-normal",
                            mreg = TRUE,
-                           cov = matrix(dat.Berkey1995$Latitude, nrow = 1))
+                           cov = dat.Berkey1995$Latitude)
 
 print(meta.reg.stan)
 }

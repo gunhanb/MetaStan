@@ -46,7 +46,7 @@ test_that("Results are correct for a meta-regression model.", {
                               tau_prior = 0.5,
                               tau_prior_dist = "half-normal",
                               mreg = TRUE,
-                              cov = matrix(dat.Berkey1995$Latitude, nrow = 1))
+                              cov = dat.Berkey1995$Latitude)
   ### compare with results
   results = meta.reg.stan$fit_sum
 

@@ -30,7 +30,7 @@
 #' The default is `TRUE`.
 #' @param mreg A string specifying whether to fit a meta-regression model.
 #' The default is `FALSE`.
-#' @param cov A numeric matrix specifying trial-level covariates in each row.
+#' @param cov A numeric vector or matrix specifying trial-level covariates (in each row).
 #' This is need when `mreg = TRUE`.
 #' @param adapt_delta A numerical value specifying the target average proposal acceptance
 #' probability for adaptation. See Stan manual for details. Default is 0.95. In general
@@ -79,7 +79,7 @@
 #'                            tau_prior = 0.5,
 #'                            tau_prior_dist = "half-normal",
 #'                            mreg = TRUE,
-#'                            cov = matrix(dat.Berkey1995$Latitude, nrow = 1))
+#'                            cov = dat.Berkey1995$Latitude)
 #'
 #' print(meta.reg.stan)
 #' }
@@ -174,9 +174,13 @@ meta_stan = function(data = NULL,
   }
 
   if(mreg == FALSE){
-    cov = matrix(rep(0, max(as.numeric(as.vector(data$mu)))), nrow = 1)
+    cov_matrix = matrix(rep(0, max(as.numeric(as.vector(data$mu)))), nrow = 1)
   }
-  ncov = nrow(cov)
+  if(mreg == TRUE & is.vector(cov) == TRUE){
+    cov_matrix = matrix(cov, nrow = 1)
+  }
+
+  ncov = nrow(cov_matrix)
 
   if(re == TRUE)   {re = 1}
   if(re == FALSE)  {re = 0}
@@ -204,7 +208,7 @@ meta_stan = function(data = NULL,
                   re = re,
                   ncp = ncp,
                   mreg = mreg,
-                  cov = cov,
+                  cov = cov_matrix,
                   ncov = ncov)
 
 
