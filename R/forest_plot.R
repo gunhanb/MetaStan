@@ -39,8 +39,6 @@ forest_plot = function(x = NULL,
     stop("required 'forestplot' package not available!")
   if (utils::packageVersion("forestplot") < "1.6")
     warning("you may need to update 'forestplot' to a more recent version (>=1.6).")
-  # auxiliary function:
-  #decplaces <- function(x, signifdigits=digits)
 
     # some sanity checks for the provided arguments:
     stopifnot(is.element("meta_stan", class(x)),

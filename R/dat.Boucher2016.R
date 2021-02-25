@@ -24,5 +24,5 @@
 #' Model-Based Meta-Analysis: Part I - Introduction and Landmark Data.
 #' CPT Pharmacometrics Syst. Pharmacol. (2016) 5, 54-64; doi:10.1002/psp4.12041
 #'
-"dat.Paresthesia"
+"dat.Boucher2016"
 

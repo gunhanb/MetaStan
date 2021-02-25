@@ -31,7 +31,7 @@
 #' @param mreg A string specifying whether to fit a meta-regression model.
 #' The default is `FALSE`.
 #' @param cov A numeric vector or matrix specifying trial-level covariates (in each row).
-#' This is need when `mreg = TRUE`.
+#' This is needed when `mreg = TRUE`.
 #' @param adapt_delta A numerical value specifying the target average proposal acceptance
 #' probability for adaptation. See Stan manual for details. Default is 0.95. In general
 #' you should not need to change adapt_delta unless you see a warning message about

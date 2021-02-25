@@ -64,7 +64,7 @@ The default is `TRUE`.}
 The default is `FALSE`.}
 
 \item{cov}{A numeric vector or matrix specifying trial-level covariates (in each row).
-This is need when `mreg = TRUE`.}
+This is needed when `mreg = TRUE`.}
 
 \item{chains}{A positive integer specifying the number of Markov chains.
 The default is 4.}
