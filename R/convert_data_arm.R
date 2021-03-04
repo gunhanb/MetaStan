@@ -1,4 +1,4 @@
-#' Convert contrast-based dataset to arm-based dataset
+#' Convert contrast-based dataset to arm-based dataset (deprecated)
 #'
 #' \code{convert_data_arm} creates a dataframe to fit a meta-analysis
 #' model using \code{meta_Stan} function.
@@ -11,9 +11,6 @@
 #' @param data Optional data frame containing the variables given to the arguments above.
 #' @return A dataframe object
 #' @examples
-#' data('dat.Crins2014', package = "MetaStan")
-#' ## Subset of dataset where PTLD outcomes available
-#' dat.Crins2014.PTLD = subset(dat.Crins2014, is.finite(exp.PTLD.events))
 #' ## Create arm-based dataset
 #' data('dat.Crins2014', package = "MetaStan")
 #' dat_converted <- convert_data_arm(exp.total, cont.total,

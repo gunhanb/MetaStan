@@ -167,11 +167,11 @@ MBMA_stan = function(data = NULL,
   exposure <- array(rep(0, Nobs))
 
   if(likelihood == "binomial") {
-    r = data$r
-    n = data$n
+    r = data$responders
+    n = data$sampleSize
   }
   if(likelihood == "normal") {
-    y = data$y
+    y = data$y_mean
     y_se = data$y_se
   }
   if(likelihood == "poisson") {

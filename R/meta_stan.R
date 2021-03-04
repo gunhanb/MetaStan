@@ -3,7 +3,7 @@
 #' `meta_stan` fits a meta-analysis model using Stan.
 #'
 #' @export
-#' @param data Data frame created by `convert_data_arm`
+#' @param data Data frame created by `create_MetaStan_dat`
 #' @param mu_prior A numerical vector specifying the parameter of the normal prior
 #' density for baseline risks, first value is parameter for mean, second is for variance.
 #' Default is c(0, 10).
@@ -45,12 +45,14 @@
 #' The default is 4.
 #' @param ... Further arguments passed to or from other methods.
 #' @return an object of class `MetaStan`.
+#' @references Guenhan BK, Roever C, Friede T. MetaStan: An R package for meta-analysis
+#' and model-based meta-analysis using Stan. In preparation.
 #' @references Guenhan BK, Roever C, Friede T. Random-effects meta-analysis of few studies involving
 #' rare events \emph{Resarch Synthesis Methods} 2020; doi:10.1002/jrsm.1370.
 #' @references Jackson D, Law M, Stijnen T, Viechtbauer W, White IR. A comparison of 7
 #' random-effects models for meta-analyses that estimate the summary odds ratio.
 #' \emph{Stat Med} 2018;37:1059--1085.
-#' @references Kuss O.Statistical methods for meta-analyses including information
+#' @references Kuss O. Statistical methods for meta-analyses including information
 #' from studies without any events-add nothing to nothing and succeed nevertheless,
 #' \emph{Stat Med}, 2015; 4; 1097--1116, doi: 10.1002/sim.6383.
 #'
@@ -161,11 +163,11 @@ meta_stan = function(data = NULL,
   exposure <- array(rep(0, Nobs))
 
   if(likelihood == "binomial") {
-    r = data$r
-    n = data$n
+    r = data$responders
+    n = data$sampleSize
   }
   if(likelihood == "normal") {
-    y = data$y
+    y = data$y_mean
     y_se = data$y_se
   }
   if(likelihood == "poisson") {
@@ -174,7 +176,7 @@ meta_stan = function(data = NULL,
   }
 
   if(mreg == FALSE){
-    cov_matrix = matrix(rep(0, max(as.numeric(as.vector(data$mu)))), nrow = 1)
+    cov_matrix = matrix(rep(0, nrow(data_wide)), nrow = 1)
   }
   if(mreg == TRUE & is.vector(cov) == TRUE){
     cov_matrix = matrix(cov, nrow = 1)
@@ -191,9 +193,9 @@ meta_stan = function(data = NULL,
 
   ## Create a list to be used with Stan
   stanDat <- list(Nobs = Nobs,
-                  t = data$theta,
+                  t = rep(0:1, times = nrow(data_wide)),
                   link = link,
-                  st = as.numeric(as.vector(data$mu)),
+                  st = data$study,
                   y = y,
                   y_se = y_se,
                   r = r,
@@ -237,7 +239,8 @@ meta_stan = function(data = NULL,
   sampler_params <- rstan::get_sampler_params(fit, inc_warmup=FALSE)
   n_divergent <- sum(sapply(sampler_params, function(x) sum(x[,'divergent__'])) )
   if(n_divergent > 0) {
-    warning(paste("In total", n_divergent, "divergent transitions occured during the sampling
+    warning(paste("In total", n_divergent, "divergent transitions occured during
+                  the sampling
                   phase.\nPlease consider increasing adapt_delta closer to 1."))
   }
 

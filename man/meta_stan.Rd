@@ -25,7 +25,7 @@ meta_stan(
 )
 }
 \arguments{
-\item{data}{Data frame created by `convert_data_arm`}
+\item{data}{Data frame created by `create_MetaStan_dat`}
 
 \item{likelihood}{A string specifying the likelihood function defining the statistical
 model. Options include  "normal", "binomial", and "Poisson".}
@@ -121,6 +121,9 @@ print(meta.reg.stan)
 
 }
 \references{
+Guenhan BK, Roever C, Friede T. MetaStan: An R package for meta-analysis
+and model-based meta-analysis using Stan. In preparation.
+
 Guenhan BK, Roever C, Friede T. Random-effects meta-analysis of few studies involving
 rare events \emph{Resarch Synthesis Methods} 2020; doi:10.1002/jrsm.1370.
 
@@ -128,7 +131,7 @@ Jackson D, Law M, Stijnen T, Viechtbauer W, White IR. A comparison of 7
 random-effects models for meta-analyses that estimate the summary odds ratio.
 \emph{Stat Med} 2018;37:1059--1085.
 
-Kuss O.Statistical methods for meta-analyses including information
+Kuss O. Statistical methods for meta-analyses including information
 from studies without any events-add nothing to nothing and succeed nevertheless,
 \emph{Stat Med}, 2015; 4; 1097--1116, doi: 10.1002/sim.6383.
 }

@@ -27,9 +27,6 @@ A dataframe object
 model using \code{meta_Stan} function.
 }
 \examples{
-data('dat.Crins2014', package = "MetaStan")
-## Subset of dataset where PTLD outcomes available
-dat.Crins2014.PTLD = subset(dat.Crins2014, is.finite(exp.PTLD.events))
 ## Create arm-based dataset
 data('dat.Crins2014', package = "MetaStan")
 dat_converted <- convert_data_arm(exp.total, cont.total,

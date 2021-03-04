@@ -10,10 +10,11 @@ test_that("Results are correct for fitting model-based meta-analysis Eleptriptan
   ## Load the dataset
   data('dat.Eletriptan', package = "MetaStan")
   ## Fitting a MBMA model
-  datMBMA = create_MBMA_dat(dat = dat.Eletriptan,
-                            armVars = c(dose = "d", r = "r",
-                                        n = "n"),
-                            nArmsVar = "nd")
+  datMBMA = create_MetaStan_dat(dat = dat.Eletriptan,
+                                armVars = c(dose = "d",
+                                            responders = "r",
+                                            sampleSize = "n"),
+                                nArmsVar = "nd")
 
   MBMA.Emax  <- MBMA_stan(data = datMBMA,
                           likelihood = "binomial",
@@ -38,11 +39,12 @@ test_that("Results are correct for fitting model-based meta-analysis Paresthesia
 
   set.seed(23344)
   ## Load the dataset
-  data('dat.Paresthesia', package = "MetaStan")
+  data('dat.Boucher2016', package = "MetaStan")
   ## Fitting a MBMA model
-  datMBMA = create_MBMA_dat(dat = dat.Paresthesia,
-                            armVars = c(dose = "d", r = "r",
-                                        n = "n"),
+  datMBMA = create_MetaStan_dat(dat = dat.Boucher2016,
+                            armVars = c(dose = "d",
+                                        responders = "r",
+                                        sampleSize = "n"),
                             nArmsVar = "nd")
 
   MBMA.Emax  <- MBMA_stan(data = datMBMA,
