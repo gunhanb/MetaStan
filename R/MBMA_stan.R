@@ -65,22 +65,23 @@
 #' @examples
 #' \dontrun{
 #'## Load the dataset
-#'data('dat.Eletriptan', package = "MetaStan")
-#'## Fitting a Binomial-Normal Hierarchial model using WIP priors
-#'datMBMA = create_MBMA_dat(dat = dat.Eletriptan,
-#'                          armVars = c(dose = "d", r = "r",
-#'                                      n = "n"),
-#'                          nArmsVar = "nd")
+#' data('dat.Eletriptan', package = "MetaStan")
+## Fitting a MBMA model
+#' datMBMA = create_MetaStan_dat(dat = dat.Eletriptan,
+#'                               armVars = c(dose = "d",
+#'                                           responders = "r",
+#'                                           sampleSize = "n"),
+#'                               nArmsVar = "nd")
 #'
 #' MBMA.Emax  <- MBMA_stan(data = datMBMA,
-#'                           likelihood = "binomial",
-#'                           dose_response = "emax",
-#'                           Emax_prior = c(0, 10),
-#'                           ED50_prior = "functional",
-#'                           tau_prior_dist = "half-normal",
-#'                           tau_prior = 0.5)
-#' print(MBMA.Emax)
-#' plot(MBMA.Emax)
+#'                         likelihood = "binomial",
+#'                         dose_response = "emax",
+#'                         Pred_doses = seq(0, 80, length.out = 11),
+#'                         mu_prior = c(0, 100),
+#'                         Emax_prior = c(0, 100),
+#'                         tau_prior_dist = "half-normal",
+#'                         tau_prior = 0.5)
+#' plot(MBMA.Emax) + ggplot2::xlab("Doses (mg)") + ggplot2::ylab("response probabilities")
 #'
 #' }
 #'

@@ -71,8 +71,8 @@
 #' ## TB dataset
 #' data('dat.Berkey1995', package = "MetaStan")
 #' ## Fitting a Binomial-Normal Hierarchical model using WIP priors
-#' dat_MetaStan <- convert_data_arm(dat.Berkey1995$nt, dat.Berkey1995$nc,
-#'                             dat.Berkey1995$rt, dat.Berkey1995$rc)
+#' dat_MetaStan <- create_MetaStan_dat(dat = dat.Crins2014,
+#'                                     armVars = c(responders = "r", sampleSize = "n"))
 #'
 #' meta.reg.stan  <- meta_stan(data = dat_MetaStan,
 #'                            likelihood = "binomial",

@@ -5,6 +5,7 @@
 #' resulting effect estimate and prediction interval.
 #'
 #' @param x A \code{meta_stan} object.
+#' @param labels Optional vector with labels for the studies (publication author/year).
 #' @param digits A numerical value specifying the number of significant digits to be shown.
 #' Default is 2.
 #' @param boxsize A numerical value specifying the box size. Default is 0.3.
@@ -14,13 +15,12 @@
 #' @examples
 #' \dontrun{
 #' data('dat.Crins2014', package = "MetaStan")
-#' dat_long <- convert_data_arm(dat.Crins2014$exp.total, dat.Crins2014$cont.total,
-#'                              dat.Crins2014$exp.AR.events, dat.Crins2014$cont.AR.events,
-#'                              dat.Crins2014$publication)
+#' dat_long <- create_MetaStan_dat(dat = dat.Crins2014,
+#'                                     armVars = c(responders = "r", sampleSize = "n"))
 #' bnhm.Crins  <- meta_stan(data = dat_long, likelihood = "binomial",
 #'                          mu_prior = c(0, 10), theta_prior = c(0, 100),
 #'                          tau_prior =  0.5)
-#' forest_plot(bnhm.Crins)
+#' forest_plot(bnhm.Crins, xlab = "log-OR", labels = dat.Crins2014$publication)
 #'
 #' }
 #' @source This function is based \code{foresplot} function from \code{foresplot}
@@ -30,6 +30,7 @@
 #' @import forestplot
 #' @export
 forest_plot = function(x = NULL,
+                       labels = NULL,
                        digits = 2,
                        boxsize = 0.3,
                        col,
@@ -48,10 +49,13 @@ forest_plot = function(x = NULL,
   data_wide = x$data_wide
 
   Nstud = nrow(data_wide)
+  if(is.null(labels)) {labels = paste("Study ID:", 1:Nstud)}
+  data_wide$labels = labels
+
   raw.data <- metafor::escalc(measure = "OR",
-                              ai = pt, n1i = nt,
-                              ci = pc, n2i = nc,
-                              slab = pub, data = data_wide)
+                              ai = r2, n1i = n2,
+                              ci = r1, n2i = n1,
+                              slab = labels, data = data_wide)
 
 
   # summary estimate
@@ -106,9 +110,9 @@ forest_plot = function(x = NULL,
   # Here we need 3 columns, 7 rows (including title row):
   format <- "%.2f"     # (common format for "sprintf()" calls)
 
-  mlabtext <- matrix("", nrow=Nstud + 3, ncol = 3)
+  mlabtext <- matrix("", nrow = Nstud + 3, ncol = 3)
   mlabtext[1,] <- c("Study", "Estimate", "95% CI")
-  mlabtext[,1] <- c("Study", raw.data$pub, "Summary", "Prediction")
+  mlabtext[,1] <- c("Study", raw.data$labels, "Summary", "Prediction")
 
   mlabtext[2:(Nstud + 1),2] <- sprintf(format, raw.data$yi)
   mlabtext[2:(Nstud + 1),3] <- sprintf(paste0("[",format,", ",format,"]"),
@@ -143,7 +147,6 @@ forest_plot = function(x = NULL,
                                    summary.est[,"lower"]),
                          upper = c(NA, raw.data$yi + q975 * sqrt(raw.data$vi),
                                    summary.est[,"upper"]),
-                         xlab = "log-OR",
                          graphwidth = grid::unit(80, 'mm'),
                          txt_gp = forestplot::fpTxtGp(ticks = grid::gpar(cex=1),
                                                       xlab = grid::gpar(cex=0.9)),

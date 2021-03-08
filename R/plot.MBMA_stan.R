@@ -9,27 +9,23 @@
 #' @return The return value is invisible \code{NULL}.
 #' @examples
 #' \dontrun{
-#'## Load the dataset
-#'data('dat.Eletriptan', package = "MetaStan")
-#'## Fitting a Binomial-Normal Hierarchial model using WIP priors
-#'datMBMA = create_MBMA_dat(dat = dat.Eletriptan,
-#'                          armVars = c(dose = "d", r = "r",
-#'                                      n = "n"),
-#'                          nArmsVar = "nd")
+#' data('dat.Eletriptan', package = "MetaStan")
+## Fitting a MBMA model
+#' datMBMA = create_MetaStan_dat(dat = dat.Eletriptan,
+#'                               armVars = c(dose = "d",
+#'                                           responders = "r",
+#'                                           sampleSize = "n"),
+#'                               nArmsVar = "nd")
 #'
 #' MBMA.Emax  <- MBMA_stan(data = datMBMA,
-#'                           likelihood = "binomial",
-#'                           dose_response = "emax",
-#'                           Emax_prior = c(0, 10),
-#'                           ED50_prior = "functional",
-#'                           tau_prior_dist = "half-normal",
-#'                           tau_prior = 0.5)
-#' print(MBMA.Emax)
-#' plot(MBMA.Emax)
-#' # use ggplot2 package for further adjustments
-#' Library(ggplot2)
-#' theme_set(theme_classic())
-#' plot(MBMA.Emax) + xlab("Doses (mg)") + ylab("response probabilities")
+#'                         likelihood = "binomial",
+#'                         dose_response = "emax",
+#'                         Pred_doses = seq(0, 80, length.out = 11),
+#'                         mu_prior = c(0, 100),
+#'                         Emax_prior = c(0, 100),
+#'                         tau_prior_dist = "half-normal",
+#'                         tau_prior = 0.5)
+#' plot(MBMA.Emax) + ggplot2::xlab("Doses (mg)") + ggplot2::ylab("response probabilities")
 #'
 #' }
 #' @source This function uses \code{ggplot} function from \code{ggplot2}
@@ -73,6 +69,8 @@ plot.MBMA_stan = function(x = MBMA.stan,...) {
                         y.hi =  pred.probs[,5],
                         y.hi75 =  pred.probs[,4])
 
+  ggplot2::theme_set(ggplot2::theme_classic())
+
   dose.plot = ggplot2::ggplot(mydata, ggplot2::aes(x = x_data, y = y)) +
     ggplot2::geom_point(ggplot2::aes(x = dose, y = y.obs, size = y.samplesizes)) +
     ggplot2::geom_line(data = Preddata, ggplot2::aes(x = Pred_doses, y = y.pred)) +
@@ -86,6 +84,7 @@ plot.MBMA_stan = function(x = MBMA.stan,...) {
                 fill="blue", alpha=0.25) +
     ggplot2::ylim(c(0,1)) +
     ggplot2::theme(legend.position = "none")
+
 
  dose.plot
 }

@@ -8,10 +8,12 @@ This function is based \code{foresplot} function from \code{foresplot}
 R package.
 }
 \usage{
-forest_plot(x = NULL, digits = 2, boxsize = 0.3, col, ...)
+forest_plot(x = NULL, labels = NULL, digits = 2, boxsize = 0.3, col, ...)
 }
 \arguments{
 \item{x}{A \code{meta_stan} object.}
+
+\item{labels}{Optional vector with labels for the studies (publication author/year).}
 
 \item{digits}{A numerical value specifying the number of significant digits to be shown.
 Default is 2.}
@@ -33,13 +35,12 @@ resulting effect estimate and prediction interval.
 \examples{
 \dontrun{
 data('dat.Crins2014', package = "MetaStan")
-dat_long <- convert_data_arm(dat.Crins2014$exp.total, dat.Crins2014$cont.total,
-                             dat.Crins2014$exp.AR.events, dat.Crins2014$cont.AR.events,
-                             dat.Crins2014$publication)
+dat_long <- create_MetaStan_dat(dat = dat.Crins2014,
+                                    armVars = c(responders = "r", sampleSize = "n"))
 bnhm.Crins  <- meta_stan(data = dat_long, likelihood = "binomial",
                          mu_prior = c(0, 10), theta_prior = c(0, 100),
                          tau_prior =  0.5)
-forest_plot(bnhm.Crins)
+forest_plot(bnhm.Crins, xlab = "log-OR", labels = dat.Crins2014$publication)
 
 }
 }

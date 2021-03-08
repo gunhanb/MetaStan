@@ -30,7 +30,8 @@ create_MetaStan_dat <- function(dat = NULL,
                                 armVars = c(dose = "d",
                                             responders = "r",
                                             sampleSize = "n"),
-                                nArmsVar = "nd") {
+                                nArmsVar = "nd",
+                                labels = NULL) {
 
   if(is.null(dat$nd)) {dat$nd = 2}
 
