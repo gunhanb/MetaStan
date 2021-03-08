@@ -38,9 +38,7 @@ test_that("Results are correct for a meta-regression model.", {
   data('dat.Berkey1995', package = "MetaStan")
   ## Fitting a Binomial-Normal Hierarchical model using WIP priors
   data_converted = create_MetaStan_dat(dat = dat.Berkey1995,
-                                 armVars = c(responders = "r",
-                                             sampleSize = "n"),
-                                 nArmsVar = "nd")
+                                       armVars = c(responders = "r", sampleSize = "n"))
 
   meta.reg.stan  <- meta_stan(data = data_converted,
                               likelihood = "binomial",

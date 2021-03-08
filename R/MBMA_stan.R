@@ -171,14 +171,13 @@ MBMA_stan = function(data = NULL,
     n = data$sampleSize
   }
   if(likelihood == "normal") {
-    y = data$y_mean
-    y_se = data$y_se
+    y = data$mean
+    y_se = data$std.err
   }
   if(likelihood == "poisson") {
     count = data$count
     exposure = data$exposure
   }
-
 
   if(re == TRUE)   {re = 1}
   if(re == FALSE)  {re = 0}

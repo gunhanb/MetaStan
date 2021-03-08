@@ -2,7 +2,7 @@
 % Please edit documentation in R/convert_data_arm.R
 \name{convert_data_arm}
 \alias{convert_data_arm}
-\title{Convert contrast-based dataset to arm-based dataset}
+\title{Convert contrast-based dataset to arm-based dataset (deprecated)}
 \usage{
 convert_data_arm(nt, nc, pt, pc, pub, data = NULL)
 }
