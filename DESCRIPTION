@@ -22,7 +22,8 @@ Imports: rstan (>= 2.18.1), rstantools (>= 1.5.0), loo (>= 2.0), forestplot (>= 
 Suggests: testthat,
           knitr,
           rmarkdown,
-          ggplot2
+          ggplot2,
+          shinystan
 LinkingTo: StanHeaders (>= 2.18.0), rstan (>= 2.18.1), BH (>= 1.66.0-1),
           Rcpp (>= 0.12.17), RcppEigen (>= 0.3.3.4.0)
 SystemRequirements: GNU make

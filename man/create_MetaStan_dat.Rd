@@ -7,8 +7,7 @@
 create_MetaStan_dat(
   dat = NULL,
   armVars = c(dose = "d", responders = "r", sampleSize = "n"),
-  nArmsVar = "nd",
-  labels = NULL
+  nArmsVar = "nd"
 )
 }
 \arguments{

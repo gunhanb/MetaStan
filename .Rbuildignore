@@ -13,3 +13,5 @@ README.md
 
 ^_pkgdown\.yml$
 ^pkgdown$
+^doc$
+^Meta$

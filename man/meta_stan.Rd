@@ -91,21 +91,22 @@ an object of class `MetaStan`.
 }
 \examples{
 \dontrun{
-data('dat.Crins2014', package = "MetaStan")
-dat_MetaStan <- convert_data_arm(dat.Crins2014$exp.total, dat.Crins2014$cont.total,
-                             dat.Crins2014$exp.AR.events, dat.Crins2014$cont.AR.events)
-bnhm.Crins  <- meta_stan(data = dat_MetaStan, likelihood = "binomial",
-                         mu_prior = c(0, 10), theta_prior = c(0, 100),
-                         tau_prior =  0.5)
-print(bnhm.Crins)
-
-forestplot(bnhm.Crins)
 
 ## TB dataset
 data('dat.Berkey1995', package = "MetaStan")
 ## Fitting a Binomial-Normal Hierarchical model using WIP priors
-dat_MetaStan <- create_MetaStan_dat(dat = dat.Crins2014,
+dat_MetaStan <- create_MetaStan_dat(dat = dat.Berkey1995,
                                     armVars = c(responders = "r", sampleSize = "n"))
+
+ ma.stan  <- meta_stan(data = dat_MetaStan,
+                           likelihood = "binomial",
+                           mu_prior = c(0, 10),
+                           theta_prior = c(0, 100),
+                           tau_prior = 0.5,
+                           tau_prior_dist = "half-normal")
+print(ma.stan)
+forest_plot(ma.stan)
+
 
 meta.reg.stan  <- meta_stan(data = dat_MetaStan,
                            likelihood = "binomial",

@@ -14,3 +14,5 @@ vignettes/*.html
 vignettes/*_files
 .DS_Store
 
+doc
+Meta

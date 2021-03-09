@@ -52,6 +52,8 @@
 #' @references Boucher M, et al. The many flavors of model-based meta-analysis:
 #' Part I-Introduction and landmark data. \emph{CPT: Pharmacometrics and Systems Pharmacology}.
 #' 2016;5:54-64.
+#' @references Guenhan BK, Roever C, Friede T. MetaStan: An R package for meta-analysis
+#' and model-based meta-analysis using Stan. In preparation.
 #' @references Mawdsley D, et al. Model-based network meta-analysis: A
 #' framework for evidence synthesis of clinical trial data.
 #' \emph{CPT: Pharmacometrics and Systems Pharmacology}. 2016;5:393-401.
