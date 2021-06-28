@@ -9,6 +9,7 @@
 #' @param digits A numerical value specifying the number of significant digits to be shown.
 #' Default is 2.
 #' @param boxsize A numerical value specifying the box size. Default is 0.3.
+#' @param heterogeneity A logical value to include heterogeneity estimates (DEFAULT = TRUE)
 #' @param col A function specifying the colors. See \code{forestplot::fpColors} for details.
 #' @param ... Further arguments passed to or from other methods.
 #' @return The return value is invisible \code{NULL}.
@@ -33,6 +34,7 @@ forest_plot = function(x = NULL,
                        labels = NULL,
                        digits = 2,
                        boxsize = 0.3,
+                       heterogeneity = TRUE,
                        col,
                        ...) {
 
@@ -65,6 +67,16 @@ forest_plot = function(x = NULL,
                                   "upper"  = x$fit_sum[c("theta", "theta_pred[1]"), "97.5%"],
                                   stringsAsFactors = FALSE)
 
+  # summary estimate
+  if(heterogeneity == TRUE) {
+  summary.est <- cbind.data.frame("method" = c("Summary", "Prediction", "Heterogeneity"),
+                                  "y"      = x$fit_sum[c("theta", "theta_pred[1]", "tau[1]"), "50%"],
+                                  "lower"  = x$fit_sum[c("theta", "theta_pred[1]", "tau[1]"), "2.5%"],
+                                  "upper"  = x$fit_sum[c("theta", "theta_pred[1]", "tau[1]"), "97.5%"],
+                                  stringsAsFactors = FALSE)
+  }
+
+
 
   ################################################################################
   # specify particular summary plotting functions:
@@ -75,7 +87,7 @@ forest_plot = function(x = NULL,
                                 summary="blue")
     fpDrawPred <- function(lower_limit, estimate, upper_limit, size, col, y.offset = 0.5,...)
     {
-      forestplot::fpDrawSummaryCI(lower=lower_limit, esti=estimate, upper=upper_limit,
+      forestplot::fpDrawBarCI(lower=lower_limit, esti=estimate, upper=upper_limit,
                                   col = "purple",
                       size=size,
                       y.offset=y.offset,...)
@@ -84,7 +96,7 @@ forest_plot = function(x = NULL,
   } else {
     fpDrawPred <- function(lower_limit, estimate, upper_limit, size, col, y.offset = 0.5,...)
     {
-      forestplot::fpDrawSummaryCI(lower=lower_limit, esti=estimate, upper=upper_limit,
+      forestplot::fpDrawBarCI(lower=lower_limit, esti=estimate, upper=upper_limit,
                                   size=size,
                       y.offset=y.offset,...)
     }
@@ -119,9 +131,9 @@ forest_plot = function(x = NULL,
                                        raw.data$yi-q975*sqrt(raw.data$vi),
                                        raw.data$yi+q975*sqrt(raw.data$vi))
 
-  mlabtext[(Nstud + 2):(Nstud + 3),2] <- sprintf(format, summary.est$y)
+  mlabtext[(Nstud + 2):(Nstud + 3),2] <- sprintf(format, summary.est$y[1:2])
   mlabtext[(Nstud + 2):(Nstud + 3),3] <- sprintf(paste0("[",format,", ",format,"]"),
-                                                 summary.est$lower, summary.est$upper)
+                                                 summary.est$lower[1:2], summary.est$upper[1:2])
 
 
   horizl <- list(grid::gpar(col="black"), grid::gpar(col="darkgrey"), grid::gpar(col="black"))
@@ -142,16 +154,37 @@ forest_plot = function(x = NULL,
                          new_page = TRUE,
                          align = c("l", "c", "c"),
                          is.summary=c(TRUE, rep(FALSE,Nstud), TRUE, TRUE),
-                         mean  = c(NA, raw.data$yi, summary.est[,"y"]),
+                         mean  = c(NA, raw.data$yi, summary.est[1:2,"y"]),
                          lower = c(NA, raw.data$yi - q975 * sqrt(raw.data$vi),
-                                   summary.est[,"lower"]),
+                                   summary.est[1:2,"lower"]),
                          upper = c(NA, raw.data$yi + q975 * sqrt(raw.data$vi),
-                                   summary.est[,"upper"]),
+                                   summary.est[1:2,"upper"]),
                          graphwidth = grid::unit(80, 'mm'),
                          txt_gp = forestplot::fpTxtGp(ticks = grid::gpar(cex=1),
                                                       xlab = grid::gpar(cex=0.9)),
                          fn.ci_sum = fn.ci_sum,
                          col = col,
                          ...)
+
+  # add heterogeneity phrase at bottom left:
+  if (heterogeneity) {
+    tauFigures <- summary.est["tau[1]",c("y", "lower", "upper")]
+    tauFigures <- tauFigures[tauFigures > 0]
+    formatstring <- paste0("%.", digits, "f")
+    tauphrase <- sprintf(paste0("Heterogeneity (tau): ",formatstring,
+                                " [",formatstring,", ",formatstring,"]"),
+                         summary.est["tau[1]","y"],
+                         summary.est["tau[1]","lower"], summary.est["tau[1]","upper"])
+    grid::seekViewport("axis_margin")
+    tvp <- grid::viewport(x=grid::unit(0.0, "npc"), y=grid::unit(0.0, "npc"),
+                          width=grid::stringWidth(tauphrase),
+                          height=grid::unit(2, "lines"),
+                          just=c("left","bottom"), name="heterogeneityEstimate")
+    grid::pushViewport(tvp)
+    grid::grid.text(tauphrase, x=grid::unit(0.0, "npc"), y=grid::unit(0.5,"npc"),
+                    just=c("left", "centre"), gp=grid::gpar(fontface="oblique"))
+  }
+
+
 
 }
