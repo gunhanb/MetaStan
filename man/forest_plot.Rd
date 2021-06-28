@@ -8,7 +8,15 @@ This function is based \code{foresplot} function from \code{foresplot}
 R package.
 }
 \usage{
-forest_plot(x = NULL, labels = NULL, digits = 2, boxsize = 0.3, col, ...)
+forest_plot(
+  x = NULL,
+  labels = NULL,
+  digits = 2,
+  boxsize = 0.3,
+  heterogeneity = TRUE,
+  col,
+  ...
+)
 }
 \arguments{
 \item{x}{A \code{meta_stan} object.}
@@ -19,6 +27,8 @@ forest_plot(x = NULL, labels = NULL, digits = 2, boxsize = 0.3, col, ...)
 Default is 2.}
 
 \item{boxsize}{A numerical value specifying the box size. Default is 0.3.}
+
+\item{heterogeneity}{A logical value to include heterogeneity estimates (DEFAULT = TRUE)}
 
 \item{col}{A function specifying the colors. See \code{forestplot::fpColors} for details.}
 
