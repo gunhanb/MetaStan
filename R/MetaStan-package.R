@@ -25,13 +25,19 @@
 #' @import rstantools
 #' @import loo
 #' @importFrom forestplot forestplot
+#' @importFrom forestplot fpDrawPointCI
+#' @importFrom forestplot fpDrawSummaryCI
+#' @importFrom forestplot fpDrawBarCI
+#' @importFrom forestplot fpColors
 #' @importFrom rstan sampling
 #' @importFrom loo loo_compare
 #' @importFrom metafor escalc
 #' @importFrom stats qnorm
 #' @importFrom grid gpar
 #' @importFrom grid unit
-#'
+#' @importFrom rstan As.mcmc.list
+#' @importFrom coda mcmc.list
+#' @importFrom HDInterval hdi
 #' @references
 #' Stan Development Team (2018). RStan: the R interface to Stan. R package version 2.17.3.
 #' http://mc-stan.org

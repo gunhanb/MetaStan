@@ -23,11 +23,13 @@
 #' density for beta coefficients in a meta-regression model, first value is parameter for mean, second
 #' is for variance. Default is c(0, 100).
 #' @param likelihood A string specifying the likelihood function defining the statistical
-#' model. Options include  "normal", "binomial", and "Poisson".
+#' model. Options include  `normal`, `binomial`, and `Poisson`.
 #' @param re A string specifying whether random-effects are included to the model. When `FALSE`, the
 #' model corresponds to a fixed-effects model. The default is `TRUE`.
 #' @param ncp A string specifying whether to use a non-centered parametrization.
 #' The default is `TRUE`.
+#' @param interval.type A string specifying the type of interval estimate. Options include
+#' shortest credible interval `shortest` (default) and qui-tailed credible interval `central`.
 #' @param mreg A string specifying whether to fit a meta-regression model.
 #' The default is `FALSE`.
 #' @param cov A numeric vector or matrix specifying trial-level covariates (in each row).
@@ -97,6 +99,7 @@ meta_stan = function(data = NULL,
                      delta = NULL,
                      re = TRUE,
                      ncp = TRUE,
+                     interval.type = "shortest",
                      mreg = FALSE,
                      cov = NULL,
                      chains = 4,
@@ -253,6 +256,7 @@ meta_stan = function(data = NULL,
              stanDat = stanDat,
              Rhat.max = Rhat.max,
              N_EFF.min = N_EFF.min,
+             interval.type = interval.type,
              tau_prior_dist = tau_prior_dist)
 
   class(out) <- "meta_stan"

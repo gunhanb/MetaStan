@@ -15,6 +15,7 @@ meta_stan(
   delta = NULL,
   re = TRUE,
   ncp = TRUE,
+  interval.type = "shortest",
   mreg = FALSE,
   cov = NULL,
   chains = 4,
@@ -28,7 +29,7 @@ meta_stan(
 \item{data}{Data frame created by `create_MetaStan_dat`}
 
 \item{likelihood}{A string specifying the likelihood function defining the statistical
-model. Options include  "normal", "binomial", and "Poisson".}
+model. Options include  `normal`, `binomial`, and `Poisson`.}
 
 \item{mu_prior}{A numerical vector specifying the parameter of the normal prior
 density for baseline risks, first value is parameter for mean, second is for variance.
@@ -59,6 +60,9 @@ model corresponds to a fixed-effects model. The default is `TRUE`.}
 
 \item{ncp}{A string specifying whether to use a non-centered parametrization.
 The default is `TRUE`.}
+
+\item{interval.type}{A string specifying the type of interval estimate. Options include
+shortest credible interval `shortest` (default) and qui-tailed credible interval `central`.}
 
 \item{mreg}{A string specifying whether to fit a meta-regression model.
 The default is `FALSE`.}

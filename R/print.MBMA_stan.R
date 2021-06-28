@@ -106,8 +106,12 @@ print.MBMA_stan <- function(x, digits = 2, ...) {
 
 
   if (x$data$re == TRUE){
-    cat("Heterogeneity stdev (tau)\n")
-    print(round(x$fit_sum['tau[1]', -c(2, 3, 5, 7, 9, 10)], digits))
+ #   cat("Heterogeneity stdev (tau)\n")
+ #   print(round(x$fit_sum['tau[1]', -c(2, 3, 5, 7, 9, 10)], digits))
+    mcmc = coda::mcmc.list(rstan::As.mcmc.list(x$fit, pars = c("tau[1]")))
+    tau_int = HDInterval::hdi(mcmc, credMass = 0.95)
+    print(round(c(tau_int[1], x$fit_sum['tau[1]', "50%"], tau_int[2]), digits))
+
   }
 
   return(invisible())
