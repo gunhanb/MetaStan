@@ -21,6 +21,10 @@
 #'   \item{cont.PTLD.events}{number of PTLD events in control group}
 #'   \item{cont.deaths}{number of deaths in control group}
 #'   \item{cont.total}{number of patients in control group}
+#'   \item{r2}{number of AR events in experimental group}
+#'   \item{n1}{number of patients in control group}
+#'   \item{n2}{number of patients in experimental group}
+#'   \item{r1}{number of AR events in control group}
 #'  }
 #' @source N.D. Crins, C. Roever, A.D. Goralczyk, T. Friede. Interleukin-2
 #' receptor antagonists for pediatric liver transplant recipients:
