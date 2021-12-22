@@ -6,7 +6,7 @@ Description: Performs Bayesian meta-analysis, meta-regression and model-based me
              weakly informative priors for the heterogeneity parameter and the treatment effect 
              parameter which are described in Guenhan, Roever, and Friede (2020) <doi:10.1002/jrsm.1370>.
 Authors@R: c(person("Burak Kuersad", "Guenhan", email="burakgunhan@gmail.com", 
-             role=c("cre"), comment = c(ORCID = "0000-0002-7454-8680")),
+             role = c("aut", "cre"), comment = c(ORCID = "0000-0002-7454-8680")),
              person("Christian", "Roever", email="christian.roever@med.uni-goettingen.de", 
              role=c("aut"), comment = c(ORCID = "0000-0002-6911-698X")),
              person("Trustees of", "Columbia University", role="cph", comment="src/init.cpp, 
