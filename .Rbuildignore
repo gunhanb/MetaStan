@@ -9,7 +9,7 @@ README.md
 ^\.Rproj\.user$
 \.github/*
 ^docs$
-
+tests\testthat\For_paper.R
 
 ^_pkgdown\.yml$
 ^pkgdown$

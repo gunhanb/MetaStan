@@ -23,19 +23,12 @@
 #' @import methods
 #' @import Rcpp
 #' @import rstantools
-#' @import loo
-#' @importFrom forestplot forestplot
-#' @importFrom forestplot fpDrawPointCI
-#' @importFrom forestplot fpDrawSummaryCI
-#' @importFrom forestplot fpDrawBarCI
-#' @importFrom forestplot fpColors
-#' @importFrom rstan sampling
+#' @importFrom forestplot forestplot fpDrawPointCI fpDrawSummaryCI fpDrawBarCI fpColors
+#' @importFrom rstan sampling As.mcmc.list
 #' @importFrom loo loo_compare
 #' @importFrom metafor escalc
 #' @importFrom stats qnorm
-#' @importFrom grid gpar
-#' @importFrom grid unit
-#' @importFrom rstan As.mcmc.list
+#' @importFrom grid gpar unit
 #' @importFrom coda mcmc.list
 #' @importFrom HDInterval hdi
 #' @references

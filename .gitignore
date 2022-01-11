@@ -16,3 +16,5 @@ vignettes/*_files
 doc/
 Meta
 docs
+/doc/
+/Meta/
