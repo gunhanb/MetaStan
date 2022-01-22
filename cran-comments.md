@@ -5,7 +5,6 @@ In this submission, I have re-written some code, extend some functionalities, an
 * win-builder (devel and release)
 
 
-
 ## Re-submission
 
 This is a resubmission.
