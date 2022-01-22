@@ -1,3 +1,11 @@
+
+In this submission, I have re-written some code, extend some functionalities, and add unit tests.
+
+## Test environments
+* win-builder (devel and release)
+
+
+
 ## Re-submission
 
 This is a resubmission.

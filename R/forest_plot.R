@@ -74,9 +74,9 @@ forest_plot = function(x = NULL,
                           x$fit_sum['tau[1]', "50%"], tau_int[2]), digits), ncol = 4)
 
     summary.est <- cbind.data.frame("method" = c("Summary", "Prediction", "Heterogeneity"),
-                                    "y"      = x$fit_sum[c("theta", "theta_pred[1]"), "50%"],
-                                    "lower"  = x$fit_sum[c("theta", "theta_pred[1]"), "2.5%"],
-                                    "upper"  = x$fit_sum[c("theta", "theta_pred[1]"), "97.5%"],
+                                    "y"      = c(x$fit_sum[c("theta", "theta_pred[1]"), "50%"], temp[, 3]),
+                                    "lower"  = c(x$fit_sum[c("theta", "theta_pred[1]"), "2.5%"], temp[, 2]),
+                                    "upper"  = c(x$fit_sum[c("theta", "theta_pred[1]"), "97.5%"], temp[, 4]),
                                     stringsAsFactors = FALSE)
   }
 
@@ -174,14 +174,14 @@ forest_plot = function(x = NULL,
 
   # add heterogeneity phrase at bottom left:
   if (heterogeneity) {
-    tauFigures <- summary.est["tau[1]",c("y", "lower", "upper")]
+    tauFigures <- summary.est[3,c("y", "lower", "upper")]
     tauFigures <- tauFigures[tauFigures > 0]
     formatstring <- paste0("%.", digits, "f")
     tauphrase <- sprintf(paste0("Heterogeneity (tau): ",formatstring,
                                 " [",formatstring,", ",formatstring,"]"),
-                         summary.est["tau[1]","y"],
-                         summary.est["tau[1]","lower"],
-                         summary.est["tau[1]","upper"])
+                         summary.est[3,"y"],
+                         summary.est[3,"lower"],
+                         summary.est[3,"upper"])
 
     tvp <- grid::viewport(x=grid::unit(0.0, "npc"),
                           y=grid::unit(0.0, "npc"),

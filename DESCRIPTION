@@ -16,7 +16,7 @@ Encoding: UTF-8
 Date: 2021-12-23
 LazyData: true
 ByteCompile: true
-Depends: R (>= 3.4.0)
+Depends: R (>= 3.5.0)
 Imports: Rcpp (>= 0.12.17), methods, 
          rstan (>= 2.18.1), rstantools (>= 1.5.0), 
          loo (>= 2.0), forestplot (>= 1.6),

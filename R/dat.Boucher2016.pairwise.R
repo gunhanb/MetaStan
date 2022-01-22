@@ -9,10 +9,8 @@
 #' \describe{
 #'   \item{study}{Study ID}
 #'   \item{duration}{Durtaion of the study}
-#'   \item{d1}{dose (mg) in the first arm (placebo)}
 #'   \item{r1}{number of events in the first arm (placebo)}
 #'   \item{n1}{number of patients in the first arm (placebo)}
-#'   \item{d2}{dose (mg) in the second arm }
 #'   \item{r2}{number of events in the second arm}
 #'   \item{n2}{number of patients in the second arm}
 #'  }

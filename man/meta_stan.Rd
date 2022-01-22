@@ -13,6 +13,7 @@ meta_stan(
   tau_prior_dist = "half-normal",
   beta_prior = c(0, 100),
   delta = NULL,
+  param = "Smith",
   re = TRUE,
   ncp = TRUE,
   interval.type = "shortest",
@@ -55,14 +56,20 @@ treatment effect on odds ratio scale (\emph{Guenhan et al (2020)}). This is used
 a normal weakly informative prior.
 for theta. Thus when this argument is specified, `theta` should be left empty. Default is NULL.}
 
+\item{param}{Paramteriztaion used. The default is the `Smith` model suggested by
+Smith et al (1995). The alternative is `Higgins` is the common meta-analysis
+model (Simmonds and Higgins, 2014).}
+
 \item{re}{A string specifying whether random-effects are included to the model. When `FALSE`, the
 model corresponds to a fixed-effects model. The default is `TRUE`.}
 
 \item{ncp}{A string specifying whether to use a non-centered parametrization.
 The default is `TRUE`.}
 
-\item{interval.type}{A string specifying the type of interval estimate. Options include
-shortest credible interval `shortest` (default) and qui-tailed credible interval `central`.}
+\item{interval.type}{A string specifying the type of interval estimate. Options
+ include
+shortest credible interval `shortest` (default) and qui-tailed credible interval
+`central`.}
 
 \item{mreg}{A string specifying whether to fit a meta-regression model.
 The default is `FALSE`.}
@@ -129,7 +136,8 @@ print(meta.reg.stan)
 Guenhan BK, Roever C, Friede T. MetaStan: An R package for meta-analysis
 and model-based meta-analysis using Stan. In preparation.
 
-Guenhan BK, Roever C, Friede T. Random-effects meta-analysis of few studies involving
+Guenhan BK, Roever C, Friede T. Random-effects meta-analysis of
+few studies involving
 rare events \emph{Resarch Synthesis Methods} 2020; doi:10.1002/jrsm.1370.
 
 Jackson D, Law M, Stijnen T, Viechtbauer W, White IR. A comparison of 7

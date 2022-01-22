@@ -22,14 +22,19 @@
 #' @param beta_prior A numerical vector specifying the parameter of the normal prior
 #' density for beta coefficients in a meta-regression model, first value is parameter for mean, second
 #' is for variance. Default is c(0, 100).
+#' @param param Paramteriztaion used. The default is the `Smith` model suggested by
+#' Smith et al (1995). The alternative is `Higgins` is the common meta-analysis
+#' model (Simmonds and Higgins, 2014).
 #' @param likelihood A string specifying the likelihood function defining the statistical
 #' model. Options include  `normal`, `binomial`, and `Poisson`.
 #' @param re A string specifying whether random-effects are included to the model. When `FALSE`, the
 #' model corresponds to a fixed-effects model. The default is `TRUE`.
 #' @param ncp A string specifying whether to use a non-centered parametrization.
 #' The default is `TRUE`.
-#' @param interval.type A string specifying the type of interval estimate. Options include
-#' shortest credible interval `shortest` (default) and qui-tailed credible interval `central`.
+#' @param interval.type A string specifying the type of interval estimate. Options
+#'  include
+#' shortest credible interval `shortest` (default) and qui-tailed credible interval
+#' `central`.
 #' @param mreg A string specifying whether to fit a meta-regression model.
 #' The default is `FALSE`.
 #' @param cov A numeric vector or matrix specifying trial-level covariates (in each row).
@@ -49,7 +54,8 @@
 #' @return an object of class `MetaStan`.
 #' @references Guenhan BK, Roever C, Friede T. MetaStan: An R package for meta-analysis
 #' and model-based meta-analysis using Stan. In preparation.
-#' @references Guenhan BK, Roever C, Friede T. Random-effects meta-analysis of few studies involving
+#' @references Guenhan BK, Roever C, Friede T. Random-effects meta-analysis of
+#' few studies involving
 #' rare events \emph{Resarch Synthesis Methods} 2020; doi:10.1002/jrsm.1370.
 #' @references Jackson D, Law M, Stijnen T, Viechtbauer W, White IR. A comparison of 7
 #' random-effects models for meta-analyses that estimate the summary odds ratio.
@@ -97,6 +103,7 @@ meta_stan = function(data = NULL,
                      tau_prior_dist = "half-normal",
                      beta_prior = c(0, 100),
                      delta = NULL,
+                     param = "Smith",
                      re = TRUE,
                      ncp = TRUE,
                      interval.type = "shortest",
@@ -218,7 +225,7 @@ meta_stan = function(data = NULL,
                   ncov = ncov)
 
 
-
+  if (param == "Smith") {
   ## Fitting the model
   fit = rstan::sampling(stanmodels$SMA,
                         data = stanDat,
@@ -227,6 +234,18 @@ meta_stan = function(data = NULL,
                         warmup = warmup,
                         control = list(adapt_delta = adapt_delta),
                         ...)
+  }
+
+  if (param == "Higgins") {
+  ## Fitting the model
+  fit = rstan::sampling(stanmodels$SMA_Higgins,
+                        data = stanDat,
+                        chains = chains,
+                        iter = iter,
+                        warmup = warmup,
+                        control = list(adapt_delta = adapt_delta),
+                        ...)
+  }
 
 
   ## MODEL FINISHED
