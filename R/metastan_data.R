@@ -17,18 +17,18 @@
 #' @param labels,       # (optional) vector of row labels
 #' @param data,         # a data frame from which (some of) above variables may
 #' be taken
-#' @return A data frame with the generated columns.
-#' @note   #  NB: arguments "id", "treatment", "x", "y", "se", "v", "count",
-#' "total", "exposure", "labels"
-#'       may be taken from local environment _OR_ from "data" (data frame) argument.
-#'  The returned object is a "list" of class "MetaStanData"
+#' @return The returned object is a "list" of class "metastan_data"
 #'  containing the following elements:
-#'    - "id"        :  study identifier (a vector of type factor)
-#'    - "treatment" :  (optional) a treatment identifier (a vector of type factor, or NULL)
-#'   - "x"         :  (optional) covariable(s), (a numeric matrix, or NULL)
-#'    - "type"      :  a flag identifying the outcome type ("normal", "binomial", or "poisson")
-#'   - "outcome"   :  the actual outcome data (a two-column numeric matrix)
-#'   - "call"      :  the original function call
+#'    * "id"        :  study identifier (a vector of type factor)
+#'    * "treatment" :  (optional) a treatment identifier (a vector of type factor, or NULL)
+#'    * "x"         :  (optional) covariable(s), (a numeric matrix, or NULL)
+#'    * "type"      :  a flag identifying the outcome type ("normal", "binomial", or "poisson")
+#'    * "outcome"   :  the actual outcome data (a two-column numeric matrix)
+#'    * "call"      :  the original function call
+#' @details   NB: arguments "id", "treatment", "x", "y", "se", "v", "count",
+#' "total", "exposure", "labels"
+#'       may be taken from local environment OR from "data" (data frame) argument.
+#'
 #' @examples
 #' \dontrun{
 #' # 2 studies, normal endpoint, no treatment/control, no covariable:
@@ -252,19 +252,19 @@ metastan_data <- function(id,
                  "type"      = type,      # type of endpoint
                  "outcome"   = outcome,   # outcome data
                  "call"      = match.call(expand.dots=FALSE))
-  class(result) <- "MetaStanData"
+  class(result) <- "metastan_data"
   return(result)
 }
 
 
 
 ################################################################################
-# "print()" method for a "MetaStanData" object:
+# "print()" method for a "metastan_data" object:
 #
 
-print.MetaStanData <- function(x, n=6, ...)
+print.metastan_data <- function(x, n=6, ...)
 {
-  cat("\"MetaStanData\" object.\n")
+  cat("\"metastan_data\" object.\n")
   cat(paste0("outcome type         : \"", x$type, "\"\n"))
   cat(paste0("number of studies    : ", length(unique(x$id)), "\n"))
   cat(paste0("number of treatments : ",
