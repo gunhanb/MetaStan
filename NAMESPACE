@@ -3,6 +3,7 @@
 S3method(plot,MBMA_stan)
 S3method(print,MBMA_stan)
 S3method(print,meta_stan)
+S3method(print,metastan_data)
 export(MBMA_stan)
 export(compare_MBMA)
 export(convert_data_arm)

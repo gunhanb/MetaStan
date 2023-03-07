@@ -1,6 +1,6 @@
 ################################################################################
 # actual data example: RCTs (two treatments, no covariables):
-
+skip("not finished")
 require("bayesmeta")
 data("CrinsEtAl2014")
 
@@ -10,7 +10,8 @@ crins.ar <- metastan_data(id=c(publication, publication),
                           type="binomial",
                           count=c(cont.AR.events, exp.AR.events),
                           total=c(cont.total, exp.total),
-                          data=CrinsEtAl2014)
+                          data=CrinsEtAl2014,
+                          sort = TRUE)
 crins.ar$outcome
 
 

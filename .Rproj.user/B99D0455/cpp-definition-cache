@@ -1,0 +1,497 @@
+[
+    {
+        "file": "/Users/guenhan/MetaStan/inst/include/stan_meta_header.hpp",
+        "file_last_write": 1678100520.0,
+        "definitions": [],
+        "hidden": false
+    },
+    {
+        "file": "/Users/guenhan/MetaStan/src/stanExports_MBMA.cc",
+        "file_last_write": 1678101080.0,
+        "definitions": [],
+        "hidden": false
+    },
+    {
+        "file": "/Users/guenhan/MetaStan/src/stanExports_MBMA.h",
+        "file_last_write": 1678101080.0,
+        "definitions": [
+            {
+                "usr": "c:@N@model_MBMA_namespace@F@prog_reader__#",
+                "kind": 6,
+                "parent_name": "",
+                "name": "prog_reader__",
+                "file": "/Users/guenhan/MetaStan/src/stanExports_MBMA.h",
+                "line": 33,
+                "column": 26,
+                "hidden": false
+            },
+            {
+                "usr": "c:@N@model_MBMA_namespace@S@model_MBMA",
+                "kind": 2,
+                "parent_name": "",
+                "name": "model_MBMA",
+                "file": "/Users/guenhan/MetaStan/src/stanExports_MBMA.h",
+                "line": 40,
+                "column": 7,
+                "hidden": false
+            },
+            {
+                "usr": "c:@N@model_MBMA_namespace@S@model_MBMA@F@ctor_body#&$@N@stan@N@io@S@var_context#i#*$@N@std@N@__1@S@basic_ostream>#C#$@N@std@N@__1@S@char_traits>#C#",
+                "kind": 7,
+                "parent_name": "model_MBMA",
+                "name": "ctor_body(stan::io::var_context &, unsigned int, std::ostream *)",
+                "file": "/Users/guenhan/MetaStan/src/stanExports_MBMA.h",
+                "line": 84,
+                "column": 10,
+                "hidden": false
+            },
+            {
+                "usr": "c:@N@model_MBMA_namespace@S@model_MBMA@F@transform_inits#&1$@N@stan@N@io@S@var_context#&I#S2_#*$@N@std@N@__1@S@basic_ostream>#C#$@N@std@N@__1@S@char_traits>#C#1",
+                "kind": 7,
+                "parent_name": "model_MBMA",
+                "name": "transform_inits(const stan::io::var_context &, int &, int &, std::ostream *)",
+                "file": "/Users/guenhan/MetaStan/src/stanExports_MBMA.h",
+                "line": 442,
+                "column": 10,
+                "hidden": false
+            },
+            {
+                "usr": "c:@N@model_MBMA_namespace@S@model_MBMA@F@transform_inits#&1$@N@stan@N@io@S@var_context#&I#*$@N@std@N@__1@S@basic_ostream>#C#$@N@std@N@__1@S@char_traits>#C#1",
+                "kind": 7,
+                "parent_name": "model_MBMA",
+                "name": "transform_inits(const stan::io::var_context &, int &, std::ostream *)",
+                "file": "/Users/guenhan/MetaStan/src/stanExports_MBMA.h",
+                "line": 562,
+                "column": 10,
+                "hidden": false
+            },
+            {
+                "usr": "c:@N@model_MBMA_namespace@S@model_MBMA@FT@>3#Nb#Nb#Tlog_prob#&I#S0_#*$@N@std@N@__1@S@basic_ostream>#C#$@N@std@N@__1@S@char_traits>#C#t0.2#1",
+                "kind": 6,
+                "parent_name": "",
+                "name": "log_prob(int &, int &, std::ostream *)",
+                "file": "/Users/guenhan/MetaStan/src/stanExports_MBMA.h",
+                "line": 573,
+                "column": 9,
+                "hidden": false
+            },
+            {
+                "usr": "c:@N@model_MBMA_namespace@S@model_MBMA@FT@>3#Nb#Nb#Tlog_prob#&I#*$@N@std@N@__1@S@basic_ostream>#C#$@N@std@N@__1@S@char_traits>#C#t0.2#1",
+                "kind": 6,
+                "parent_name": "",
+                "name": "log_prob(int &, std::ostream *)",
+                "file": "/Users/guenhan/MetaStan/src/stanExports_MBMA.h",
+                "line": 978,
+                "column": 8,
+                "hidden": false
+            },
+            {
+                "usr": "c:@N@model_MBMA_namespace@S@model_MBMA@F@get_param_names#&I#1",
+                "kind": 7,
+                "parent_name": "model_MBMA",
+                "name": "get_param_names(int &)",
+                "file": "/Users/guenhan/MetaStan/src/stanExports_MBMA.h",
+                "line": 987,
+                "column": 10,
+                "hidden": false
+            },
+            {
+                "usr": "c:@N@model_MBMA_namespace@S@model_MBMA@F@get_dims#&I#1",
+                "kind": 7,
+                "parent_name": "model_MBMA",
+                "name": "get_dims(int &)",
+                "file": "/Users/guenhan/MetaStan/src/stanExports_MBMA.h",
+                "line": 1008,
+                "column": 10,
+                "hidden": false
+            },
+            {
+                "usr": "c:@N@model_MBMA_namespace@S@model_MBMA@FT@>1#Twrite_array#&t0.0#&I#S2_#S2_#b#b#*$@N@std@N@__1@S@basic_ostream>#C#$@N@std@N@__1@S@char_traits>#C#v#1",
+                "kind": 6,
+                "parent_name": "",
+                "name": "write_array(RNG &, int &, int &, int &, bool, bool, std::ostream *)",
+                "file": "/Users/guenhan/MetaStan/src/stanExports_MBMA.h",
+                "line": 1067,
+                "column": 10,
+                "hidden": false
+            },
+            {
+                "usr": "c:@N@model_MBMA_namespace@S@model_MBMA@FT@>1#Twrite_array#&t0.0#&I#S2_#b#b#*$@N@std@N@__1@S@basic_ostream>#C#$@N@std@N@__1@S@char_traits>#C#v#1",
+                "kind": 6,
+                "parent_name": "",
+                "name": "write_array(RNG &, int &, int &, bool, bool, std::ostream *)",
+                "file": "/Users/guenhan/MetaStan/src/stanExports_MBMA.h",
+                "line": 1499,
+                "column": 10,
+                "hidden": false
+            },
+            {
+                "usr": "c:@N@model_MBMA_namespace@S@model_MBMA@F@model_name#1",
+                "kind": 7,
+                "parent_name": "model_MBMA",
+                "name": "model_name",
+                "file": "/Users/guenhan/MetaStan/src/stanExports_MBMA.h",
+                "line": 1515,
+                "column": 17,
+                "hidden": false
+            },
+            {
+                "usr": "c:@N@model_MBMA_namespace@S@model_MBMA@F@constrained_param_names#&I#b#b#1",
+                "kind": 7,
+                "parent_name": "model_MBMA",
+                "name": "constrained_param_names(int &, bool, bool)",
+                "file": "/Users/guenhan/MetaStan/src/stanExports_MBMA.h",
+                "line": 1518,
+                "column": 10,
+                "hidden": false
+            },
+            {
+                "usr": "c:@N@model_MBMA_namespace@S@model_MBMA@F@unconstrained_param_names#&I#b#b#1",
+                "kind": 7,
+                "parent_name": "model_MBMA",
+                "name": "unconstrained_param_names(int &, bool, bool)",
+                "file": "/Users/guenhan/MetaStan/src/stanExports_MBMA.h",
+                "line": 1635,
+                "column": 10,
+                "hidden": false
+            },
+            {
+                "usr": "c:stanExports_MBMA.h@T@stan_model",
+                "kind": 8,
+                "parent_name": "",
+                "name": "stan_model",
+                "file": "/Users/guenhan/MetaStan/src/stanExports_MBMA.h",
+                "line": 1751,
+                "column": 42,
+                "hidden": false
+            }
+        ],
+        "hidden": false
+    },
+    {
+        "file": "/Users/guenhan/MetaStan/src/stanExports_SMA.cc",
+        "file_last_write": 1678101080.0,
+        "definitions": [],
+        "hidden": false
+    },
+    {
+        "file": "/Users/guenhan/MetaStan/src/stanExports_SMA.h",
+        "file_last_write": 1678101080.0,
+        "definitions": [
+            {
+                "usr": "c:@N@model_SMA_namespace@F@prog_reader__#",
+                "kind": 6,
+                "parent_name": "",
+                "name": "prog_reader__",
+                "file": "/Users/guenhan/MetaStan/src/stanExports_SMA.h",
+                "line": 33,
+                "column": 26,
+                "hidden": false
+            },
+            {
+                "usr": "c:@N@model_SMA_namespace@S@model_SMA",
+                "kind": 2,
+                "parent_name": "",
+                "name": "model_SMA",
+                "file": "/Users/guenhan/MetaStan/src/stanExports_SMA.h",
+                "line": 40,
+                "column": 7,
+                "hidden": false
+            },
+            {
+                "usr": "c:@N@model_SMA_namespace@S@model_SMA@F@ctor_body#&$@N@stan@N@io@S@var_context#i#*$@N@std@N@__1@S@basic_ostream>#C#$@N@std@N@__1@S@char_traits>#C#",
+                "kind": 7,
+                "parent_name": "model_SMA",
+                "name": "ctor_body(stan::io::var_context &, unsigned int, std::ostream *)",
+                "file": "/Users/guenhan/MetaStan/src/stanExports_SMA.h",
+                "line": 75,
+                "column": 10,
+                "hidden": false
+            },
+            {
+                "usr": "c:@N@model_SMA_namespace@S@model_SMA@F@transform_inits#&1$@N@stan@N@io@S@var_context#&I#S2_#*$@N@std@N@__1@S@basic_ostream>#C#$@N@std@N@__1@S@char_traits>#C#1",
+                "kind": 7,
+                "parent_name": "model_SMA",
+                "name": "transform_inits(const stan::io::var_context &, int &, int &, std::ostream *)",
+                "file": "/Users/guenhan/MetaStan/src/stanExports_SMA.h",
+                "line": 320,
+                "column": 10,
+                "hidden": false
+            },
+            {
+                "usr": "c:@N@model_SMA_namespace@S@model_SMA@F@transform_inits#&1$@N@stan@N@io@S@var_context#&I#*$@N@std@N@__1@S@basic_ostream>#C#$@N@std@N@__1@S@char_traits>#C#1",
+                "kind": 7,
+                "parent_name": "model_SMA",
+                "name": "transform_inits(const stan::io::var_context &, int &, std::ostream *)",
+                "file": "/Users/guenhan/MetaStan/src/stanExports_SMA.h",
+                "line": 431,
+                "column": 10,
+                "hidden": false
+            },
+            {
+                "usr": "c:@N@model_SMA_namespace@S@model_SMA@FT@>3#Nb#Nb#Tlog_prob#&I#S0_#*$@N@std@N@__1@S@basic_ostream>#C#$@N@std@N@__1@S@char_traits>#C#t0.2#1",
+                "kind": 6,
+                "parent_name": "",
+                "name": "log_prob(int &, int &, std::ostream *)",
+                "file": "/Users/guenhan/MetaStan/src/stanExports_SMA.h",
+                "line": 442,
+                "column": 9,
+                "hidden": false
+            },
+            {
+                "usr": "c:@N@model_SMA_namespace@S@model_SMA@FT@>3#Nb#Nb#Tlog_prob#&I#*$@N@std@N@__1@S@basic_ostream>#C#$@N@std@N@__1@S@char_traits>#C#t0.2#1",
+                "kind": 6,
+                "parent_name": "",
+                "name": "log_prob(int &, std::ostream *)",
+                "file": "/Users/guenhan/MetaStan/src/stanExports_SMA.h",
+                "line": 723,
+                "column": 8,
+                "hidden": false
+            },
+            {
+                "usr": "c:@N@model_SMA_namespace@S@model_SMA@F@get_param_names#&I#1",
+                "kind": 7,
+                "parent_name": "model_SMA",
+                "name": "get_param_names(int &)",
+                "file": "/Users/guenhan/MetaStan/src/stanExports_SMA.h",
+                "line": 732,
+                "column": 10,
+                "hidden": false
+            },
+            {
+                "usr": "c:@N@model_SMA_namespace@S@model_SMA@F@get_dims#&I#1",
+                "kind": 7,
+                "parent_name": "model_SMA",
+                "name": "get_dims(int &)",
+                "file": "/Users/guenhan/MetaStan/src/stanExports_SMA.h",
+                "line": 745,
+                "column": 10,
+                "hidden": false
+            },
+            {
+                "usr": "c:@N@model_SMA_namespace@S@model_SMA@FT@>1#Twrite_array#&t0.0#&I#S2_#S2_#b#b#*$@N@std@N@__1@S@basic_ostream>#C#$@N@std@N@__1@S@char_traits>#C#v#1",
+                "kind": 6,
+                "parent_name": "",
+                "name": "write_array(RNG &, int &, int &, int &, bool, bool, std::ostream *)",
+                "file": "/Users/guenhan/MetaStan/src/stanExports_SMA.h",
+                "line": 781,
+                "column": 10,
+                "hidden": false
+            },
+            {
+                "usr": "c:@N@model_SMA_namespace@S@model_SMA@FT@>1#Twrite_array#&t0.0#&I#S2_#b#b#*$@N@std@N@__1@S@basic_ostream>#C#$@N@std@N@__1@S@char_traits>#C#v#1",
+                "kind": 6,
+                "parent_name": "",
+                "name": "write_array(RNG &, int &, int &, bool, bool, std::ostream *)",
+                "file": "/Users/guenhan/MetaStan/src/stanExports_SMA.h",
+                "line": 1058,
+                "column": 10,
+                "hidden": false
+            },
+            {
+                "usr": "c:@N@model_SMA_namespace@S@model_SMA@F@model_name#1",
+                "kind": 7,
+                "parent_name": "model_SMA",
+                "name": "model_name",
+                "file": "/Users/guenhan/MetaStan/src/stanExports_SMA.h",
+                "line": 1074,
+                "column": 17,
+                "hidden": false
+            },
+            {
+                "usr": "c:@N@model_SMA_namespace@S@model_SMA@F@constrained_param_names#&I#b#b#1",
+                "kind": 7,
+                "parent_name": "model_SMA",
+                "name": "constrained_param_names(int &, bool, bool)",
+                "file": "/Users/guenhan/MetaStan/src/stanExports_SMA.h",
+                "line": 1077,
+                "column": 10,
+                "hidden": false
+            },
+            {
+                "usr": "c:@N@model_SMA_namespace@S@model_SMA@F@unconstrained_param_names#&I#b#b#1",
+                "kind": 7,
+                "parent_name": "model_SMA",
+                "name": "unconstrained_param_names(int &, bool, bool)",
+                "file": "/Users/guenhan/MetaStan/src/stanExports_SMA.h",
+                "line": 1149,
+                "column": 10,
+                "hidden": false
+            },
+            {
+                "usr": "c:stanExports_SMA.h@T@stan_model",
+                "kind": 8,
+                "parent_name": "",
+                "name": "stan_model",
+                "file": "/Users/guenhan/MetaStan/src/stanExports_SMA.h",
+                "line": 1223,
+                "column": 40,
+                "hidden": false
+            }
+        ],
+        "hidden": false
+    },
+    {
+        "file": "/Users/guenhan/MetaStan/src/stanExports_SMA_Higgins.cc",
+        "file_last_write": 1678101080.0,
+        "definitions": [],
+        "hidden": false
+    },
+    {
+        "file": "/Users/guenhan/MetaStan/src/stanExports_SMA_Higgins.h",
+        "file_last_write": 1678101080.0,
+        "definitions": [
+            {
+                "usr": "c:@N@model_SMA_Higgins_namespace@F@prog_reader__#",
+                "kind": 6,
+                "parent_name": "",
+                "name": "prog_reader__",
+                "file": "/Users/guenhan/MetaStan/src/stanExports_SMA_Higgins.h",
+                "line": 33,
+                "column": 26,
+                "hidden": false
+            },
+            {
+                "usr": "c:@N@model_SMA_Higgins_namespace@S@model_SMA_Higgins",
+                "kind": 2,
+                "parent_name": "",
+                "name": "model_SMA_Higgins",
+                "file": "/Users/guenhan/MetaStan/src/stanExports_SMA_Higgins.h",
+                "line": 40,
+                "column": 7,
+                "hidden": false
+            },
+            {
+                "usr": "c:@N@model_SMA_Higgins_namespace@S@model_SMA_Higgins@F@ctor_body#&$@N@stan@N@io@S@var_context#i#*$@N@std@N@__1@S@basic_ostream>#C#$@N@std@N@__1@S@char_traits>#C#",
+                "kind": 7,
+                "parent_name": "model_SMA_Higgins",
+                "name": "ctor_body(stan::io::var_context &, unsigned int, std::ostream *)",
+                "file": "/Users/guenhan/MetaStan/src/stanExports_SMA_Higgins.h",
+                "line": 75,
+                "column": 10,
+                "hidden": false
+            },
+            {
+                "usr": "c:@N@model_SMA_Higgins_namespace@S@model_SMA_Higgins@F@transform_inits#&1$@N@stan@N@io@S@var_context#&I#S2_#*$@N@std@N@__1@S@basic_ostream>#C#$@N@std@N@__1@S@char_traits>#C#1",
+                "kind": 7,
+                "parent_name": "model_SMA_Higgins",
+                "name": "transform_inits(const stan::io::var_context &, int &, int &, std::ostream *)",
+                "file": "/Users/guenhan/MetaStan/src/stanExports_SMA_Higgins.h",
+                "line": 320,
+                "column": 10,
+                "hidden": false
+            },
+            {
+                "usr": "c:@N@model_SMA_Higgins_namespace@S@model_SMA_Higgins@F@transform_inits#&1$@N@stan@N@io@S@var_context#&I#*$@N@std@N@__1@S@basic_ostream>#C#$@N@std@N@__1@S@char_traits>#C#1",
+                "kind": 7,
+                "parent_name": "model_SMA_Higgins",
+                "name": "transform_inits(const stan::io::var_context &, int &, std::ostream *)",
+                "file": "/Users/guenhan/MetaStan/src/stanExports_SMA_Higgins.h",
+                "line": 431,
+                "column": 10,
+                "hidden": false
+            },
+            {
+                "usr": "c:@N@model_SMA_Higgins_namespace@S@model_SMA_Higgins@FT@>3#Nb#Nb#Tlog_prob#&I#S0_#*$@N@std@N@__1@S@basic_ostream>#C#$@N@std@N@__1@S@char_traits>#C#t0.2#1",
+                "kind": 6,
+                "parent_name": "",
+                "name": "log_prob(int &, int &, std::ostream *)",
+                "file": "/Users/guenhan/MetaStan/src/stanExports_SMA_Higgins.h",
+                "line": 442,
+                "column": 9,
+                "hidden": false
+            },
+            {
+                "usr": "c:@N@model_SMA_Higgins_namespace@S@model_SMA_Higgins@FT@>3#Nb#Nb#Tlog_prob#&I#*$@N@std@N@__1@S@basic_ostream>#C#$@N@std@N@__1@S@char_traits>#C#t0.2#1",
+                "kind": 6,
+                "parent_name": "",
+                "name": "log_prob(int &, std::ostream *)",
+                "file": "/Users/guenhan/MetaStan/src/stanExports_SMA_Higgins.h",
+                "line": 723,
+                "column": 8,
+                "hidden": false
+            },
+            {
+                "usr": "c:@N@model_SMA_Higgins_namespace@S@model_SMA_Higgins@F@get_param_names#&I#1",
+                "kind": 7,
+                "parent_name": "model_SMA_Higgins",
+                "name": "get_param_names(int &)",
+                "file": "/Users/guenhan/MetaStan/src/stanExports_SMA_Higgins.h",
+                "line": 732,
+                "column": 10,
+                "hidden": false
+            },
+            {
+                "usr": "c:@N@model_SMA_Higgins_namespace@S@model_SMA_Higgins@F@get_dims#&I#1",
+                "kind": 7,
+                "parent_name": "model_SMA_Higgins",
+                "name": "get_dims(int &)",
+                "file": "/Users/guenhan/MetaStan/src/stanExports_SMA_Higgins.h",
+                "line": 745,
+                "column": 10,
+                "hidden": false
+            },
+            {
+                "usr": "c:@N@model_SMA_Higgins_namespace@S@model_SMA_Higgins@FT@>1#Twrite_array#&t0.0#&I#S2_#S2_#b#b#*$@N@std@N@__1@S@basic_ostream>#C#$@N@std@N@__1@S@char_traits>#C#v#1",
+                "kind": 6,
+                "parent_name": "",
+                "name": "write_array(RNG &, int &, int &, int &, bool, bool, std::ostream *)",
+                "file": "/Users/guenhan/MetaStan/src/stanExports_SMA_Higgins.h",
+                "line": 781,
+                "column": 10,
+                "hidden": false
+            },
+            {
+                "usr": "c:@N@model_SMA_Higgins_namespace@S@model_SMA_Higgins@FT@>1#Twrite_array#&t0.0#&I#S2_#b#b#*$@N@std@N@__1@S@basic_ostream>#C#$@N@std@N@__1@S@char_traits>#C#v#1",
+                "kind": 6,
+                "parent_name": "",
+                "name": "write_array(RNG &, int &, int &, bool, bool, std::ostream *)",
+                "file": "/Users/guenhan/MetaStan/src/stanExports_SMA_Higgins.h",
+                "line": 1058,
+                "column": 10,
+                "hidden": false
+            },
+            {
+                "usr": "c:@N@model_SMA_Higgins_namespace@S@model_SMA_Higgins@F@model_name#1",
+                "kind": 7,
+                "parent_name": "model_SMA_Higgins",
+                "name": "model_name",
+                "file": "/Users/guenhan/MetaStan/src/stanExports_SMA_Higgins.h",
+                "line": 1074,
+                "column": 17,
+                "hidden": false
+            },
+            {
+                "usr": "c:@N@model_SMA_Higgins_namespace@S@model_SMA_Higgins@F@constrained_param_names#&I#b#b#1",
+                "kind": 7,
+                "parent_name": "model_SMA_Higgins",
+                "name": "constrained_param_names(int &, bool, bool)",
+                "file": "/Users/guenhan/MetaStan/src/stanExports_SMA_Higgins.h",
+                "line": 1077,
+                "column": 10,
+                "hidden": false
+            },
+            {
+                "usr": "c:@N@model_SMA_Higgins_namespace@S@model_SMA_Higgins@F@unconstrained_param_names#&I#b#b#1",
+                "kind": 7,
+                "parent_name": "model_SMA_Higgins",
+                "name": "unconstrained_param_names(int &, bool, bool)",
+                "file": "/Users/guenhan/MetaStan/src/stanExports_SMA_Higgins.h",
+                "line": 1149,
+                "column": 10,
+                "hidden": false
+            },
+            {
+                "usr": "c:stanExports_SMA_Higgins.h@T@stan_model",
+                "kind": 8,
+                "parent_name": "",
+                "name": "stan_model",
+                "file": "/Users/guenhan/MetaStan/src/stanExports_SMA_Higgins.h",
+                "line": 1223,
+                "column": 56,
+                "hidden": false
+            }
+        ],
+        "hidden": false
+    }
+]

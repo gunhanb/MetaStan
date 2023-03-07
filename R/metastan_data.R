@@ -4,19 +4,19 @@
 #'
 #' The resulting data.frame can be used as data argument in \code{meta_stan}.
 #'
-#' @param id           # a vector of study IDs (labels)
-#' @param treatment    # (optional) vector indicating treatment groups
-#' @param x            # (optional) covariable/regressor vector or matrix
-#' @param type         # type of outcome
-#' @param y            # estimates (for normal outcomes)
-#' @param se           # associated standard errors (normal outcomes)
-#' @param v            # variances / squared standard errors (normal outcomes)
-#' @param count        # event count (for binomial or Poisson outcomes)
-#' @param total        # sample size (for binomial outcomes)
-#' @param exposure     # exposure (for Poisson outcomes)
-#' @param labels       # (optional) vector of row labels
-#' @param data         # a data frame from which (some of) above variables may be taken
-#' @param tidy         # if TRUE (the default), output rows will be sorted (keeping entries corresponding to the same study ("id") next to each other, and sorting by "treatment" and "x")
+#' @param id           a vector of study IDs (labels)
+#' @param treatment    (optional) vector indicating treatment groups
+#' @param x            (optional) covariable/regressor vector or matrix
+#' @param type         type of outcome
+#' @param y            estimates (for normal outcomes)
+#' @param se           associated standard errors (normal outcomes)
+#' @param v            variances / squared standard errors (normal outcomes)
+#' @param count        event count (for binomial or Poisson outcomes)
+#' @param total        sample size (for binomial outcomes)
+#' @param exposure     exposure (for Poisson outcomes)
+#' @param labels       (optional) vector of row labels
+#' @param data         a data frame from which (some of) above variables may be taken
+#' @param sort         if TRUE (the default), output rows will be sorted (keeping entries corresponding to the same study ("id") next to each other, and sorting by "treatment" and "x")
 #' @return The returned object is a "list" of class "metastan_data"
 #'  containing the following elements:
 #'    * "id"        :  study identifier (a vector of type factor)
@@ -47,13 +47,15 @@ metastan_data <- function(id,
                           treatment,
                           x,
                           type = c("normal", "binomial", "poisson"),
-                          y, se, v,     # for normal outcomes
-                          count, total, # for binomial outcomes (event count, sample size)
+                          y,
+                          se,
+                          v,     # for normal outcomes
+                          count,
+                          total, # for binomial outcomes (event count, sample size)
                           exposure,     # for Poisson outcomes (count, exposure)
                           labels,       # (optional) vector of row labels
                           data,         # a data frame from which (some of) above variables may be taken
-                          tidy=TRUE,
-                          checkForConflicts=TRUE)
+                          sort = TRUE)
 {
   ##############################
   # gather data from arguments;
@@ -92,7 +94,7 @@ metastan_data <- function(id,
   labels <- eval(mc.labels, data, enclos=sys.frame(sys.parent()))
   ###################################
   # check for (potential) conflicts:
-  if (dataArg & checkForConflicts) {
+  if (dataArg) {
     dataName <- deparse(substitute(data))
     id2 <- try(eval(mc.id), silent=TRUE)
     if ((!is.element("try-error", class(id2))) && (!identical(id, id2)))
@@ -146,7 +148,7 @@ metastan_data <- function(id,
   stopifnot(!is.null(id), is.vector(id), length(id)>0)
   if (!is.null(treatment))
     stopifnot(is.vector(treatment), (length(treatment)==length(id)))
-  stopifnot(is.vector(tidy), is.logical(tidy), length(tidy)==1, !is.na(tidy))
+  stopifnot(is.vector(sort), is.logical(sort), length(sort)==1, !is.na(sort))
   # process outcome data:
   if (type=="binomial") { # (proper binomial counts & totals required)
     stopifnot(!is.null(count) & !is.null(total),
@@ -219,7 +221,7 @@ metastan_data <- function(id,
   } else { # (the default)
     x <- NULL
   }
-  if (tidy) { # sort output rows sensibly:
+  if (sort) { # sort output rows sensibly:
     # create a "sorted ID" vector (in order to keep studies "in order of appearance"):
     sortedID <- factor(id, levels=as.character(unique(id)))
     if (!is.null(treatment)) {
@@ -285,10 +287,7 @@ metastan_data <- function(id,
 
 
 
-################################################################################
-# "print()" method for a "metastan_data" object:
-#
-
+#' @export
 print.metastan_data <- function(x, n=6, ...)
 {
   cat("\"metastan_data\" object.\n")
@@ -316,6 +315,6 @@ print.metastan_data <- function(x, n=6, ...)
   }
   dat <- cbind.data.frame(dat, x$outcome)
   rownames(dat) <- NULL
-  print(head(dat, n=n))
+  print(head(dat, n=n), ...)
   invisible(x)
 }

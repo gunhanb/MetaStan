@@ -17,31 +17,46 @@ metastan_data(
   exposure,
   labels,
   data,
+  sort = TRUE,
   checkForConflicts = TRUE
 )
 }
 \arguments{
-\item{id, }{# study IDs}
+\item{id}{a vector of study IDs (labels)}
 
-\item{treatment, }{# (optional) vector indicating treatment groups}
+\item{treatment}{(optional) vector indicating treatment groups}
 
-\item{x, }{# (optional) regressor vector or matrix}
+\item{x}{(optional) covariable/regressor vector or matrix}
 
-\item{v, }{# for normal outcomes}
+\item{type}{type of outcome}
 
-\item{total, }{# for binomial outcomes (event count, sample size)}
+\item{y}{estimates (for normal outcomes)}
 
-\item{exposure, }{# for Poisson outcomes (count, exposure)}
+\item{se}{associated standard errors (normal outcomes)}
 
-\item{labels, }{# (optional) vector of row labels}
+\item{v}{variances / squared standard errors (normal outcomes)}
 
-\item{data, }{# a data frame from which (some of) above variables may
-be taken}
+\item{count}{event count (for binomial or Poisson outcomes)}
 
-\item{type=c("normal", }{"binomial", "poisson"), # type of outcome}
+\item{total}{sample size (for binomial outcomes)}
+
+\item{exposure}{exposure (for Poisson outcomes)}
+
+\item{labels}{(optional) vector of row labels}
+
+\item{data}{a data frame from which (some of) above variables may be taken}
+
+\item{sort}{if TRUE (the default), output rows will be sorted (keeping entries corresponding to the same study ("id") next to each other, and sorting by "treatment" and "x")}
 }
 \value{
-A data frame with the generated columns.
+The returned object is a "list" of class "metastan_data"
+ containing the following elements:
+   * "id"        :  study identifier (a vector of type factor)
+   * "treatment" :  (optional) a treatment identifier (a vector of type factor, or NULL)
+   * "x"         :  (optional) covariable(s), (a numeric matrix, or NULL)
+   * "type"      :  a flag identifying the outcome type ("normal", "binomial", or "poisson")
+   * "outcome"   :  the actual outcome data (a two-column numeric matrix)
+   * "call"      :  the original function call
 }
 \description{
 \code{metastan_data} creates datasets suitable for meta_stan function
@@ -52,24 +67,18 @@ The resulting data.frame can be used as data argument in \code{meta_stan}.
   NB: arguments "id", "treatment", "x", "y", "se", "v", "count",
 "total", "exposure", "labels"
       may be taken from local environment OR from "data" (data frame) argument.
- The returned object is a "list" of class "metastan_data"
- containing the following elements:
-   - "id"        :  study identifier (a vector of type factor)
-   - "treatment" :  (optional) a treatment identifier (a vector of type factor, or NULL)
-  - "x"         :  (optional) covariable(s), (a numeric matrix, or NULL)
-   - "type"      :  a flag identifying the outcome type ("normal", "binomial", or "poisson")
-  - "outcome"   :  the actual outcome data (a two-column numeric matrix)
-  - "call"      :  the original function call
 }
 \examples{
-\dontrun{
-# 2 studies, normal endpoint, no treatment/control, no covariable:
-xx <- metastan_data(id=c("Mueller","Mueller", "Meier","Meier","Meier"),
-                   type="normal",
-                   y=c(1,2,3,3,4),
-                   se=c(1,1,2,2,2))
-xx
-# check out the actual "plain" returned object
-print.default(xx)
-}
+# 3 studies, binomial endpoint, one covariable (named "dose"):
+msd <- metastan_data(id=c("Smith","Smith", "Taylor","Taylor",
+                          "Jones", "Jones","Taylor"),
+                     treatment=c("placebo","verum","placebo","verum",
+                                 "verum","placebo","verum"),
+                     type="binomial",
+                     count=c(3, 2, 7, 5, 4, 5, 6),
+                     total=c(10, 10, 25, 27, 15, 16, 23),
+                     x=cbind("dose"=c(0, 50, 0, 50, 30, 0, 20)))
+msd
+print(msd, n=7)     # (show all 7 lines of data)
+print.default(msd)  # default view of returned object
 }
