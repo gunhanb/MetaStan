@@ -9,6 +9,7 @@ src/*.cc
 src/*.cpp
 src/*.dll
 src/*.o
+src/
 vignettes/*.R
 vignettes/*.html
 vignettes/*_files
