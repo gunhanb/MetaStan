@@ -13,7 +13,7 @@ data {
   vector[Nobs] t;
 
   // Study number for each observation
-  int<lower=1> st[Nobs];
+  array[Nobs] int<lower=1> st;
 
   // link function (1=normal, 2=binary, 3=poisson)
   int<lower=1,upper=3> link;
@@ -23,12 +23,12 @@ data {
   vector[Nobs] y_se;
 
   // binomial data, link=logit=2
-  int<lower=0>  r[Nobs];
-  int<lower=1>  n[Nobs];
+  array[Nobs] int<lower=0>  r;
+  array[Nobs] int<lower=1>  n;
 
 
   // count data, link=log=3
-  int<lower=0> count[Nobs];
+  array[Nobs] int<lower=0> count;
   vector[Nobs]    exposure;
 
   // Priors
@@ -58,9 +58,9 @@ data {
 parameters {
   vector[Nobs] mu;                             // baseline risks (log odds)
   real theta;                               // relative treatment effect (log odds ratio)
-  vector[Nobs] u[re];                          // individual treatment effects
-  real<lower=0> tau[re];                        // heterogeneity stdev.
-  vector[ncov] beta[mreg];                      // beta coeffients in meta-regression
+  array[re] vector[Nobs] u;                          // individual treatment effects
+  array[re] real<lower=0> tau;                        // heterogeneity stdev.
+  array[mreg] vector[ncov] beta;                      // beta coeffients in meta-regression
 }
 
 transformed parameters {
@@ -159,7 +159,7 @@ model {
 
 generated quantities {
   vector[Nobs] log_lik;                // pointwise log-likelihood contribution
-  real theta_pred[re];                 // predicted log-odds ratio for the new study
+  array[re] real theta_pred;                 // predicted log-odds ratio for the new study
 
 
   for (s in 1:Nobs) {
