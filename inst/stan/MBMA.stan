@@ -12,14 +12,14 @@ data {
   int<lower=1> Nst;
 
   // Study number for each arm
-  int<lower=1> st[Nobs];
+  array[Nobs] int<lower=1> st;
 
   // Dose amount for each arm
-  real<lower=0> dose[Nobs];
+  array[Nobs] real<lower=0> dose;
 
 
   // num doses in each trial
-  int<lower=1> ndose[Nst];
+  array[Nst] int<lower=1> ndose;
 
   // link function (1=normal, 2=binary, 3=poisson)
   int<lower=1,upper=3> link;
@@ -32,11 +32,11 @@ data {
   vector[Nobs] y_se;
 
   // binomial data, link=logit=2
-  int<lower=0>  r[Nobs];
-  int<lower=1>  n[Nobs];
+  array[Nobs] int<lower=0>  r;
+  array[Nobs] int<lower=1>  n;
 
   // count data, link=log=3
-  int<lower=0> count[Nobs];
+  array[Nobs] int<lower=0> count;
   vector[Nobs]    exposure;
 
   // Priors
@@ -53,13 +53,13 @@ data {
   int<lower=1> Npred;
 
   // Prediction points in the dose-response curve
-  real Pred_doses[Npred];
+  array[Npred] real Pred_doses;
 
   //  Indicator for placebo arm
-  int<lower=1> b_ndx[Nst];
+  array[Nst] int<lower=1> b_ndx;
 
   // Indicator for non-placebo arm
-  int<lower=1> t_ndx[Nobs-Nst];
+  array[Nobs-Nst] int<lower=1> t_ndx;
 
   // Fixed-effects or Random-effects model: (0: fe, 1: re)
   int<lower=0,upper=1> re;
@@ -101,10 +101,10 @@ transformed data{
 parameters {
   vector[Nst] mu;                             // baseline risks
   real alpha;
-  real<lower=0, upper=1.5> ED50_raw[emax];
-  real<lower=0.5, upper=10> gamma[hill];              // Hill parameter
+  array[emax] real<lower=0, upper=1.5> ED50_raw;
+  array[hill] real<lower=0.5, upper=10> gamma;              // Hill parameter
   vector[Nobs - Nst] u;
-  real<lower=0> tau[re];
+  array[re] real<lower=0> tau;
 }
 
 transformed parameters{
@@ -114,7 +114,7 @@ transformed parameters{
   vector[Nobs] md;
   vector[Nobs] delta;
   vector[Nobs] theta;
-  real<lower=0> ED50[emax];
+  array[emax] real<lower=0> ED50;
 
   // used for the prior distribution of ED50 (ED50) parameter
   if(emax == 1) {ED50[1] = ED50_raw[1] * maxdose;}
@@ -217,9 +217,9 @@ model {
 
 generated quantities {
   real mean_mu;
-  real md_pred[Npred];
-  real delta_pred[Npred];                                      // Predicted delta
-  real<lower=0, upper=1> Pred_probs[Npred];                    // Predicted probabolities
+  array[Npred] real md_pred;
+  array[Npred] real delta_pred;                                      // Predicted delta
+  array[Npred] real<lower=0, upper=1> Pred_probs;                    // Predicted probabolities
   vector[Nobs] log_lik;                                        // pointwise log-likelihood contribution
 
 
