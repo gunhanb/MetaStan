@@ -17,8 +17,7 @@ metastan_data(
   exposure,
   labels,
   data,
-  sort = TRUE,
-  checkForConflicts = TRUE
+  sort = TRUE
 )
 }
 \arguments{

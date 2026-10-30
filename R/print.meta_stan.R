@@ -49,7 +49,14 @@ print.meta_stan <- function(x, digits = 2, ...) {
     cat("\n\n")
   }
 
-  cat("Treatment effect (theta) estimates\n")
+  transformation = if (is.null(x$transformation)) "none" else x$transformation
+  if (transformation == "relative_risk") {
+    cat("Treatment effect (theta) estimates on log relative risk scale\n")
+  } else if (transformation == "risk_difference") {
+    cat("Treatment effect (theta) estimates on risk difference scale\n")
+  } else {
+    cat("Treatment effect (theta) estimates\n")
+  }
   print(round(x$fit_sum['theta', -c(2, 3, 5, 7, 9, 10)], digits))
   cat("\n")
 

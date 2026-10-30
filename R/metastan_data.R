@@ -315,6 +315,6 @@ print.metastan_data <- function(x, n=6, ...)
   }
   dat <- cbind.data.frame(dat, x$outcome)
   rownames(dat) <- NULL
-  print(head(dat, n=n), ...)
+  print(utils::head(dat, n=n), ...)
   invisible(x)
 }

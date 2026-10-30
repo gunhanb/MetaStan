@@ -53,7 +53,14 @@ forest_plot = function(x = NULL,
   if(is.null(labels)) {labels = paste("Study ID:", 1:Nstud)}
   data_wide$labels = labels
 
-  raw.data <- metafor::escalc(measure = "OR",
+  ## study-level estimates on the same scale as theta
+  transformation = if (is.null(x$transformation)) "none" else x$transformation
+  measure = switch(transformation,
+                   relative_risk = "RR",
+                   risk_difference = "RD",
+                   "OR")
+
+  raw.data <- metafor::escalc(measure = measure,
                               ai = r2, n1i = n2,
                               ci = r1, n2i = n1,
                               slab = labels, data = data_wide)

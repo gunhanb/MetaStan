@@ -29,6 +29,14 @@ http://mc-stan.org
 Günhan, B and Röver, C and Friede, T (2020). Random-effects meta-analysis of few studies
 involving rare events. Research Synthesis Methods. doi = 10.1002/jrsm.1370.
 }
+\seealso{
+Useful links:
+\itemize{
+  \item \url{https://github.com/gunhanb/MetaStan}
+  \item Report bugs at \url{https://github.com/gunhanb/MetaStan/issues}
+}
+
+}
 \author{
 Burak Kuersad Guenhan <burak.gunhan@med.uni-goettingen.de>
 }

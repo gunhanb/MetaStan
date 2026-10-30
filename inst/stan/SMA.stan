@@ -15,8 +15,13 @@ data {
   // Study number for each observation
   int<lower=1> st[Nobs];
 
-  // link function (1=normal, 2=binary, 3=poisson)
-  int<lower=1,upper=3> link;
+  // link function
+  // 1 = continuous (MD or SMD)
+  // 2 = binary logit (log OR)
+  // 3 = count log (rate ratio)
+  // 4 = binary log (log RR)
+  // 5 = binary identity (RD)
+  int<lower=1,upper=5> link;
 
   // normal data, link=identity=1
   vector[Nobs] y;
@@ -67,6 +72,8 @@ transformed parameters {
   vector[Nobs] d;
   vector[max(st)] temp;
   vector[max(st)] beta_cov;
+
+  vector[Nobs] p; // event probabilities (binomial links only)
 
   if(mreg) {
     for(i in 1:Nobs)
@@ -124,6 +131,23 @@ transformed parameters {
       }
 }
 
+  // event probabilities, computed once d is defined
+  for (i in 1:Nobs) {
+    if (link == 2) {
+      // logit link (OR)
+      p[i] = inv_logit(d[i]);
+    } else if (link == 4) {
+      // log link (RR)
+      p[i] = exp(d[i]);
+    } else if (link == 5) {
+      // identity link (RD)
+      p[i] = d[i];
+    } else {
+      // not used for normal or poisson likelihoods
+      p[i] = 0;
+    }
+  }
+
 }
 
 model {
@@ -151,9 +175,32 @@ model {
   if(mreg)  beta[1] ~ normal(beta_prior[1], beta_prior[2]);
 
   // likelihood
-  if(link == 1) y ~ normal(d, y_se);
-  if(link == 2) r ~ binomial_logit(n, d);
-  if(link == 3) count ~ poisson_log(exposure + d);
+  if (link == 1) {
+    // MD or SMD
+    y ~ normal(d, y_se);
+  }
+
+  if (link == 2) {
+    // logit link (OR)
+    r ~ binomial_logit(n, d);
+  }
+
+  if (link == 3) {
+    // log rate ratio
+    count ~ poisson_log(exposure + d);
+  }
+
+  if (link == 4) {
+    // log link (RR)
+    for (i in 1:Nobs)
+      r[i] ~ binomial(n[i], p[i]);
+  }
+
+  if (link == 5) {
+    // identity link (RD)
+    for (i in 1:Nobs)
+      r[i] ~ binomial(n[i], p[i]);
+  }
 
 }
 
@@ -163,9 +210,24 @@ generated quantities {
 
 
   for (s in 1:Nobs) {
-    if(link == 1)  log_lik[s] = normal_lpdf(y[s] | d[s], y_se[s]);
-    if(link == 2)  log_lik[s] = binomial_logit_lpmf(r[s] | n[s], d[s]);
-    if(link == 3)  log_lik[s] = poisson_log_lpmf(count[s] | exposure[s] + d[s]);
+    if (link == 1)
+    log_lik[s] = normal_lpdf(y[s] | d[s], y_se[s]);
+
+
+    if (link == 2)
+    log_lik[s] = binomial_logit_lpmf(r[s] | n[s], d[s]);
+
+
+    if (link == 3)
+    log_lik[s] = poisson_log_lpmf(count[s] | exposure[s] + d[s]);
+
+
+    if (link == 4)
+    log_lik[s] = binomial_lpmf(r[s] | n[s], p[s]);
+
+
+    if (link == 5)
+    log_lik[s] = binomial_lpmf(r[s] | n[s], p[s]);
   }
 
   // Prediction for new study

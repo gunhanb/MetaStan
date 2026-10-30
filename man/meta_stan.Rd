@@ -7,6 +7,7 @@
 meta_stan(
   data = NULL,
   likelihood = NULL,
+  transformation = "none",
   mu_prior = c(0, 10),
   theta_prior = NULL,
   tau_prior = 0.5,
@@ -31,6 +32,11 @@ meta_stan(
 
 \item{likelihood}{A string specifying the likelihood function defining the statistical
 model. Options include  `normal`, `binomial`, and `Poisson`.}
+
+\item{transformation}{A string specifying the type of transformation used for
+binomial likelihood. Options include `none` (default, log odds ratio), `relative_risk` (log relative risk),
+and `risk_difference` (risk difference). With `risk_difference`, `mu_prior` and `theta_prior` are on the
+probability scale and `delta` cannot be used.}
 
 \item{mu_prior}{A numerical vector specifying the parameter of the normal prior
 density for baseline risks, first value is parameter for mean, second is for variance.
